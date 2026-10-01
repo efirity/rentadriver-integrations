@@ -1,0 +1,35 @@
+# Shopify CLI app configuration for the RentADriver app (https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration).
+# The app itself has no separate runtime: the embedded UI is served by apps/web at /shopify and every endpoint lives in
+# apps/api under /v1/shopify. Run `shopify app deploy` from this folder after changing it, or edit the same values in
+# the Dev Dashboard. client_id = SHOPIFY_API_KEY. App "RentADriver" in the EFIRITY PTE. LTD. organization.
+client_id = "7e61891f27ac51c344b7805ea1bf2819"
+name = "RentADriver"
+application_url = "https://rentadriver.ai/shopify"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = false
+
+[access_scopes]
+# Keep in sync with SHOPIFY_SCOPES (apps/api/src/env.ts)
+scopes = "read_orders,write_orders,read_shipping,write_shipping,read_fulfillments,write_fulfillments,read_merchant_managed_fulfillment_orders,write_merchant_managed_fulfillment_orders,read_locations"
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = [
+  "https://api.rentadriver.ai/v1/shopify/callback",
+  "https://rentadriver.ai/shopify",
+]
+
+[webhooks]
+api_version = "2026-01"
+
+# Compliance topics are mandatory for listing and are ONLY declared here (the API verifies the HMAC and answers 200).
+# The order/app topics are registered per shop by the API after install (SHOPIFY_REGISTER_WEBHOOKS=1). If you prefer to
+# declare them here instead, add them below and set SHOPIFY_REGISTER_WEBHOOKS=0 so events are not delivered twice.
+[[webhooks.subscriptions]]
+compliance_topics = ["customers/data_request", "customers/redact", "shop/redact"]
+uri = "https://api.rentadriver.ai/v1/shopify/webhooks"
+
+[pos]
+embedded = false

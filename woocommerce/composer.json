@@ -1,0 +1,14 @@
+{
+  "name": "rentadriver/woocommerce-quality",
+  "description": "Development-only WordPress coding standards for the RentADriver plugin",
+  "type": "project",
+  "license": "GPL-2.0-or-later",
+  "require-dev": {
+    "wp-coding-standards/wpcs": "^3.3",
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.1"
+  },
+  "config": {
+    "allow-plugins": { "dealerdirect/phpcodesniffer-composer-installer": true }
+  },
+  "scripts": { "check": "phpcs", "fix": "phpcbf" }
+}

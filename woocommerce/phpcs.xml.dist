@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ruleset name="RentADriver WooCommerce">
+  <description>WordPress Coding Standards for the distributed plugin.</description>
+  <file>rentadriver-delivery</file>
+  <arg name="extensions" value="php"/>
+  <arg value="sp"/>
+  <rule ref="WordPress"/>
+  <config name="text_domain" value="rentadriver-delivery"/>
+  <config name="prefixes" value="rentadriver"/>
+  <rule ref="WordPress.WP.Capabilities"><properties><property name="custom_capabilities" type="array"><element value="manage_woocommerce"/></property></properties></rule>
+</ruleset>

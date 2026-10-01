@@ -1,0 +1,30 @@
+# Secrets and private platform credentials (never commit)
+**/oauth.txt
+**/auth.txt
+**/info.txt
+**/*.secret
+**/*.key
+**/certs/
+.env
+.env.*
+*.pem
+!wix/public-key.pem
+
+# Internal review notes and reviewer correspondence (kept in the private monorepo)
+review-knowhow.md
+**/EMAIL-*.md
+
+# Tooling state and build output
+shopify/.shopify/
+woocommerce/vendor/
+woocommerce/wporg-svn/
+node_modules/
+*.zip
+.DS_Store
+
+# Listing videos and soundtracks stay out of GitHub (they live in the private monorepo / marketplace listings)
+*.mp4
+*.mov
+*.wav
+*.m4a
+**/listing/video/
