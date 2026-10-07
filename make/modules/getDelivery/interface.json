@@ -1,0 +1,32 @@
+[
+  {
+    "name": "success",
+    "type": "boolean"
+  },
+  {
+    "name": "delivery",
+    "type": "collection",
+    "spec": [
+      {
+        "name": "id",
+        "type": "text"
+      },
+      {
+        "name": "short_code",
+        "type": "text"
+      },
+      {
+        "name": "status",
+        "type": "text"
+      },
+      {
+        "name": "currency",
+        "type": "text"
+      },
+      {
+        "name": "client_price_cents",
+        "type": "number"
+      }
+    ]
+  }
+]

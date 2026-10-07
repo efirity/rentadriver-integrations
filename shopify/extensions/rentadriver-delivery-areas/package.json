@@ -1,0 +1,29 @@
+{
+  "name": "rentadriver-delivery-areas",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@shopify/shopify_function": "2.0.1"
+  },
+  "scripts": {
+    "typegen": "graphql-code-generator --config package.json",
+    "build": "shopify app function build"
+  },
+  "codegen": {
+    "schema": "schema.graphql",
+    "documents": "src/*.graphql",
+    "generates": {
+      "./generated/api.ts": {
+        "plugins": [
+          "typescript",
+          "typescript-operations"
+        ]
+      }
+    },
+    "config": {
+      "omitOperationSuffix": true
+    }
+  }
+}

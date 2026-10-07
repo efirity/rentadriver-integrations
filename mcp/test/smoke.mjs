@@ -1,0 +1,14 @@
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+const t = new StdioClientTransport({ command: "node", args: ["dist/index.js"], env: { ...process.env, RENTADRIVER_API_URL: "http://localhost:8787", RENTADRIVER_API_KEY: process.env.RENTADRIVER_API_KEY ?? "" } });
+const c = new Client({ name: "test", version: "0" });
+await c.connect(t);
+const tools = await c.listTools(); console.log("tools:", tools.tools.length, tools.tools.map((x) => x.name).join(", "));
+const r1 = await c.callTool({ name: "check_coverage", arguments: { address: "Flinders Street Station, Melbourne" } }); console.log("coverage:", r1.content[0].text.slice(0, 160));
+const r2 = await c.callTool({ name: "get_quote", arguments: { pickup: { lat: -37.8076, lng: 144.9568, address: "Queen Victoria Market" }, dropoffs: [{ lat: -37.8183, lng: 144.9671, address: "Flinders Street Station" }] } }); const q = JSON.parse(r2.content[0].text).quote; console.log("quote:", q.price, q.currency, q.eta_dropoff_min, "min");
+const r3 = await c.callTool({ name: "create_delivery", arguments: { quote_id: q.id, dryRun: true } }); console.log("dryRun:", r3.content[0].text.slice(0, 120));
+const r4 = await c.callTool({ name: "check_account_status", arguments: {} }); console.log("account:", r4.content[0].text.slice(0, 100));
+const res = await c.listResources(); console.log("resources:", res.resources.map((r) => r.uri));
+const pr = await c.listPrompts(); console.log("prompts:", pr.prompts.map((p) => p.name));
+const r5 = await c.callTool({ name: "get_delivery", arguments: { delivery_id: "RD-NOPE000" } }); console.log("not found →", r5.isError, r5.content[0].text.slice(0, 80));
+await c.close();

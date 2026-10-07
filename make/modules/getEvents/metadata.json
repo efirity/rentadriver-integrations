@@ -1,0 +1,6 @@
+{
+  "name": "getEvents",
+  "label": "Get Delivery Events",
+  "type": "action",
+  "connection": "oauth"
+}

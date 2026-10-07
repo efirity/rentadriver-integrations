@@ -1,0 +1,40 @@
+[
+  {
+    "name": "success",
+    "type": "boolean"
+  },
+  {
+    "name": "connection",
+    "type": "collection",
+    "spec": [
+      {
+        "name": "account_id",
+        "type": "text"
+      },
+      {
+        "name": "account_name",
+        "type": "text"
+      },
+      {
+        "name": "workspace_id",
+        "type": "text"
+      },
+      {
+        "name": "country_code",
+        "type": "text"
+      },
+      {
+        "name": "currency",
+        "type": "text"
+      },
+      {
+        "name": "mode",
+        "type": "text"
+      },
+      {
+        "name": "role",
+        "type": "text"
+      }
+    ]
+  }
+]

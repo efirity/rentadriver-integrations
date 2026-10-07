@@ -1,0 +1,7 @@
+{
+  "url": "/automation/connection",
+  "method": "GET",
+  "response": {
+    "output": "{{body}}"
+  }
+}

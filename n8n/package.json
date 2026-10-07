@@ -1,0 +1,62 @@
+{
+  "name": "n8n-nodes-rentadriver",
+  "version": "0.1.0",
+  "description": "RentADriver quotes, delivery drafts and delivery events for n8n",
+  "license": "MIT",
+  "keywords": [
+    "n8n-community-node-package",
+    "delivery",
+    "rentadriver"
+  ],
+  "files": [
+    "dist",
+    "LICENSE",
+    "NOTICE.md",
+    "examples",
+    "PUBLISHING.md"
+  ],
+  "scripts": {
+    "build": "n8n-node build",
+    "test": "npm run lint && npm run build && node --test tests/*.test.cjs",
+    "prepack": "npm run lint && npm run build",
+    "lint": "n8n-node lint",
+    "dev": "n8n-node dev --external-n8n"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/RentADriverOAuth2Api.credentials.js",
+      "dist/credentials/RentADriverApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/RentADriver/RentADriver.node.js"
+    ],
+    "strict": true
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "0.50.4",
+    "@types/node": "22.19.0",
+    "n8n-workflow": "2.16.0",
+    "typescript": "5.9.3"
+  },
+  "author": {
+    "name": "efirity",
+    "url": "https://rentadriver.ai",
+    "email": "support@rentadriver.ai"
+  },
+  "homepage": "https://rentadriver.ai/integrations/n8n",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efirity/rentadriver-integrations.git",
+    "directory": "n8n"
+  },
+  "bugs": {
+    "url": "https://github.com/efirity/rentadriver-integrations/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

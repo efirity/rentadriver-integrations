@@ -1,0 +1,8 @@
+{
+  "name": "RentADriver",
+  "description": "Same-day local delivery from your store, with live tracking and proof of delivery.",
+  "deploymentUri": "https://api.rentadriver.ai/v1/wix/plugin",
+  "dashboardUrl": "https://rentadriver.ai/wix",
+  "learnMoreUrl": "https://rentadriver.ai/integrations/wix",
+  "fallbackDefinitionMandatory": false
+}

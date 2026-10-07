@@ -1,0 +1,70 @@
+[
+  {
+    "name": "success",
+    "type": "boolean"
+  },
+  {
+    "name": "next_cursor",
+    "type": "text"
+  },
+  {
+    "name": "events",
+    "type": "array",
+    "spec": {
+      "name": "",
+      "type": "collection",
+      "spec": [
+        {
+          "name": "id",
+          "type": "text"
+        },
+        {
+          "name": "cursor",
+          "type": "text"
+        },
+        {
+          "name": "event",
+          "type": "text"
+        },
+        {
+          "name": "data",
+          "type": "collection",
+          "spec": [
+            {
+              "name": "event_id",
+              "type": "text"
+            },
+            {
+              "name": "delivery_id",
+              "type": "text"
+            },
+            {
+              "name": "short_code",
+              "type": "text"
+            },
+            {
+              "name": "status",
+              "type": "text"
+            },
+            {
+              "name": "workspace_id",
+              "type": "text"
+            },
+            {
+              "name": "currency",
+              "type": "text"
+            },
+            {
+              "name": "is_test",
+              "type": "boolean"
+            },
+            {
+              "name": "occurred_at",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

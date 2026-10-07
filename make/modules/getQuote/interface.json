@@ -1,0 +1,44 @@
+[
+  {
+    "name": "success",
+    "type": "boolean"
+  },
+  {
+    "name": "quote",
+    "type": "collection",
+    "spec": [
+      {
+        "name": "id",
+        "type": "text"
+      },
+      {
+        "name": "currency",
+        "type": "text"
+      },
+      {
+        "name": "client_price_cents",
+        "type": "number"
+      },
+      {
+        "name": "price",
+        "type": "text"
+      },
+      {
+        "name": "expires_at",
+        "type": "text"
+      },
+      {
+        "name": "vehicle_class",
+        "type": "text"
+      },
+      {
+        "name": "eta_pickup_min",
+        "type": "number"
+      },
+      {
+        "name": "eta_dropoff_min",
+        "type": "number"
+      }
+    ]
+  }
+]

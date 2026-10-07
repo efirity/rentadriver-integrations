@@ -1,0 +1,5188 @@
+{
+  "status": "REVIEW",
+  "assert_compliance": true,
+  "brand_color": null,
+  "brand_color_dark": null,
+  "branding": {
+    "contact_email": null,
+    "customer_support": "https://rentadriver.ai/support",
+    "physical_address": null,
+    "privacy_policy": "https://rentadriver.ai/privacy",
+    "terms_of_service": "https://rentadriver.ai/terms",
+    "website": "https://rentadriver.ai"
+  },
+  "categories": null,
+  "commerce_agreement": true,
+  "commerce_agreement_explanation": "RentADriver arranges physical parcel pickup and delivery by couriers. Users obtain a delivery quote and pay for a physical delivery from their prepaid RentADriver wallet. The card-deposit tool links to Stripe Checkout for wallet funding; the user completes payment outside ChatGPT. The plugin does not sell digital content, software subscriptions or subscription upgrades.",
+  "commerce_enabled": true,
+  "complies_with_all_laws_and_regulations": true,
+  "composer_icon": {
+    "file_id": "file_00000000b6d881f588890c92e4abe3c4"
+  },
+  "composer_icon_dark": {
+    "file_id": "file_00000000b6d881f588890c92e4abe3c4"
+  },
+  "country_filtering": {
+    "allow_or_block": "ALLOW",
+    "countries": [
+      "GB",
+      "US",
+      "MD"
+    ]
+  },
+  "description": "Check delivery coverage, request a price, book package deliveries and track their progress with RentADriver. Delivery coverage currently includes service areas in the United Kingdom, United States and Moldova; check coverage for each pickup and drop-off. Booking requires a connected RentADriver account and sufficient prepaid wallet balance. Prices and driver availability come from the service; coverage does not guarantee an available driver or pickup time.",
+  "developer_identity_name": "efirity",
+  "developer_name": "EFIRITY PTE. LTD.",
+  "display_name": "RentADriver",
+  "entity_type": "business",
+  "frame_domain_enabled": false,
+  "frame_domain_explanation": null,
+  "has_rights_to_3p_content": true,
+  "icons": {
+    "original": {
+      "file_id": "file_0000000077c0822f9d6a8d762a89f14d"
+    },
+    "256_square": {
+      "file_id": "file_00000000e7c881f89032d7bd9f336315"
+    },
+    "256_circle": {
+      "file_id": "file_000000000f2481f4b9c76ad791936445"
+    }
+  },
+  "icons_dark": {
+    "original": {
+      "file_id": "file_0000000077c0822f9d6a8d762a89f14d"
+    },
+    "256_square": {
+      "file_id": "file_00000000e7c881f89032d7bd9f336315"
+    },
+    "256_circle": {
+      "file_id": "file_000000000f2481f4b9c76ad791936445"
+    }
+  },
+  "initialized": false,
+  "intended_audience": "all_ages",
+  "is_health_related": null,
+  "logo_url": null,
+  "logo_url_dark": null,
+  "mcp": {
+    "type": "metadata_populated",
+    "mcp_url": "https://mcp.rentadriver.ai/mcp",
+    "requires_mtls": false,
+    "supported_auth": [
+      {
+        "type": "OAUTH",
+        "registration_url": "https://api.rentadriver.ai/oauth/register",
+        "authorization_url": "https://rentadriver.ai/oauth/authorize",
+        "token_url": "https://api.rentadriver.ai/oauth/token",
+        "scope_separator": " ",
+        "scope_param": "scope",
+        "pkce_required": true,
+        "revocation_url": "https://api.rentadriver.ai/oauth/revoke",
+        "pkce_methods": [
+          "S256"
+        ],
+        "allow_http_redirect": true,
+        "supports_domain_restriction": false,
+        "authorization_server_base": "https://api.rentadriver.ai",
+        "authorization_server_issuer": "https://api.rentadriver.ai",
+        "base_scopes": [],
+        "default_scopes": [
+          "read",
+          "write"
+        ],
+        "resource": "https://mcp.rentadriver.ai/mcp",
+        "scopes_supported": [
+          "read",
+          "write"
+        ],
+        "token_endpoint_auth_methods_supported": [
+          "none",
+          "client_secret_post",
+          "client_secret_basic"
+        ],
+        "oidc_enabled": false,
+        "use_cimd": false,
+        "authorization_response_iss_parameter_supported": false
+      }
+    ],
+    "policy_info": {
+      "safety_status": "SCANNED_OK"
+    },
+    "resources": [
+      {
+        "name": "Check coverage",
+        "title": "Check coverage",
+        "description": "Is an address or lat/lng inside a RentADriver service area? Free, no API key.",
+        "action_name": "check_coverage",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string"
+            },
+            "lat": {
+              "type": "number"
+            },
+            "lng": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "read_only",
+          "open_world"
+        ],
+        "provided_tool_annotations": {
+          "title": "Check coverage",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "List service areas",
+        "title": "List service areas",
+        "description": "Launch cities with currency, timezone and radius. Free.",
+        "action_name": "list_service_areas",
+        "input_json_schema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "List service areas",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Get a delivery quote",
+        "title": "Get a delivery quote",
+        "description": "Price and conditional ETA for a pickup and one or more drop-offs. Null ETA means driver availability is unconfirmed; never promise a pickup time. Free, no key. Returns a quote_id valid 15 minutes; pass it to create_delivery.",
+        "action_name": "get_quote",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "workspace_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "pickup": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "description": "Street address (geocoded if lat/lng omitted)"
+                },
+                "lat": {
+                  "type": "number"
+                },
+                "lng": {
+                  "type": "number"
+                },
+                "contact_name": {
+                  "type": "string"
+                },
+                "contact_phone": {
+                  "type": "string"
+                },
+                "instructions": {
+                  "type": "string",
+                  "description": "Access notes, buzzer, floor, where to leave it"
+                },
+                "window_start": {
+                  "type": "string",
+                  "description": "ISO datetime"
+                },
+                "window_end": {
+                  "type": "string",
+                  "description": "ISO datetime"
+                },
+                "proof_required": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "photo",
+                      "signature",
+                      "recipient_name",
+                      "otp"
+                    ]
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "dropoffs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/properties/pickup"
+              },
+              "minItems": 1,
+              "maxItems": 8
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "default": 1
+                  },
+                  "size_class": {
+                    "type": "string",
+                    "enum": [
+                      "S",
+                      "M",
+                      "L",
+                      "XL"
+                    ],
+                    "default": "M",
+                    "description": "S envelope/bag · M shoebox–backpack · L suitcase · XL bulky parcel (courier weight limits still apply)"
+                  },
+                  "weight_kg": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 20,
+                    "description": "Weight per package in kg; standard courier limit 20 kg per package, 200 kg combined"
+                  },
+                  "length_cm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000
+                  },
+                  "width_cm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000
+                  },
+                  "height_cm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000
+                  },
+                  "value_cents": {
+                    "type": "integer"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "parcel",
+                      "document",
+                      "retail",
+                      "food",
+                      "grocery",
+                      "flowers",
+                      "pharmacy",
+                      "keys",
+                      "electronics",
+                      "other"
+                    ],
+                    "default": "parcel"
+                  },
+                  "fragile": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "description"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "urgency": {
+              "type": "string",
+              "enum": [
+                "asap",
+                "today",
+                "scheduled"
+              ],
+              "default": "asap"
+            },
+            "scheduled_at": {
+              "type": "string"
+            },
+            "vehicle_class": {
+              "type": "string",
+              "enum": [
+                "bike",
+                "scooter",
+                "car",
+                "suv",
+                "van",
+                "truck"
+              ]
+            },
+            "service": {
+              "type": "string",
+              "enum": [
+                "auto",
+                "local",
+                "intercity"
+              ],
+              "default": "auto"
+            },
+            "speed": {
+              "type": "string",
+              "enum": [
+                "express",
+                "standard",
+                "shared"
+              ]
+            }
+          },
+          "required": [
+            "pickup",
+            "dropoffs"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world"
+        ],
+        "provided_tool_annotations": {
+          "title": "Get a delivery quote",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "templates": [
+          {
+            "sediment_id": "",
+            "resource_uri": "ui://rentadriver/quote.html",
+            "meta": {
+              "ui": {
+                "csp": {
+                  "resourceDomains": [
+                    "https://rentadriver.ai",
+                    "https://api.rentadriver.ai"
+                  ]
+                },
+                "prefersBorder": false
+              },
+              "openai/widgetDescription": "Price and conditional ETA for a pickup and one or more drop-offs. Null ETA means driver availability is unconfirmed; never promise a pickup time. Free, no key. Returns a quote_id valid 15 minutes; pass it to create_delivery."
+            }
+          }
+        ],
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {
+          "ui": {
+            "resourceUri": "ui://rentadriver/quote.html"
+          },
+          "ui/resourceUri": "ui://rentadriver/quote.html"
+        },
+        "visibility": "public"
+      },
+      {
+        "name": "Intercity lanes",
+        "title": "Intercity lanes",
+        "description": "City-to-city lanes between launch cities (e.g. London → Birmingham, Chicago → New York) with distance, transit time, sample prices for express / standard / shared speeds and the next shared departures. Free.",
+        "action_name": "list_intercity_lanes",
+        "input_json_schema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "Intercity lanes",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Intercity quote",
+        "title": "Intercity quote",
+        "description": "Price a city-to-city delivery: pickup in one launch city, drop-off in (or within 80 km of) another city in the same country. speed: express (dedicated driver leaves within 2h), standard (dedicated within 24h), shared (consolidated lane run at fixed departures, cheapest). Returns quote_id, tiered per-km breakdown, departure/arrival estimates and the milestone schedule. Free, no key.",
+        "action_name": "get_intercity_quote",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "workspace_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "pickup": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "description": "Street address (geocoded if lat/lng omitted)"
+                },
+                "lat": {
+                  "type": "number"
+                },
+                "lng": {
+                  "type": "number"
+                },
+                "contact_name": {
+                  "type": "string"
+                },
+                "contact_phone": {
+                  "type": "string"
+                },
+                "instructions": {
+                  "type": "string",
+                  "description": "Access notes, buzzer, floor, where to leave it"
+                },
+                "window_start": {
+                  "type": "string",
+                  "description": "ISO datetime"
+                },
+                "window_end": {
+                  "type": "string",
+                  "description": "ISO datetime"
+                },
+                "proof_required": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "photo",
+                      "signature",
+                      "recipient_name",
+                      "otp"
+                    ]
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "dropoffs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/properties/pickup"
+              },
+              "minItems": 1,
+              "maxItems": 3
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "default": 1
+                  },
+                  "size_class": {
+                    "type": "string",
+                    "enum": [
+                      "S",
+                      "M",
+                      "L",
+                      "XL"
+                    ],
+                    "default": "M",
+                    "description": "S envelope/bag · M shoebox–backpack · L suitcase · XL bulky parcel (courier weight limits still apply)"
+                  },
+                  "weight_kg": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 20,
+                    "description": "Weight per package in kg; standard courier limit 20 kg per package, 200 kg combined"
+                  },
+                  "length_cm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000
+                  },
+                  "width_cm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000
+                  },
+                  "height_cm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000
+                  },
+                  "value_cents": {
+                    "type": "integer"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "parcel",
+                      "document",
+                      "retail",
+                      "food",
+                      "grocery",
+                      "flowers",
+                      "pharmacy",
+                      "keys",
+                      "electronics",
+                      "other"
+                    ],
+                    "default": "parcel"
+                  },
+                  "fragile": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "description"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "speed": {
+              "type": "string",
+              "enum": [
+                "express",
+                "standard",
+                "shared"
+              ],
+              "default": "standard"
+            },
+            "scheduled_at": {
+              "type": "string"
+            },
+            "vehicle_class": {
+              "type": "string",
+              "enum": [
+                "car",
+                "suv",
+                "van",
+                "truck"
+              ]
+            }
+          },
+          "required": [
+            "pickup",
+            "dropoffs"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world"
+        ],
+        "provided_tool_annotations": {
+          "title": "Intercity quote",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Platform stats",
+        "title": "Platform stats",
+        "description": "Live counts: active drivers, drivers on shift, deliveries, agents connected.",
+        "action_name": "get_platform_stats",
+        "input_json_schema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "Platform stats",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Country workspaces",
+        "title": "Country workspaces",
+        "description": "List enabled country workspaces, their separate local-currency balances, and available countries. No FX or balance transfers.",
+        "action_name": "list_country_workspaces",
+        "input_json_schema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "Country workspaces",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Enable country workspace",
+        "title": "Enable country workspace",
+        "description": "Enable another delivery country in this account. Admin role required. Starts with zero local-currency balance; existing money stays untouched. Set spending controls independently for this workspace.",
+        "action_name": "enable_country_workspace",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "country_code": {
+              "type": "string",
+              "enum": [
+                "US",
+                "GB",
+                "AU",
+                "CA"
+              ]
+            },
+            "spending_cap_per_delivery_cents": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "daily_cap_cents": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "country_code"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [],
+        "provided_tool_annotations": {
+          "title": "Enable country workspace",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Create account + API key",
+        "title": "Create account + API key",
+        "description": "Self-serve signup for an agent/app. Returns an API key ONCE. Save it as RENTADRIVER_API_KEY. Rehearse with a sandbox (rd_test_) key; live bookings need a funded wallet.",
+        "action_name": "signup",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "country_code": {
+              "type": "string",
+              "enum": [
+                "US",
+                "GB",
+                "AU",
+                "CA"
+              ],
+              "default": "US",
+              "description": "Initial country workspace. Enable additional countries with enable_country_workspace; each has its own local-currency balance."
+            },
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "agent",
+                "app",
+                "business"
+              ],
+              "default": "agent"
+            },
+            "agent_framework": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "email"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [],
+        "provided_tool_annotations": {
+          "title": "Create account + API key",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Account status",
+        "title": "Account status",
+        "description": "Confirms the API key works; returns balance, caps and capabilities.",
+        "action_name": "check_account_status",
+        "input_json_schema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "Account status",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Wallet balance",
+        "title": "Wallet balance",
+        "description": "Selected country balance and ledger. Omit workspace_id for the original default wallet.",
+        "action_name": "get_wallet_balance",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "workspace_id": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "Wallet balance",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Deposit by card",
+        "title": "Deposit by card",
+        "description": "Creates a Stripe Checkout URL a human must open to pay. Wallet is credited on payment.",
+        "action_name": "create_wallet_deposit",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "workspace_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "amount_cents": {
+              "type": "integer",
+              "minimum": 500
+            }
+          },
+          "required": [
+            "amount_cents"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world"
+        ],
+        "provided_tool_annotations": {
+          "title": "Deposit by card",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Deposit USDC (x402)",
+        "title": "Deposit USDC (x402)",
+        "description": "Agent-native funding: returns x402 v2 payment requirements (USDC on Base). Sign with an x402 client and re-call with the X-Payment header via the REST endpoint.",
+        "action_name": "create_x402_deposit",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "workspace_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "amount_cents": {
+              "type": "integer",
+              "minimum": 100
+            }
+          },
+          "required": [
+            "amount_cents"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world"
+        ],
+        "provided_tool_annotations": {
+          "title": "Deposit USDC (x402)",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Spending controls",
+        "title": "Spending controls",
+        "description": "Cap per-delivery and rolling 24-hour spend in workspace currency minor units. Zero blocks, null clears. Defaults to original workspace.",
+        "action_name": "set_spending_controls",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "workspace_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "spending_cap_per_delivery_cents": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "daily_cap_cents": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Spending controls",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "List API keys",
+        "title": "List API keys",
+        "description": "Lists the account's API keys with prefix, name, last use and revocation state. Full keys are never returned.",
+        "action_name": "list_api_keys",
+        "input_json_schema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "List API keys",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Create API key",
+        "title": "Create API key",
+        "description": "Issues an additional key (max 10 active) for another agent or environment. The key is shown once.",
+        "action_name": "create_api_key",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [],
+        "provided_tool_annotations": {
+          "title": "Create API key",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Revoke API key",
+        "title": "Revoke API key",
+        "description": "Permanently deactivates a key. You cannot revoke the key you are calling with.",
+        "action_name": "revoke_api_key",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "key_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "key_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Revoke API key",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Create a delivery",
+        "title": "Create a delivery",
+        "description": "Books a delivery. Pass quote_id from get_quote, or pickup+dropoffs directly. fund=true (default) holds the price from your wallet and starts dispatch. Use dryRun=true first to see the price without committing. Returns next_action.",
+        "action_name": "create_delivery",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "workspace_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "dispatch_timeout_hours": {
+              "type": "number",
+              "minimum": 0.25,
+              "maximum": 72,
+              "description": "Search duration in hours, 0.25–72. Default ASAP 24h, otherwise 72h; pickup windows and today deadlines still apply. No repeated funding."
+            },
+            "quote_id": {
+              "type": "string"
+            },
+            "pickup": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "description": "Street address (geocoded if lat/lng omitted)"
+                },
+                "lat": {
+                  "type": "number"
+                },
+                "lng": {
+                  "type": "number"
+                },
+                "contact_name": {
+                  "type": "string"
+                },
+                "contact_phone": {
+                  "type": "string"
+                },
+                "instructions": {
+                  "type": "string",
+                  "description": "Access notes, buzzer, floor, where to leave it"
+                },
+                "window_start": {
+                  "type": "string",
+                  "description": "ISO datetime"
+                },
+                "window_end": {
+                  "type": "string",
+                  "description": "ISO datetime"
+                },
+                "proof_required": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "photo",
+                      "signature",
+                      "recipient_name",
+                      "otp"
+                    ]
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "dropoffs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/properties/pickup"
+              }
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "default": 1
+                  },
+                  "size_class": {
+                    "type": "string",
+                    "enum": [
+                      "S",
+                      "M",
+                      "L",
+                      "XL"
+                    ],
+                    "default": "M",
+                    "description": "S envelope/bag · M shoebox–backpack · L suitcase · XL bulky parcel (courier weight limits still apply)"
+                  },
+                  "weight_kg": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 20,
+                    "description": "Weight per package in kg; standard courier limit 20 kg per package, 200 kg combined"
+                  },
+                  "length_cm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000
+                  },
+                  "width_cm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000
+                  },
+                  "height_cm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000
+                  },
+                  "value_cents": {
+                    "type": "integer"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "parcel",
+                      "document",
+                      "retail",
+                      "food",
+                      "grocery",
+                      "flowers",
+                      "pharmacy",
+                      "keys",
+                      "electronics",
+                      "other"
+                    ],
+                    "default": "parcel"
+                  },
+                  "fragile": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "description"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "urgency": {
+              "type": "string",
+              "enum": [
+                "asap",
+                "today",
+                "scheduled"
+              ]
+            },
+            "scheduled_at": {
+              "type": "string"
+            },
+            "vehicle_class": {
+              "type": "string",
+              "enum": [
+                "bike",
+                "scooter",
+                "car",
+                "suv",
+                "van",
+                "truck"
+              ]
+            },
+            "service": {
+              "type": "string",
+              "enum": [
+                "auto",
+                "local",
+                "intercity"
+              ]
+            },
+            "speed": {
+              "type": "string",
+              "enum": [
+                "express",
+                "standard",
+                "shared"
+              ]
+            },
+            "instructions": {
+              "type": "string"
+            },
+            "contingency": {
+              "type": "object",
+              "properties": {
+                "if_no_answer": {
+                  "type": "string",
+                  "enum": [
+                    "wait_then_leave_safe",
+                    "wait_then_return",
+                    "call_client",
+                    "leave_with_neighbour"
+                  ]
+                },
+                "if_closed": {
+                  "type": "string",
+                  "enum": [
+                    "return_to_pickup",
+                    "hold_and_retry",
+                    "call_client"
+                  ]
+                },
+                "max_wait_minutes": {
+                  "type": "integer"
+                },
+                "return_to": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "external_ref": {
+              "type": "string"
+            },
+            "idempotency_key": {
+              "type": "string"
+            },
+            "webhook_url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "metadata": {
+              "type": "object",
+              "additionalProperties": {}
+            },
+            "fund": {
+              "type": "boolean",
+              "default": true
+            },
+            "dryRun": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world",
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Create a delivery",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Store pickup + delivery",
+        "title": "Store pickup + delivery",
+        "description": "Shortcut for the most common agent job: collect a prepaid order from a store and deliver it. Pickup contact gets the order reference in the instructions.",
+        "action_name": "create_store_pickup",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "workspace_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "store_address": {
+              "type": "string"
+            },
+            "order_reference": {
+              "type": "string"
+            },
+            "store_phone": {
+              "type": "string"
+            },
+            "dropoff_address": {
+              "type": "string"
+            },
+            "recipient_name": {
+              "type": "string"
+            },
+            "recipient_phone": {
+              "type": "string"
+            },
+            "item_description": {
+              "type": "string",
+              "default": "Prepaid order"
+            },
+            "size_class": {
+              "type": "string",
+              "enum": [
+                "S",
+                "M",
+                "L",
+                "XL"
+              ],
+              "default": "M"
+            },
+            "instructions": {
+              "type": "string"
+            },
+            "dryRun": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "store_address",
+            "order_reference",
+            "dropoff_address"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world",
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Store pickup + delivery",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Create several deliveries",
+        "title": "Create several deliveries",
+        "description": "Up to 25 create_delivery payloads in one call.",
+        "action_name": "create_batch",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "deliveries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": {}
+              },
+              "minItems": 1,
+              "maxItems": 25
+            }
+          },
+          "required": [
+            "deliveries"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world",
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Create several deliveries",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Fund a delivery",
+        "title": "Fund a delivery",
+        "description": "For deliveries created with fund=false, or after topping up the wallet.",
+        "action_name": "fund_delivery",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "delivery_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world",
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Fund a delivery",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Get delivery",
+        "title": "Get delivery",
+        "description": "Full delivery by id or short code (RD-XXXXXXX). Hosts that support MCP Apps render a live tracker card.",
+        "action_name": "get_delivery",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "delivery_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "Get delivery",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "templates": [
+          {
+            "sediment_id": "",
+            "resource_uri": "ui://rentadriver/delivery.html",
+            "meta": {
+              "ui": {
+                "csp": {
+                  "resourceDomains": [
+                    "https://rentadriver.ai",
+                    "https://api.rentadriver.ai"
+                  ]
+                },
+                "prefersBorder": false
+              },
+              "openai/widgetDescription": "Full delivery by id or short code (RD-XXXXXXX). Hosts that support MCP Apps render a live tracker card."
+            }
+          }
+        ],
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {
+          "ui": {
+            "resourceUri": "ui://rentadriver/delivery.html"
+          },
+          "ui/resourceUri": "ui://rentadriver/delivery.html"
+        },
+        "visibility": "public"
+      },
+      {
+        "name": "List deliveries",
+        "title": "List deliveries",
+        "description": "status='active' or a comma list; since ISO datetime.",
+        "action_name": "list_deliveries",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "since": {
+              "type": "string"
+            },
+            "limit": {
+              "type": "integer",
+              "maximum": 100
+            },
+            "offset": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "List deliveries",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Create a private handover code",
+        "title": "Create a private handover code",
+        "description": "Generate or replace a six-digit code for a delivery stop requiring OTP proof. Share it privately with the intended recipient, never the driver. Replacing invalidates the old code. Expires in seven days; five failed attempts lock it.",
+        "action_name": "create_recipient_code",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "stop_id": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "delivery_id",
+            "stop_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Create a private handover code",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Track delivery",
+        "title": "Track delivery",
+        "description": "Live status, ETA, driver position and last event. Poll this every 30–60s while active.",
+        "action_name": "track_delivery",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "delivery_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "Track delivery",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Delivery timeline",
+        "title": "Delivery timeline",
+        "description": "Every event on the delivery in order: created, funded, dispatching, offers, assigned, each driver step, delivered, confirmed, paid, plus messages.",
+        "action_name": "get_delivery_events",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "delivery_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "Delivery timeline",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Update delivery",
+        "title": "Update delivery",
+        "description": "Change instructions, contingency rules or the drop-off contact while in progress.",
+        "action_name": "update_delivery",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            },
+            "instructions": {
+              "type": "string"
+            },
+            "contingency": {
+              "type": "object",
+              "properties": {
+                "if_no_answer": {
+                  "type": "string",
+                  "enum": [
+                    "wait_then_leave_safe",
+                    "wait_then_return",
+                    "call_client",
+                    "leave_with_neighbour"
+                  ]
+                },
+                "if_closed": {
+                  "type": "string",
+                  "enum": [
+                    "return_to_pickup",
+                    "hold_and_retry",
+                    "call_client"
+                  ]
+                },
+                "max_wait_minutes": {
+                  "type": "integer"
+                },
+                "return_to": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "dropoff_contact": {
+              "type": "object",
+              "properties": {
+                "contact_name": {
+                  "type": "string"
+                },
+                "contact_phone": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "window_end": {
+              "type": "string"
+            },
+            "metadata": {
+              "type": "object",
+              "additionalProperties": {}
+            }
+          },
+          "required": [
+            "delivery_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Update delivery",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Cancel delivery",
+        "title": "Cancel delivery",
+        "description": "Free before a driver is assigned; a cancellation fee after assignment; not possible after pickup.",
+        "action_name": "cancel_delivery",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "delivery_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Cancel delivery",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Return leg",
+        "title": "Return leg",
+        "description": "Create the reverse delivery (last drop-off back to pickup).",
+        "action_name": "create_return",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "delivery_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world",
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Return leg",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Message the driver",
+        "title": "Message the driver",
+        "description": "Delivered as a push + in-app message once a driver is assigned.",
+        "action_name": "send_message_to_driver",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "delivery_id",
+            "body"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world",
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Message the driver",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Read messages",
+        "title": "Read messages",
+        "description": "The full message thread between you and the driver for one delivery, oldest first.",
+        "action_name": "get_delivery_messages",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "delivery_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "Read messages",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Proof of delivery",
+        "title": "Proof of delivery",
+        "description": "Signed photo URLs (1h), signature, recipient name, geo + time.",
+        "action_name": "get_proof_of_delivery",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "delivery_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "Proof of delivery",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Confirm delivery",
+        "title": "Confirm delivery",
+        "description": "Releases payment to the driver. Auto-confirms 24h after delivery if you don't.",
+        "action_name": "confirm_delivery",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "delivery_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world",
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Confirm delivery",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Open a dispute",
+        "title": "Open a dispute",
+        "description": "Funds stay held; ops reviews within 24h.",
+        "action_name": "open_dispute",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 5
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          },
+          "required": [
+            "delivery_id",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Open a dispute",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Tip the driver",
+        "title": "Tip the driver",
+        "description": "Cents, from your wallet. Reuse idempotency_key when retrying the same tip.",
+        "action_name": "tip_driver",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            },
+            "idempotency_key": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 100
+            },
+            "amount_cents": {
+              "type": "integer",
+              "minimum": 50,
+              "maximum": 50000
+            }
+          },
+          "required": [
+            "delivery_id",
+            "idempotency_key",
+            "amount_cents"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world",
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Tip the driver",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Rate the driver",
+        "title": "Rate the driver",
+        "description": "Rate the driver of a completed delivery from 1 to 5 stars, with an optional comment.",
+        "action_name": "rate_driver",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "delivery_id": {
+              "type": "string"
+            },
+            "stars": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "comment": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "delivery_id",
+            "stars"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Rate the driver",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "List Shopify orders",
+        "title": "List Shopify orders",
+        "description": "Orders the RentADriver app for Shopify has seen on the shops connected to this account, with the booking status (booked / skipped / needs_funds / failed) and the linked delivery. Requires the app to be installed on the store: https://rentadriver.ai/integrations/shopify",
+        "action_name": "list_shopify_orders",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "skipped",
+                "booked",
+                "needs_funds",
+                "failed",
+                "cancelled"
+              ]
+            },
+            "limit": {
+              "type": "integer",
+              "maximum": 200
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "List Shopify orders",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Book a Shopify order",
+        "title": "Book a Shopify order",
+        "description": "Book a same-day delivery for a Shopify order by its name (e.g. #1042) or id. Pickup is the store location, drop-off the order's shipping address, items from the line items. Fetches the order from Shopify if the app has not seen it. force=true ignores the shop's radius and size limits. On success the order is fulfilled with a tracking link as the driver picks it up.",
+        "action_name": "book_shopify_order",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "order": {
+              "type": "string",
+              "description": "Order name like #1042, Shopify order id, or the app's order row id"
+            },
+            "shop": {
+              "type": "string",
+              "description": "myshopify.com domain when several shops are connected"
+            },
+            "force": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "order"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world",
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Book a Shopify order",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "List store orders",
+        "title": "List store orders",
+        "description": "Orders the RentADriver connector has seen on the WooCommerce, BigCommerce, Wix Stores or Squarespace stores connected to this account, with the booking status (booked / skipped / needs_funds / failed) and the linked delivery. Requires the store to be connected: https://rentadriver.ai/integrations/<platform>",
+        "action_name": "list_store_orders",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "platform": {
+              "type": "string",
+              "enum": [
+                "woocommerce",
+                "bigcommerce",
+                "wix",
+                "squarespace"
+              ]
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "skipped",
+                "booked",
+                "needs_funds",
+                "failed",
+                "cancelled"
+              ]
+            },
+            "limit": {
+              "type": "integer",
+              "maximum": 200
+            }
+          },
+          "required": [
+            "platform"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "List store orders",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Book a store order",
+        "title": "Book a store order",
+        "description": "Book a same-day delivery for a WooCommerce, BigCommerce, Wix Stores or Squarespace order by its number (e.g. #1042) or id. Pickup is the store location, drop-off the order's shipping address, items from the line items. Fetches the order from the platform if the connector has not seen it. force=true ignores the store's radius and size limits. On success the order is marked shipped / fulfilled with a tracking link as the driver picks it up.",
+        "action_name": "book_store_order",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "platform": {
+              "type": "string",
+              "enum": [
+                "woocommerce",
+                "bigcommerce",
+                "wix",
+                "squarespace"
+              ]
+            },
+            "order": {
+              "type": "string",
+              "description": "Order number like #1042, the platform's order id, or the connector's order row id"
+            },
+            "store": {
+              "type": "string",
+              "description": "Store id, URL or key when several stores of that platform are connected"
+            },
+            "force": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "platform",
+            "order"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world",
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Book a store order",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Register webhook",
+        "title": "Register webhook",
+        "description": "HMAC-signed POSTs for delivery.* events. Returns the signing secret once.",
+        "action_name": "register_webhook",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "events": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "open_world"
+        ],
+        "provided_tool_annotations": {
+          "title": "Register webhook",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "List webhooks",
+        "title": "List webhooks",
+        "description": "Active webhooks registered on the account.",
+        "action_name": "list_webhooks",
+        "input_json_schema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "capability_labels": [
+          "read_only"
+        ],
+        "provided_tool_annotations": {
+          "title": "List webhooks",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      },
+      {
+        "name": "Delete webhook",
+        "title": "Delete webhook",
+        "description": "Deactivates a webhook; queued deliveries to it stop.",
+        "action_name": "delete_webhook",
+        "input_json_schema": {
+          "type": "object",
+          "properties": {
+            "webhook_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "webhook_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "capability_labels": [
+          "destructive"
+        ],
+        "provided_tool_annotations": {
+          "title": "Delete webhook",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "tool_invoking_message": "",
+        "tool_invoked_message": "",
+        "metadata": {},
+        "visibility": "public"
+      }
+    ]
+  },
+  "mcp_url": "https://mcp.rentadriver.ai/mcp",
+  "negative_test_cases": [
+    {
+      "description": "Passenger transport is unsupported; do not invoke package delivery tools.",
+      "expected_output": null,
+      "expected_output_url": null,
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "user_prompt": "Book a passenger taxi from my hotel to the airport."
+    },
+    {
+      "description": "Digital content delivery does not require a physical courier.",
+      "expected_output": null,
+      "expected_output_url": null,
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "user_prompt": "Email a PDF to my colleague."
+    },
+    {
+      "description": "General writing request without a delivery action; no connector required.",
+      "expected_output": null,
+      "expected_output_url": null,
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "user_prompt": "Write a birthday card message for my sister."
+    }
+  ],
+  "no_money_transfers_crypto_or_investment_trades": true,
+  "no_serving_or_displaying_advertisements": true,
+  "not_marketed_to_children_under_13": true,
+  "oauth_client": null,
+  "plugin_category": "business & operations",
+  "policy_info": {
+    "safety_status": "SCANNED_OK"
+  },
+  "read_policy_guidelines": true,
+  "release_notes": "Initial release: check parcel delivery coverage, request quotes, book deliveries and track delivery progress through a connected RentADriver account.",
+  "resources": [
+    {
+      "name": "Check coverage",
+      "title": "Check coverage",
+      "description": "Is an address or lat/lng inside a RentADriver service area? Free, no API key.",
+      "action_name": "check_coverage",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "number"
+          },
+          "lng": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only",
+        "open_world"
+      ],
+      "provided_tool_annotations": {
+        "title": "Check coverage",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "List service areas",
+      "title": "List service areas",
+      "description": "Launch cities with currency, timezone and radius. Free.",
+      "action_name": "list_service_areas",
+      "input_json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "List service areas",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Get a delivery quote",
+      "title": "Get a delivery quote",
+      "description": "Price and conditional ETA for a pickup and one or more drop-offs. Null ETA means driver availability is unconfirmed; never promise a pickup time. Free, no key. Returns a quote_id valid 15 minutes; pass it to create_delivery.",
+      "action_name": "get_quote",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pickup": {
+            "type": "object",
+            "properties": {
+              "address": {
+                "type": "string",
+                "description": "Street address (geocoded if lat/lng omitted)"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              },
+              "contact_name": {
+                "type": "string"
+              },
+              "contact_phone": {
+                "type": "string"
+              },
+              "instructions": {
+                "type": "string",
+                "description": "Access notes, buzzer, floor, where to leave it"
+              },
+              "window_start": {
+                "type": "string",
+                "description": "ISO datetime"
+              },
+              "window_end": {
+                "type": "string",
+                "description": "ISO datetime"
+              },
+              "proof_required": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "photo",
+                    "signature",
+                    "recipient_name",
+                    "otp"
+                  ]
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "dropoffs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/properties/pickup"
+            },
+            "minItems": 1,
+            "maxItems": 8
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "default": 1
+                },
+                "size_class": {
+                  "type": "string",
+                  "enum": [
+                    "S",
+                    "M",
+                    "L",
+                    "XL"
+                  ],
+                  "default": "M",
+                  "description": "S envelope/bag · M shoebox–backpack · L suitcase · XL bulky parcel (courier weight limits still apply)"
+                },
+                "weight_kg": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 20,
+                  "description": "Weight per package in kg; standard courier limit 20 kg per package, 200 kg combined"
+                },
+                "length_cm": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "width_cm": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "height_cm": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "value_cents": {
+                  "type": "integer"
+                },
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "parcel",
+                    "document",
+                    "retail",
+                    "food",
+                    "grocery",
+                    "flowers",
+                    "pharmacy",
+                    "keys",
+                    "electronics",
+                    "other"
+                  ],
+                  "default": "parcel"
+                },
+                "fragile": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": [
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "urgency": {
+            "type": "string",
+            "enum": [
+              "asap",
+              "today",
+              "scheduled"
+            ],
+            "default": "asap"
+          },
+          "scheduled_at": {
+            "type": "string"
+          },
+          "vehicle_class": {
+            "type": "string",
+            "enum": [
+              "bike",
+              "scooter",
+              "car",
+              "suv",
+              "van",
+              "truck"
+            ]
+          },
+          "service": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "local",
+              "intercity"
+            ],
+            "default": "auto"
+          },
+          "speed": {
+            "type": "string",
+            "enum": [
+              "express",
+              "standard",
+              "shared"
+            ]
+          }
+        },
+        "required": [
+          "pickup",
+          "dropoffs"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world"
+      ],
+      "provided_tool_annotations": {
+        "title": "Get a delivery quote",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": [
+        {
+          "sediment_id": "",
+          "resource_uri": "ui://rentadriver/quote.html",
+          "meta": {
+            "ui": {
+              "csp": {
+                "resourceDomains": [
+                  "https://rentadriver.ai",
+                  "https://api.rentadriver.ai"
+                ]
+              },
+              "prefersBorder": false
+            },
+            "openai/widgetDescription": "Price and conditional ETA for a pickup and one or more drop-offs. Null ETA means driver availability is unconfirmed; never promise a pickup time. Free, no key. Returns a quote_id valid 15 minutes; pass it to create_delivery."
+          }
+        }
+      ],
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {
+        "ui": {
+          "resourceUri": "ui://rentadriver/quote.html"
+        },
+        "ui/resourceUri": "ui://rentadriver/quote.html"
+      },
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Intercity lanes",
+      "title": "Intercity lanes",
+      "description": "City-to-city lanes between launch cities (e.g. London → Birmingham, Chicago → New York) with distance, transit time, sample prices for express / standard / shared speeds and the next shared departures. Free.",
+      "action_name": "list_intercity_lanes",
+      "input_json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "Intercity lanes",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Intercity quote",
+      "title": "Intercity quote",
+      "description": "Price a city-to-city delivery: pickup in one launch city, drop-off in (or within 80 km of) another city in the same country. speed: express (dedicated driver leaves within 2h), standard (dedicated within 24h), shared (consolidated lane run at fixed departures, cheapest). Returns quote_id, tiered per-km breakdown, departure/arrival estimates and the milestone schedule. Free, no key.",
+      "action_name": "get_intercity_quote",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pickup": {
+            "type": "object",
+            "properties": {
+              "address": {
+                "type": "string",
+                "description": "Street address (geocoded if lat/lng omitted)"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              },
+              "contact_name": {
+                "type": "string"
+              },
+              "contact_phone": {
+                "type": "string"
+              },
+              "instructions": {
+                "type": "string",
+                "description": "Access notes, buzzer, floor, where to leave it"
+              },
+              "window_start": {
+                "type": "string",
+                "description": "ISO datetime"
+              },
+              "window_end": {
+                "type": "string",
+                "description": "ISO datetime"
+              },
+              "proof_required": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "photo",
+                    "signature",
+                    "recipient_name",
+                    "otp"
+                  ]
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "dropoffs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/properties/pickup"
+            },
+            "minItems": 1,
+            "maxItems": 3
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "default": 1
+                },
+                "size_class": {
+                  "type": "string",
+                  "enum": [
+                    "S",
+                    "M",
+                    "L",
+                    "XL"
+                  ],
+                  "default": "M",
+                  "description": "S envelope/bag · M shoebox–backpack · L suitcase · XL bulky parcel (courier weight limits still apply)"
+                },
+                "weight_kg": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 20,
+                  "description": "Weight per package in kg; standard courier limit 20 kg per package, 200 kg combined"
+                },
+                "length_cm": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "width_cm": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "height_cm": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "value_cents": {
+                  "type": "integer"
+                },
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "parcel",
+                    "document",
+                    "retail",
+                    "food",
+                    "grocery",
+                    "flowers",
+                    "pharmacy",
+                    "keys",
+                    "electronics",
+                    "other"
+                  ],
+                  "default": "parcel"
+                },
+                "fragile": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": [
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "speed": {
+            "type": "string",
+            "enum": [
+              "express",
+              "standard",
+              "shared"
+            ],
+            "default": "standard"
+          },
+          "scheduled_at": {
+            "type": "string"
+          },
+          "vehicle_class": {
+            "type": "string",
+            "enum": [
+              "car",
+              "suv",
+              "van",
+              "truck"
+            ]
+          }
+        },
+        "required": [
+          "pickup",
+          "dropoffs"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world"
+      ],
+      "provided_tool_annotations": {
+        "title": "Intercity quote",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Platform stats",
+      "title": "Platform stats",
+      "description": "Live counts: active drivers, drivers on shift, deliveries, agents connected.",
+      "action_name": "get_platform_stats",
+      "input_json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "Platform stats",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Country workspaces",
+      "title": "Country workspaces",
+      "description": "List enabled country workspaces, their separate local-currency balances, and available countries. No FX or balance transfers.",
+      "action_name": "list_country_workspaces",
+      "input_json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "Country workspaces",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Enable country workspace",
+      "title": "Enable country workspace",
+      "description": "Enable another delivery country in this account. Admin role required. Starts with zero local-currency balance; existing money stays untouched. Set spending controls independently for this workspace.",
+      "action_name": "enable_country_workspace",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "country_code": {
+            "type": "string",
+            "enum": [
+              "US",
+              "GB",
+              "AU",
+              "CA"
+            ]
+          },
+          "spending_cap_per_delivery_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "daily_cap_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "country_code"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [],
+      "provided_tool_annotations": {
+        "title": "Enable country workspace",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Create account + API key",
+      "title": "Create account + API key",
+      "description": "Self-serve signup for an agent/app. Returns an API key ONCE. Save it as RENTADRIVER_API_KEY. Rehearse with a sandbox (rd_test_) key; live bookings need a funded wallet.",
+      "action_name": "signup",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "country_code": {
+            "type": "string",
+            "enum": [
+              "US",
+              "GB",
+              "AU",
+              "CA"
+            ],
+            "default": "US",
+            "description": "Initial country workspace. Enable additional countries with enable_country_workspace; each has its own local-currency balance."
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "agent",
+              "app",
+              "business"
+            ],
+            "default": "agent"
+          },
+          "agent_framework": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "email"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [],
+      "provided_tool_annotations": {
+        "title": "Create account + API key",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Account status",
+      "title": "Account status",
+      "description": "Confirms the API key works; returns balance, caps and capabilities.",
+      "action_name": "check_account_status",
+      "input_json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "Account status",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Wallet balance",
+      "title": "Wallet balance",
+      "description": "Selected country balance and ledger. Omit workspace_id for the original default wallet.",
+      "action_name": "get_wallet_balance",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "Wallet balance",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Deposit by card",
+      "title": "Deposit by card",
+      "description": "Creates a Stripe Checkout URL a human must open to pay. Wallet is credited on payment.",
+      "action_name": "create_wallet_deposit",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "minimum": 500
+          }
+        },
+        "required": [
+          "amount_cents"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world"
+      ],
+      "provided_tool_annotations": {
+        "title": "Deposit by card",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Deposit USDC (x402)",
+      "title": "Deposit USDC (x402)",
+      "description": "Agent-native funding: returns x402 v2 payment requirements (USDC on Base). Sign with an x402 client and re-call with the X-Payment header via the REST endpoint.",
+      "action_name": "create_x402_deposit",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "minimum": 100
+          }
+        },
+        "required": [
+          "amount_cents"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world"
+      ],
+      "provided_tool_annotations": {
+        "title": "Deposit USDC (x402)",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Spending controls",
+      "title": "Spending controls",
+      "description": "Cap per-delivery and rolling 24-hour spend in workspace currency minor units. Zero blocks, null clears. Defaults to original workspace.",
+      "action_name": "set_spending_controls",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "spending_cap_per_delivery_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "daily_cap_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Spending controls",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "List API keys",
+      "title": "List API keys",
+      "description": "Lists the account's API keys with prefix, name, last use and revocation state. Full keys are never returned.",
+      "action_name": "list_api_keys",
+      "input_json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "List API keys",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Create API key",
+      "title": "Create API key",
+      "description": "Issues an additional key (max 10 active) for another agent or environment. The key is shown once.",
+      "action_name": "create_api_key",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [],
+      "provided_tool_annotations": {
+        "title": "Create API key",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Revoke API key",
+      "title": "Revoke API key",
+      "description": "Permanently deactivates a key. You cannot revoke the key you are calling with.",
+      "action_name": "revoke_api_key",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "key_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Revoke API key",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Create a delivery",
+      "title": "Create a delivery",
+      "description": "Books a delivery. Pass quote_id from get_quote, or pickup+dropoffs directly. fund=true (default) holds the price from your wallet and starts dispatch. Use dryRun=true first to see the price without committing. Returns next_action.",
+      "action_name": "create_delivery",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dispatch_timeout_hours": {
+            "type": "number",
+            "minimum": 0.25,
+            "maximum": 72,
+            "description": "Search duration in hours, 0.25–72. Default ASAP 24h, otherwise 72h; pickup windows and today deadlines still apply. No repeated funding."
+          },
+          "quote_id": {
+            "type": "string"
+          },
+          "pickup": {
+            "type": "object",
+            "properties": {
+              "address": {
+                "type": "string",
+                "description": "Street address (geocoded if lat/lng omitted)"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              },
+              "contact_name": {
+                "type": "string"
+              },
+              "contact_phone": {
+                "type": "string"
+              },
+              "instructions": {
+                "type": "string",
+                "description": "Access notes, buzzer, floor, where to leave it"
+              },
+              "window_start": {
+                "type": "string",
+                "description": "ISO datetime"
+              },
+              "window_end": {
+                "type": "string",
+                "description": "ISO datetime"
+              },
+              "proof_required": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "photo",
+                    "signature",
+                    "recipient_name",
+                    "otp"
+                  ]
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "dropoffs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/properties/pickup"
+            }
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "default": 1
+                },
+                "size_class": {
+                  "type": "string",
+                  "enum": [
+                    "S",
+                    "M",
+                    "L",
+                    "XL"
+                  ],
+                  "default": "M",
+                  "description": "S envelope/bag · M shoebox–backpack · L suitcase · XL bulky parcel (courier weight limits still apply)"
+                },
+                "weight_kg": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 20,
+                  "description": "Weight per package in kg; standard courier limit 20 kg per package, 200 kg combined"
+                },
+                "length_cm": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "width_cm": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "height_cm": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "value_cents": {
+                  "type": "integer"
+                },
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "parcel",
+                    "document",
+                    "retail",
+                    "food",
+                    "grocery",
+                    "flowers",
+                    "pharmacy",
+                    "keys",
+                    "electronics",
+                    "other"
+                  ],
+                  "default": "parcel"
+                },
+                "fragile": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": [
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "urgency": {
+            "type": "string",
+            "enum": [
+              "asap",
+              "today",
+              "scheduled"
+            ]
+          },
+          "scheduled_at": {
+            "type": "string"
+          },
+          "vehicle_class": {
+            "type": "string",
+            "enum": [
+              "bike",
+              "scooter",
+              "car",
+              "suv",
+              "van",
+              "truck"
+            ]
+          },
+          "service": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "local",
+              "intercity"
+            ]
+          },
+          "speed": {
+            "type": "string",
+            "enum": [
+              "express",
+              "standard",
+              "shared"
+            ]
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "contingency": {
+            "type": "object",
+            "properties": {
+              "if_no_answer": {
+                "type": "string",
+                "enum": [
+                  "wait_then_leave_safe",
+                  "wait_then_return",
+                  "call_client",
+                  "leave_with_neighbour"
+                ]
+              },
+              "if_closed": {
+                "type": "string",
+                "enum": [
+                  "return_to_pickup",
+                  "hold_and_retry",
+                  "call_client"
+                ]
+              },
+              "max_wait_minutes": {
+                "type": "integer"
+              },
+              "return_to": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "external_ref": {
+            "type": "string"
+          },
+          "idempotency_key": {
+            "type": "string"
+          },
+          "webhook_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "fund": {
+            "type": "boolean",
+            "default": true
+          },
+          "dryRun": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world",
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Create a delivery",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Store pickup + delivery",
+      "title": "Store pickup + delivery",
+      "description": "Shortcut for the most common agent job: collect a prepaid order from a store and deliver it. Pickup contact gets the order reference in the instructions.",
+      "action_name": "create_store_pickup",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "store_address": {
+            "type": "string"
+          },
+          "order_reference": {
+            "type": "string"
+          },
+          "store_phone": {
+            "type": "string"
+          },
+          "dropoff_address": {
+            "type": "string"
+          },
+          "recipient_name": {
+            "type": "string"
+          },
+          "recipient_phone": {
+            "type": "string"
+          },
+          "item_description": {
+            "type": "string",
+            "default": "Prepaid order"
+          },
+          "size_class": {
+            "type": "string",
+            "enum": [
+              "S",
+              "M",
+              "L",
+              "XL"
+            ],
+            "default": "M"
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "dryRun": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "store_address",
+          "order_reference",
+          "dropoff_address"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world",
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Store pickup + delivery",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Create several deliveries",
+      "title": "Create several deliveries",
+      "description": "Up to 25 create_delivery payloads in one call.",
+      "action_name": "create_batch",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "deliveries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {}
+            },
+            "minItems": 1,
+            "maxItems": 25
+          }
+        },
+        "required": [
+          "deliveries"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world",
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Create several deliveries",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Fund a delivery",
+      "title": "Fund a delivery",
+      "description": "For deliveries created with fund=false, or after topping up the wallet.",
+      "action_name": "fund_delivery",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delivery_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world",
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Fund a delivery",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Get delivery",
+      "title": "Get delivery",
+      "description": "Full delivery by id or short code (RD-XXXXXXX). Hosts that support MCP Apps render a live tracker card.",
+      "action_name": "get_delivery",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delivery_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "Get delivery",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": [
+        {
+          "sediment_id": "",
+          "resource_uri": "ui://rentadriver/delivery.html",
+          "meta": {
+            "ui": {
+              "csp": {
+                "resourceDomains": [
+                  "https://rentadriver.ai",
+                  "https://api.rentadriver.ai"
+                ]
+              },
+              "prefersBorder": false
+            },
+            "openai/widgetDescription": "Full delivery by id or short code (RD-XXXXXXX). Hosts that support MCP Apps render a live tracker card."
+          }
+        }
+      ],
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {
+        "ui": {
+          "resourceUri": "ui://rentadriver/delivery.html"
+        },
+        "ui/resourceUri": "ui://rentadriver/delivery.html"
+      },
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "List deliveries",
+      "title": "List deliveries",
+      "description": "status='active' or a comma list; since ISO datetime.",
+      "action_name": "list_deliveries",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "since": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 100
+          },
+          "offset": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "List deliveries",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Create a private handover code",
+      "title": "Create a private handover code",
+      "description": "Generate or replace a six-digit code for a delivery stop requiring OTP proof. Share it privately with the intended recipient, never the driver. Replacing invalidates the old code. Expires in seven days; five failed attempts lock it.",
+      "action_name": "create_recipient_code",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "stop_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "delivery_id",
+          "stop_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Create a private handover code",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Track delivery",
+      "title": "Track delivery",
+      "description": "Live status, ETA, driver position and last event. Poll this every 30–60s while active.",
+      "action_name": "track_delivery",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delivery_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "Track delivery",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Delivery timeline",
+      "title": "Delivery timeline",
+      "description": "Every event on the delivery in order: created, funded, dispatching, offers, assigned, each driver step, delivered, confirmed, paid, plus messages.",
+      "action_name": "get_delivery_events",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delivery_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "Delivery timeline",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Update delivery",
+      "title": "Update delivery",
+      "description": "Change instructions, contingency rules or the drop-off contact while in progress.",
+      "action_name": "update_delivery",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "contingency": {
+            "type": "object",
+            "properties": {
+              "if_no_answer": {
+                "type": "string",
+                "enum": [
+                  "wait_then_leave_safe",
+                  "wait_then_return",
+                  "call_client",
+                  "leave_with_neighbour"
+                ]
+              },
+              "if_closed": {
+                "type": "string",
+                "enum": [
+                  "return_to_pickup",
+                  "hold_and_retry",
+                  "call_client"
+                ]
+              },
+              "max_wait_minutes": {
+                "type": "integer"
+              },
+              "return_to": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "dropoff_contact": {
+            "type": "object",
+            "properties": {
+              "contact_name": {
+                "type": "string"
+              },
+              "contact_phone": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "window_end": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "delivery_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Update delivery",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Cancel delivery",
+      "title": "Cancel delivery",
+      "description": "Free before a driver is assigned; a cancellation fee after assignment; not possible after pickup.",
+      "action_name": "cancel_delivery",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delivery_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Cancel delivery",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Return leg",
+      "title": "Return leg",
+      "description": "Create the reverse delivery (last drop-off back to pickup).",
+      "action_name": "create_return",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delivery_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world",
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Return leg",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Message the driver",
+      "title": "Message the driver",
+      "description": "Delivered as a push + in-app message once a driver is assigned.",
+      "action_name": "send_message_to_driver",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "delivery_id",
+          "body"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world",
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Message the driver",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Read messages",
+      "title": "Read messages",
+      "description": "The full message thread between you and the driver for one delivery, oldest first.",
+      "action_name": "get_delivery_messages",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delivery_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "Read messages",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Proof of delivery",
+      "title": "Proof of delivery",
+      "description": "Signed photo URLs (1h), signature, recipient name, geo + time.",
+      "action_name": "get_proof_of_delivery",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delivery_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "Proof of delivery",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Confirm delivery",
+      "title": "Confirm delivery",
+      "description": "Releases payment to the driver. Auto-confirms 24h after delivery if you don't.",
+      "action_name": "confirm_delivery",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delivery_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world",
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Confirm delivery",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Open a dispute",
+      "title": "Open a dispute",
+      "description": "Funds stay held; ops reviews within 24h.",
+      "action_name": "open_dispute",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 5
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "required": [
+          "delivery_id",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Open a dispute",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Tip the driver",
+      "title": "Tip the driver",
+      "description": "Cents, from your wallet. Reuse idempotency_key when retrying the same tip.",
+      "action_name": "tip_driver",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 100
+          },
+          "amount_cents": {
+            "type": "integer",
+            "minimum": 50,
+            "maximum": 50000
+          }
+        },
+        "required": [
+          "delivery_id",
+          "idempotency_key",
+          "amount_cents"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world",
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Tip the driver",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Rate the driver",
+      "title": "Rate the driver",
+      "description": "Rate the driver of a completed delivery from 1 to 5 stars, with an optional comment.",
+      "action_name": "rate_driver",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "delivery_id": {
+            "type": "string"
+          },
+          "stars": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "comment": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delivery_id",
+          "stars"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Rate the driver",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "List Shopify orders",
+      "title": "List Shopify orders",
+      "description": "Orders the RentADriver app for Shopify has seen on the shops connected to this account, with the booking status (booked / skipped / needs_funds / failed) and the linked delivery. Requires the app to be installed on the store: https://rentadriver.ai/integrations/shopify",
+      "action_name": "list_shopify_orders",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "skipped",
+              "booked",
+              "needs_funds",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 200
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "List Shopify orders",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Book a Shopify order",
+      "title": "Book a Shopify order",
+      "description": "Book a same-day delivery for a Shopify order by its name (e.g. #1042) or id. Pickup is the store location, drop-off the order's shipping address, items from the line items. Fetches the order from Shopify if the app has not seen it. force=true ignores the shop's radius and size limits. On success the order is fulfilled with a tracking link as the driver picks it up.",
+      "action_name": "book_shopify_order",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "type": "string",
+            "description": "Order name like #1042, Shopify order id, or the app's order row id"
+          },
+          "shop": {
+            "type": "string",
+            "description": "myshopify.com domain when several shops are connected"
+          },
+          "force": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "order"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world",
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Book a Shopify order",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "List store orders",
+      "title": "List store orders",
+      "description": "Orders the RentADriver connector has seen on the WooCommerce, BigCommerce, Wix Stores or Squarespace stores connected to this account, with the booking status (booked / skipped / needs_funds / failed) and the linked delivery. Requires the store to be connected: https://rentadriver.ai/integrations/<platform>",
+      "action_name": "list_store_orders",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": [
+              "woocommerce",
+              "bigcommerce",
+              "wix",
+              "squarespace"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "skipped",
+              "booked",
+              "needs_funds",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 200
+          }
+        },
+        "required": [
+          "platform"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "List store orders",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Book a store order",
+      "title": "Book a store order",
+      "description": "Book a same-day delivery for a WooCommerce, BigCommerce, Wix Stores or Squarespace order by its number (e.g. #1042) or id. Pickup is the store location, drop-off the order's shipping address, items from the line items. Fetches the order from the platform if the connector has not seen it. force=true ignores the store's radius and size limits. On success the order is marked shipped / fulfilled with a tracking link as the driver picks it up.",
+      "action_name": "book_store_order",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": [
+              "woocommerce",
+              "bigcommerce",
+              "wix",
+              "squarespace"
+            ]
+          },
+          "order": {
+            "type": "string",
+            "description": "Order number like #1042, the platform's order id, or the connector's order row id"
+          },
+          "store": {
+            "type": "string",
+            "description": "Store id, URL or key when several stores of that platform are connected"
+          },
+          "force": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "platform",
+          "order"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world",
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Book a store order",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Register webhook",
+      "title": "Register webhook",
+      "description": "HMAC-signed POSTs for delivery.* events. Returns the signing secret once.",
+      "action_name": "register_webhook",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "open_world"
+      ],
+      "provided_tool_annotations": {
+        "title": "Register webhook",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "List webhooks",
+      "title": "List webhooks",
+      "description": "Active webhooks registered on the account.",
+      "action_name": "list_webhooks",
+      "input_json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "read_only"
+      ],
+      "provided_tool_annotations": {
+        "title": "List webhooks",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    },
+    {
+      "name": "Delete webhook",
+      "title": "Delete webhook",
+      "description": "Deactivates a webhook; queued deliveries to it stop.",
+      "action_name": "delete_webhook",
+      "input_json_schema": {
+        "type": "object",
+        "properties": {
+          "webhook_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "webhook_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "output_json_schema": null,
+      "capability_labels": [
+        "destructive"
+      ],
+      "provided_tool_annotations": {
+        "title": "Delete webhook",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "templates": null,
+      "supported_auth_override": null,
+      "tool_invoking_message": "",
+      "tool_invoked_message": "",
+      "metadata": {},
+      "description_model": null,
+      "visibility": "public"
+    }
+  ],
+  "screenshots": [
+    {
+      "cdn_url": null,
+      "file_id": null,
+      "url": null,
+      "user_prompt": "Check delivery coverage in London."
+    },
+    {
+      "cdn_url": null,
+      "file_id": null,
+      "url": null,
+      "user_prompt": "Quote a small parcel from London Waterloo station to London Bridge station. Do not book it."
+    },
+    {
+      "cdn_url": null,
+      "file_id": null,
+      "url": null,
+      "user_prompt": "Show my active deliveries and their latest tracking status."
+    }
+  ],
+  "subtitle": "Quote, book and track parcels",
+  "supported_auth": [
+    {
+      "type": "OAUTH",
+      "allow_http_redirect": true,
+      "authorization_server_base": "https://api.rentadriver.ai",
+      "authorization_url": "https://rentadriver.ai/oauth/authorize",
+      "base_scopes": [],
+      "client_id_metadata_document_supported": null,
+      "custom_redirect_url_params": null,
+      "custom_token_request_params": null,
+      "default_scopes": [
+        "read",
+        "write"
+      ],
+      "grant_type": null,
+      "oidc_configuration_url": null,
+      "oidc_enabled": false,
+      "oidc_scopes_supported": null,
+      "oidc_userinfo_endpoint": null,
+      "pkce_methods": [
+        "S256"
+      ],
+      "pkce_required": true,
+      "registration_url": "https://api.rentadriver.ai/oauth/register",
+      "resource": "https://mcp.rentadriver.ai/mcp",
+      "revocation_url": "https://api.rentadriver.ai/oauth/revoke",
+      "scope_param": "scope",
+      "scope_separator": " ",
+      "scopes_supported": [
+        "read",
+        "write"
+      ],
+      "supports_domain_restriction": false,
+      "token_endpoint_auth_methods_supported": [
+        "none",
+        "client_secret_post",
+        "client_secret_basic"
+      ],
+      "token_url": "https://api.rentadriver.ai/oauth/token",
+      "use_cimd": false
+    }
+  ],
+  "template_params": null,
+  "test_cases": [
+    {
+      "description": "Delivery coverage",
+      "expected_output": "Return current service areas and coverage for London Waterloo. Explain that coverage does not guarantee a driver or pickup time. Verified in sandbox; a transient coverage error passed on retry.",
+      "expected_output_url": null,
+      "file_attachment_urls": null,
+      "tools_triggered": "list_service_areas, check_coverage",
+      "user_prompt": "Which cities does RentADriver cover, and is London Waterloo station covered?"
+    },
+    {
+      "description": "Parcel quote",
+      "expected_output": "Return current price, currency and quote identifier for the supplied public stations, without booking. Do not invent driver availability or promise a pickup time.",
+      "expected_output_url": null,
+      "file_attachment_urls": null,
+      "tools_triggered": "get_quote",
+      "user_prompt": "Quote a small parcel from London Waterloo station to London Bridge station. Do not book it."
+    },
+    {
+      "description": "Account and wallet read",
+      "expected_output": "Return only the connected sandbox account’s balances in each workspace currency. Do not create a deposit or transfer. Workspace listing passed on sequential retry.",
+      "expected_output_url": null,
+      "file_attachment_urls": null,
+      "tools_triggered": "check_account_status, list_country_workspaces, get_wallet_balance",
+      "user_prompt": "Show my RentADriver account status and country wallet balances."
+    },
+    {
+      "description": "Track an existing delivery",
+      "expected_output": "Return the sandbox delivery list and actual status, tracking and proof for RD-XXXXXX (completed/paid at verification). It has simulated photo proof. If unavailable, select a returned sandbox fixture.",
+      "expected_output_url": null,
+      "file_attachment_urls": null,
+      "tools_triggered": "list_deliveries, get_delivery, track_delivery, get_proof_of_delivery",
+      "user_prompt": "List my sandbox deliveries, then show the status, tracking and proof for RD-XXXXXX. If unavailable, use a sandbox delivery from the returned list."
+    },
+    {
+      "description": "Preview without booking",
+      "expected_output": "Return dry_run=true for the London quote with dryRun=true and fund=false. Do not create a booking or reserve funds. ChatGPT verification found the delivery count and GB wallet balance unchanged.",
+      "expected_output_url": null,
+      "file_attachment_urls": null,
+      "tools_triggered": "get_quote, create_delivery with dryRun=true",
+      "user_prompt": "Preview a small parcel delivery from London Waterloo station to London Bridge station without placing an order."
+    }
+  ],
+  "test_credentials": "Connect with OAuth using a sandbox account; see README",
+  "tool_justifications": {
+    "check_coverage": {
+      "destructive_justification": "Only checks coverage; no delivery, charge, cancellation or other irreversible action.",
+      "open_world_justification": "May geocode an arbitrary address using an external mapping provider.",
+      "read_only_justification": "Reads coverage for the supplied location without booking or changing account data."
+    },
+    "list_service_areas": {
+      "destructive_justification": "Does not change service areas, bookings or account data.",
+      "open_world_justification": "Returns the bounded RentADriver service-area catalogue; no arbitrary external destination.",
+      "read_only_justification": "Reads the configured service-area catalogue only."
+    },
+    "get_quote": {
+      "destructive_justification": "Adds an expiring quote only; it does not dispatch a driver, spend funds or replace a booking.",
+      "open_world_justification": "Resolves supplied addresses and route estimates using external mapping services.",
+      "read_only_justification": "Persists a time-limited quote record; it does not book a delivery or hold funds."
+    },
+    "list_intercity_lanes": {
+      "destructive_justification": "Does not alter routes, reserve capacity or create a delivery.",
+      "open_world_justification": "Queries RentADriver’s fixed lane catalogue rather than arbitrary external resources.",
+      "read_only_justification": "Reads configured intercity lanes, schedules and sample prices."
+    },
+    "get_intercity_quote": {
+      "destructive_justification": "Only adds an expiring quote; no booking, payment or dispatch occurs.",
+      "open_world_justification": "May geocode arbitrary addresses and request route estimates from external mapping services.",
+      "read_only_justification": "Creates a persisted intercity quote record; no delivery is booked."
+    },
+    "get_platform_stats": {
+      "destructive_justification": "Does not modify individual records or operational state.",
+      "open_world_justification": "Returns a bounded aggregate of RentADriver’s own operational records.",
+      "read_only_justification": "Reads aggregate counts of drivers, deliveries and connected agents."
+    },
+    "list_country_workspaces": {
+      "destructive_justification": "Does not enable workspaces, change balances or transfer money.",
+      "open_world_justification": "Access is limited to the connected account’s workspaces and configured country list.",
+      "read_only_justification": "Reads the authenticated account’s country workspaces and balances."
+    },
+    "enable_country_workspace": {
+      "destructive_justification": "Adds a workspace with zero balance; existing balances remain unchanged.",
+      "open_world_justification": "Operates only within the authenticated RentADriver account and supported countries.",
+      "read_only_justification": "Creates an additional country workspace for the authenticated account."
+    },
+    "signup": {
+      "destructive_justification": "Adds account records; does not overwrite an existing account or charge a wallet.",
+      "open_world_justification": "Creates records within RentADriver’s account service, with a fixed supported-country set.",
+      "read_only_justification": "Creates a new account and its initial API key."
+    },
+    "check_account_status": {
+      "destructive_justification": "Does not change permissions, limits, credentials or money.",
+      "open_world_justification": "Uses only the account associated with the current authentication credential.",
+      "read_only_justification": "Reads authentication status, account capabilities, balance and spending limits."
+    },
+    "get_wallet_balance": {
+      "destructive_justification": "Does not debit, credit or move wallet funds.",
+      "open_world_justification": "Limited to a workspace owned by the authenticated account.",
+      "read_only_justification": "Reads the selected workspace wallet balance and ledger."
+    },
+    "create_wallet_deposit": {
+      "destructive_justification": "Creating the checkout session does not charge a card; the user must separately complete payment.",
+      "open_world_justification": "Contacts Stripe and returns an external hosted checkout URL.",
+      "read_only_justification": "Creates a Stripe Checkout session for a requested wallet top-up."
+    },
+    "create_x402_deposit": {
+      "destructive_justification": "This tool cannot sign or submit a payment; funding requires a separate signed REST request outside this tool.",
+      "open_world_justification": "Returns USDC/Base payment requirements for use with an external x402 client.",
+      "read_only_justification": "Calls the funding endpoint to obtain payment requirements for the requested amount."
+    },
+    "set_spending_controls": {
+      "destructive_justification": "Overwrites controls and can remove limits that protect existing wallet funds.",
+      "open_world_justification": "Only changes controls on the authenticated account’s selected workspace.",
+      "read_only_justification": "Updates the workspace’s per-delivery and daily spending limits."
+    },
+    "list_api_keys": {
+      "destructive_justification": "Does not create, revoke or disclose full existing API keys.",
+      "open_world_justification": "Limited to keys belonging to the authenticated RentADriver account.",
+      "read_only_justification": "Reads key metadata such as prefix, last use and revocation state; not full keys."
+    },
+    "create_api_key": {
+      "destructive_justification": "Adds a credential without revoking or replacing existing keys; the new key does grant account access.",
+      "open_world_justification": "Creates a key only for the authenticated RentADriver account.",
+      "read_only_justification": "Creates an additional credential and returns the new key once."
+    },
+    "revoke_api_key": {
+      "destructive_justification": "Permanently deactivates the selected key; dependent clients lose access.",
+      "open_world_justification": "Limited to API keys belonging to the authenticated account.",
+      "read_only_justification": "Changes an existing API key to revoked."
+    },
+    "create_delivery": {
+      "destructive_justification": "A funded booking reserves money and can initiate real-world delivery obligations and cancellation fees.",
+      "open_world_justification": "Can dispatch real drivers to user-specified pickup and drop-off locations.",
+      "read_only_justification": "Creates a booking and can reserve wallet funds and begin dispatch; dryRun is optional."
+    },
+    "create_store_pickup": {
+      "destructive_justification": "Can hold funds and dispatch a driver to collect an order; cancellation may incur fees.",
+      "open_world_justification": "Coordinates real drivers, stores and recipient locations supplied by the user.",
+      "read_only_justification": "Creates and funds a pickup-and-delivery booking unless dryRun is requested."
+    },
+    "create_batch": {
+      "destructive_justification": "Can commit multiple wallet holds and real-world bookings in a single call.",
+      "open_world_justification": "May dispatch real drivers for multiple user-specified delivery routes.",
+      "read_only_justification": "Submits up to 25 delivery creation requests, each potentially funded."
+    },
+    "fund_delivery": {
+      "destructive_justification": "Commits wallet funds and can trigger driver assignment and cancellation liability.",
+      "open_world_justification": "Initiates the driver-dispatch workflow outside the requesting account.",
+      "read_only_justification": "Reserves wallet funds for an existing delivery and starts dispatch when eligible."
+    },
+    "get_delivery": {
+      "destructive_justification": "Does not modify the booking, contact details, money or dispatch state.",
+      "open_world_justification": "Limited to deliveries accessible through the authenticated account.",
+      "read_only_justification": "Reads one delivery and its associated tracking details."
+    },
+    "list_deliveries": {
+      "destructive_justification": "Does not create, cancel or change any delivery.",
+      "open_world_justification": "Results are scoped to the authenticated RentADriver account.",
+      "read_only_justification": "Reads delivery records matching the supplied filters."
+    },
+    "create_recipient_code": {
+      "destructive_justification": "Replacing the code immediately invalidates the previous code and changes recipient access.",
+      "open_world_justification": "Limited to a stop on a delivery accessible to the authenticated account.",
+      "read_only_justification": "Generates or replaces the handover code for a delivery stop."
+    },
+    "track_delivery": {
+      "destructive_justification": "Does not move the driver, change the route or update delivery state.",
+      "open_world_justification": "Limited to one authorized delivery and its assigned driver.",
+      "read_only_justification": "Reads the current delivery status, ETA and assigned driver position."
+    },
+    "get_delivery_events": {
+      "destructive_justification": "Does not add, delete or edit events.",
+      "open_world_justification": "Limited to the selected delivery accessible to the authenticated account.",
+      "read_only_justification": "Reads the existing delivery event timeline."
+    },
+    "update_delivery": {
+      "destructive_justification": "Can overwrite delivery instructions or contact details and alter an in-progress handover.",
+      "open_world_justification": "Only updates an existing delivery accessible to the connected account.",
+      "read_only_justification": "Replaces permitted instructions, contact details, contingency rules or metadata."
+    },
+    "cancel_delivery": {
+      "destructive_justification": "Stops the booking and can incur a cancellation fee after driver assignment.",
+      "open_world_justification": "Operates on one existing delivery within the authenticated account.",
+      "read_only_justification": "Changes the delivery’s state to cancelled when allowed."
+    },
+    "create_return": {
+      "destructive_justification": "Creates a delivery obligation that can lead to funding, dispatch and cancellation fees.",
+      "open_world_justification": "Can arrange a real-world return journey involving a driver and recipient.",
+      "read_only_justification": "Creates a new reverse delivery from the selected original delivery."
+    },
+    "send_message_to_driver": {
+      "destructive_justification": "The driver can receive and read the message immediately; sending cannot be reliably undone.",
+      "open_world_justification": "Communicates with a driver outside the requesting customer account.",
+      "read_only_justification": "Adds a message and sends it to the assigned driver through push and in-app channels."
+    },
+    "get_delivery_messages": {
+      "destructive_justification": "Does not send, edit or delete messages.",
+      "open_world_justification": "Limited to the authenticated account’s delivery conversation.",
+      "read_only_justification": "Reads existing messages for one delivery."
+    },
+    "get_proof_of_delivery": {
+      "destructive_justification": "Does not change or delete proof, confirm delivery or release payment.",
+      "open_world_justification": "Evidence is restricted to a delivery accessible through the authenticated account.",
+      "read_only_justification": "Reads delivery proof and generates time-limited access URLs for stored evidence."
+    },
+    "confirm_delivery": {
+      "destructive_justification": "Releases held funds and finalizes settlement; it is not a read-only acknowledgement.",
+      "open_world_justification": "Affects the assigned driver’s settlement as well as the customer booking.",
+      "read_only_justification": "Confirms receipt and releases the held delivery payment to the driver."
+    },
+    "open_dispute": {
+      "destructive_justification": "Changes settlement handling and can prevent release of held funds.",
+      "open_world_justification": "Limited to an authorized delivery and RentADriver’s internal dispute workflow.",
+      "read_only_justification": "Creates a dispute and keeps delivery funds held for operations review."
+    },
+    "tip_driver": {
+      "destructive_justification": "Spends wallet funds; retries must reuse the idempotency key to avoid additional tips.",
+      "open_world_justification": "Benefits the assigned driver, a party outside the requesting customer account.",
+      "read_only_justification": "Debits the customer wallet and credits a tip for the delivery’s driver."
+    },
+    "rate_driver": {
+      "destructive_justification": "Can replace a rating and affect the driver’s reputation.",
+      "open_world_justification": "Limited to the assigned driver on an authorized completed delivery.",
+      "read_only_justification": "Writes the rating and optional comment for a completed delivery."
+    },
+    "list_shopify_orders": {
+      "destructive_justification": "Does not book, fulfill, cancel or modify a store order.",
+      "open_world_justification": "Limited to shops and orders connected to the authenticated RentADriver account.",
+      "read_only_justification": "Reads orders and booking status already associated with connected Shopify shops."
+    },
+    "book_shopify_order": {
+      "destructive_justification": "Can reserve funds, dispatch a courier and change the order’s fulfillment state.",
+      "open_world_justification": "Interacts with Shopify, the store, recipient and dispatched driver.",
+      "read_only_justification": "Books a delivery for a connected Shopify order and can update fulfillment."
+    },
+    "list_store_orders": {
+      "destructive_justification": "Does not create deliveries or change store orders.",
+      "open_world_justification": "Limited to stores connected to the authenticated account.",
+      "read_only_justification": "Reads order and booking records for the specified connected commerce platform."
+    },
+    "book_store_order": {
+      "destructive_justification": "Can spend reserved wallet funds, dispatch a courier and mark an order shipped or fulfilled.",
+      "open_world_justification": "Interacts with the external commerce platform, store, recipient and driver.",
+      "read_only_justification": "Creates a delivery for a connected store order and can update shipment status."
+    },
+    "register_webhook": {
+      "destructive_justification": "Adds a subscription rather than deleting existing data; it enables future event disclosure to that URL.",
+      "open_world_justification": "Registers a user-supplied external URL that will receive delivery event requests.",
+      "read_only_justification": "Creates a webhook subscription and its signing secret."
+    },
+    "list_webhooks": {
+      "destructive_justification": "Does not register, delete or send a webhook.",
+      "open_world_justification": "Limited to webhooks belonging to the authenticated account.",
+      "read_only_justification": "Reads the account’s existing webhook subscriptions."
+    },
+    "delete_webhook": {
+      "destructive_justification": "Stops future and queued deliveries to that webhook; missed events may not be recoverable.",
+      "open_world_justification": "Limited to webhook records belonging to the authenticated account.",
+      "read_only_justification": "Deactivates an existing webhook subscription."
+    }
+  },
+  "translations": null,
+  "version": "1.0.0"
+}

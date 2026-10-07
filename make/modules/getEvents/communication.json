@@ -1,0 +1,11 @@
+{
+  "url": "/automation/events",
+  "method": "GET",
+  "qs": {
+    "after": "{{parameters.after}}",
+    "limit": 100
+  },
+  "response": {
+    "output": "{{body}}"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "baseUrl": "https://api.rentadriver.ai/v1",
+  "headers": {
+    "authorization": "Bearer {{connection.accessToken}}",
+    "x-workspace-id": "{{connection.workspaceId}}"
+  },
+  "response": {
+    "error": {
+      "message": "RentADriver request failed ({{statusCode}}). Check the connection and request values."
+    }
+  },
+  "log": {
+    "sanitize": [
+      "request.headers.authorization",
+      "request.body",
+      "response.body"
+    ]
+  }
+}

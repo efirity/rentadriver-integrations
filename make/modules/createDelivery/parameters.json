@@ -1,0 +1,55 @@
+[
+  {
+    "name": "quoteId",
+    "label": "Quote ID",
+    "type": "text",
+    "required": true,
+    "validate": {
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  },
+  {
+    "name": "sourceId",
+    "label": "Source ID",
+    "type": "text",
+    "required": true,
+    "validate": {
+      "max": 200
+    },
+    "help": "Use the upstream order/event ID and preserve it on retries."
+  },
+  {
+    "name": "currency",
+    "label": "Quote currency",
+    "type": "text",
+    "required": true,
+    "validate": {
+      "pattern": "^[A-Z]{3}$"
+    }
+  },
+  {
+    "name": "maximumPrice",
+    "label": "Maximum price (integer minor units)",
+    "type": "integer",
+    "required": true,
+    "validate": {
+      "min": 0
+    },
+    "help": "For example, 1250 means 12.50 in a two-decimal currency."
+  },
+  {
+    "name": "fund",
+    "label": "Fund and dispatch",
+    "type": "boolean",
+    "default": false,
+    "required": true,
+    "help": "Spends from your existing wallet in live mode. Leave disabled to create an unfunded draft."
+  },
+  {
+    "name": "dryRun",
+    "label": "Validate only",
+    "type": "boolean",
+    "default": false,
+    "required": true
+  }
+]

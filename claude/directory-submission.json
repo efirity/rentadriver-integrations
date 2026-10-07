@@ -1,0 +1,157 @@
+{
+ "_comment": "Verbatim record of the RentADriver listing in the Claude connectors directory, read field by field from the live edit form in the organization's directory submissions portal on 2026-09-16. This is a RECORD, not a draft: the listing exists and its slug is permanent, so edit it in the portal rather than starting a new submission. Runbook: ./README.md.",
+ "_read_at": "2026-09-16",
+ "review_state": "In review",
+ "connection": {
+  "server_url": "https://mcp.rentadriver.ai/mcp",
+  "transport": "streamable_http",
+  "url_configuration": "universal_url",
+  "_note": "Server URL and auth settings are Anthropic-managed post-submission; changes go through mcp-review@anthropic.com."
+ },
+ "listing": {
+  "name": "RentADriver",
+  "slug": "rentadriver",
+  "server_label": "rentadriver",
+  "one_liner": "Book real-world package deliveries with vetted drivers — quote, book, track, proof, pay.",
+  "description": "RentADriver gives Claude a delivery company. Ask for a quote between two addresses in a launch city, book it, and a vetted driver from the BusyDrivers network picks the item up and delivers it the same day — with live tracking, photo and signature proof, and a receipt.\n\nQuotes and coverage checks need no account. Booking uses a prepaid wallet on your RentADriver organisation, so Claude can never spend more than you have loaded, and spending caps per delivery and per day are enforced by the API.\n\nWith it connected, Claude can check whether an address is covered, price a delivery (local or city-to-city), create single or multi-stop deliveries, schedule recurring runs, follow a delivery live, fetch proof of delivery, manage webhooks, and read your wallet and receipts. Live in Melbourne, Sydney, Brisbane, London, Birmingham, Northampton, New York, Los Angeles, Chicago and Toronto.",
+  "categories": [
+   "Commerce & Shopping",
+   "Productivity",
+   "Development tools"
+  ],
+  "icon": "https://rentadriver.ai/brand/mark.svg",
+  "author_name": "EFIRITY PTE. LTD.",
+  "author_url": "https://rentadriver.ai/",
+  "works_with": [
+   "Claude (web & mobile)",
+   "Claude API",
+   "Claude Code",
+   "Claude Desktop"
+  ],
+  "permissions_summary": "Reads and writes deliveries on the organisation that authorised it: quotes and coverage, booking and funding from the prepaid wallet, live tracking, proof of delivery, webhooks, receipts. Cannot add funds, create API keys or change team members.",
+  "sensitive_data_types": [],
+  "has_mcp_app": true
+ },
+ "links": {
+  "documentation": "https://rentadriver.ai/docs/mcp",
+  "enterprise_managed_auth_documentation": "https://rentadriver.ai/docs/mcp#oauth",
+  "support": "support@rentadriver.ai",
+  "privacy_policy": "https://rentadriver.ai/privacy"
+ },
+ "branding_and_media": {
+  "logo_url": null,
+  "background_pattern": null,
+  "hero_video_id": null,
+  "hero_video_preview_link": null,
+  "carousel": [
+   {
+    "image": "https://rentadriver.ai/directory/quote.png",
+    "prompt": "How much to send a 2 kg parcel from 1 Collins St to Richmond this afternoon?"
+   },
+   {
+    "image": "https://rentadriver.ai/directory/track.png",
+    "prompt": "Book it, pay from my wallet, and tell me when it is picked up."
+   },
+   {
+    "image": "https://rentadriver.ai/directory/agents.png",
+    "prompt": "Show me the proof of delivery for RD-8F2K."
+   },
+   {
+    "image": "https://rentadriver.ai/directory/pricing.png",
+    "prompt": "Which launch cities deliver same-day, and what does a 5 km drop cost in each?"
+   }
+  ]
+ },
+ "integration_snippets": {
+  "claude_api_copy_text": "",
+  "claude_code_copy_text": "claude mcp add --transport http rentadriver https://mcp.rentadriver.ai/mcp",
+  "claude_code_external_link": "https://rentadriver.ai/docs/mcp"
+ },
+ "tools_and_prompts": {
+  "tool_count": 43,
+  "tools": [
+   "book_shopify_order",
+   "book_store_order",
+   "cancel_delivery",
+   "check_account_status",
+   "check_coverage",
+   "confirm_delivery",
+   "create_api_key",
+   "create_batch",
+   "create_delivery",
+   "create_recipient_code",
+   "create_return",
+   "create_store_pickup",
+   "create_wallet_deposit",
+   "create_x402_deposit",
+   "delete_webhook",
+   "enable_country_workspace",
+   "fund_delivery",
+   "get_delivery",
+   "get_delivery_events",
+   "get_delivery_messages",
+   "get_intercity_quote",
+   "get_platform_stats",
+   "get_proof_of_delivery",
+   "get_quote",
+   "get_wallet_balance",
+   "list_api_keys",
+   "list_country_workspaces",
+   "list_deliveries",
+   "list_intercity_lanes",
+   "list_service_areas",
+   "list_shopify_orders",
+   "list_store_orders",
+   "list_webhooks",
+   "open_dispute",
+   "rate_driver",
+   "register_webhook",
+   "revoke_api_key",
+   "send_message_to_driver",
+   "set_spending_controls",
+   "signup",
+   "tip_driver",
+   "track_delivery",
+   "update_delivery"
+  ],
+  "prompts": [
+   "plan_delivery"
+  ],
+  "_synced": "Re-synced from the live server 2026-09-16 (previously 38 names, missing book_store_order, create_recipient_code, list_store_orders and the plan_delivery prompt).",
+  "_x402_note": "create_x402_deposit appears here because the portal's probe does not send a Claude user agent. The hosted server hides it from Claude-family clients at request time, so Claude itself sees 42 tools."
+ },
+ "use_cases": {
+  "primary_use_cases": "Price a delivery before committing: \"How much to send a 2 kg parcel from 1 Collins St to Richmond this afternoon?\" — Claude calls get_quote and reads back price, ETA and cheaper time slots.\nBook and follow it: \"Book it, pay from my wallet, and tell me when it's picked up\" — create_delivery, fund_delivery, then get_delivery / the live event stream.\nProve it happened: \"Show me the proof for RD-8F2K\" — photo, signature, recipient name and timestamps.\nRun a store's daily errands: \"Every weekday at 16:00 collect from the warehouse and drop at the shop\" — a recurring delivery with the address book.",
+  "connection_requirements": "A RentADriver organisation (free sign-up at https://rentadriver.ai/dashboard, or Claude can call the signup tool). Quotes and coverage tools work without signing in. Booking needs a verified email and a funded wallet (a US$20 welcome credit is granted on email verification). The connector authenticates the signed-in user over OAuth 2.1 and reaches only that organisation.",
+  "read_write_capabilities": "read_write"
+ },
+ "data_handling": {
+  "api_ownership": "first_party",
+  "personal_health_data": "no",
+  "sponsored_or_promoted_content": "no"
+ },
+ "company": {
+  "company_name": "EFIRITY PTE. LTD.",
+  "company_website": "https://sg.efirity.com/"
+ },
+ "testing_access": {
+  "self_tested_checkbox": false,
+  "_self_tested_note": "Deliberately unticked: it attests every tool was run, and several are destructive (revoke_api_key, cancel_delivery, delete_webhook).",
+  "test_setup_instructions_summary": "OAuth consent with a sandbox account",
+  "_length_chars": 3119
+ },
+ "compliance": {
+  "policy_acknowledgements_all_accepted": true,
+  "items": [
+   "I have read and understand the MCP Directory developer guidelines.",
+   "My server calls our own first-party APIs (or APIs we legitimately proxy with permission).",
+   "My MCP server does not transfer money, cryptocurrency, or other financial assets on a user's behalf.",
+   "My MCP server does not use AI models to generate images, video, or audio.",
+   "Tool descriptions contain no instructions about model behavior, other tools, or external instruction sources, and no hidden or encoded text.",
+   "My MCP server does not collect conversation data beyond what is needed for its function.",
+   "Public documentation for this MCP server will be live by the publish date."
+  ],
+  "additional_notes_summary": "Rewritten 2026-09-16: dated 'please re-test' note; how money works (prepaid wallet, Stripe Checkout opened by a human, no assets moved on a user's behalf); what create_x402_deposit does and that it is hidden from Claude clients; MCP Apps cards; coverage; tool annotations; OAuth security model. Full text lives in the portal field.",
+  "_length_chars": 3194
+ }
+}

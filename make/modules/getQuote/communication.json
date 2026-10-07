@@ -1,0 +1,29 @@
+{
+  "url": "/quotes",
+  "method": "POST",
+  "type": "json",
+  "body": {
+    "workspace_id": "{{connection.workspaceId}}",
+    "pickup": {
+      "address": "{{parameters.pickup}}"
+    },
+    "dropoffs": [
+      {
+        "address": "{{parameters.dropoff}}"
+      }
+    ],
+    "items": [
+      {
+        "description": "{{parameters.description}}",
+        "quantity": 1,
+        "size_class": "{{parameters.size}}",
+        "category": "parcel"
+      }
+    ],
+    "urgency": "asap",
+    "service": "auto"
+  },
+  "response": {
+    "output": "{{body}}"
+  }
+}

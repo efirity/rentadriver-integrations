@@ -1,0 +1,56 @@
+{
+  "name": "rentadriver-mcp",
+  "version": "0.4.4",
+  "description": "RentADriver — from “send it” to delivered. The MCP server for real package deliveries: upfront quotes, driver tracking and proof of handover.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "rentadriver-mcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "delivery",
+    "courier",
+    "ai-agents",
+    "logistics",
+    "rentadriver",
+    "x402"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efirity/rentadriver-integrations.git",
+    "directory": "mcp"
+  },
+  "homepage": "https://rentadriver.ai",
+  "bugs": {
+    "url": "https://rentadriver.ai/docs/mcp",
+    "email": "support@rentadriver.ai"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/build-app.mjs && chmod +x dist/index.js",
+    "dev": "bun --env-file=../../.env src/index.ts",
+    "start": "node dist/index.js",
+    "http": "node dist/index.js --http",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "^1.7.5",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

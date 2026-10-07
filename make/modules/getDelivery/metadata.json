@@ -1,0 +1,6 @@
+{
+  "name": "getDelivery",
+  "label": "Get a Delivery",
+  "type": "action",
+  "connection": "oauth"
+}

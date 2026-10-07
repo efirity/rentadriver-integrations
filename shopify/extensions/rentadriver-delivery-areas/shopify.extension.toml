@@ -1,0 +1,17 @@
+api_version = "2026-01"
+
+[[extensions]]
+name = "RentADriver delivery areas"
+handle = "rentadriver-delivery-areas"
+uid = "25c5997f-c177-098b-6d43-5d0dcbf4e531b48e4bcd"
+type = "function"
+description = "Hides the RentADriver shipping rates at checkout for addresses outside the store's delivery areas."
+
+  [[extensions.targeting]]
+  target = "cart.delivery-options.transform.run"
+  input_query = "src/run.graphql"
+  export = "run"
+
+  [extensions.build]
+  command = ""
+  path = "dist/function.wasm"

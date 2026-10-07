@@ -1,0 +1,56 @@
+[
+  {
+    "name": "pickup",
+    "label": "Pickup address",
+    "type": "text",
+    "required": true,
+    "validate": {
+      "min": 3,
+      "max": 300
+    }
+  },
+  {
+    "name": "dropoff",
+    "label": "Drop-off address",
+    "type": "text",
+    "required": true,
+    "validate": {
+      "min": 3,
+      "max": 300
+    }
+  },
+  {
+    "name": "description",
+    "label": "Package description",
+    "type": "text",
+    "required": true,
+    "validate": {
+      "max": 300
+    }
+  },
+  {
+    "name": "size",
+    "label": "Package size",
+    "type": "select",
+    "default": "M",
+    "required": true,
+    "options": [
+      {
+        "label": "S",
+        "value": "S"
+      },
+      {
+        "label": "M",
+        "value": "M"
+      },
+      {
+        "label": "L",
+        "value": "L"
+      },
+      {
+        "label": "XL",
+        "value": "XL"
+      }
+    ]
+  }
+]

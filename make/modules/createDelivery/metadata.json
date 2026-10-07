@@ -1,0 +1,6 @@
+{
+  "name": "createDelivery",
+  "label": "Create a Delivery from a Quote",
+  "type": "action",
+  "connection": "oauth"
+}

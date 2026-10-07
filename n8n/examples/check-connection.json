@@ -1,0 +1,28 @@
+{
+  "name": "RentADriver — check a sandbox connection",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-start",
+      "name": "Run Manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": { "authentication": "oauth2", "operation": "connection" },
+      "id": "check-connection",
+      "name": "Check RentADriver Connection",
+      "type": "n8n-nodes-rentadriver.rentADriver",
+      "typeVersion": 1,
+      "position": [260, 0]
+    }
+  ],
+  "connections": {
+    "Run Manually": {
+      "main": [[{ "node": "Check RentADriver Connection", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}

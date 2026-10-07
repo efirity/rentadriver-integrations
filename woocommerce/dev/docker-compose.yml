@@ -1,0 +1,56 @@
+# Local WordPress + WooCommerce for testing the RentADriver shipping plugin end to end.
+# The plugin folder is bind-mounted, so edits on the Mac are live inside the container (no rebuild, no re-install).
+# Everything is addressed by the Mac's LAN IP (RD_HOST) so the browser, WordPress and the API all reach each other:
+# the browser hits WordPress and the API, WordPress POSTs its API keys + webhooks to the API, and the API calls back
+# into WooCommerce's REST API. See ../README.md ("Testing the plugin locally").
+name: rentadriver-woo-dev
+services:
+  db:
+    image: mariadb:11
+    environment: { MARIADB_DATABASE: wp, MARIADB_USER: wp, MARIADB_PASSWORD: wp, MARIADB_ROOT_PASSWORD: root }
+    volumes: [dbdata:/var/lib/mysql]
+    healthcheck: { test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"], interval: 5s, retries: 20 }
+  wp:
+    image: wordpress:php8.3-apache
+    depends_on: { db: { condition: service_healthy } }
+    ports: ["${RD_WP_PORT:-8080}:80"]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: wp
+      WORDPRESS_DB_NAME: wp
+      WORDPRESS_DEBUG: 1
+      # The image already trusts X-Forwarded-Proto, so is_ssl() is true behind the TLS proxy. The site URL is set by
+      # setup.sh with wp-cli: WORDPRESS_CONFIG_EXTRA is only written when wp-config.php does not exist yet, so editing it
+      # here after the first run silently does nothing.
+    volumes:
+      - wpdata:/var/www/html
+      - ../rentadriver-delivery:/var/www/html/wp-content/plugins/rentadriver-delivery
+      - ./mu-plugins:/var/www/html/wp-content/mu-plugins
+    extra_hosts: ["host.docker.internal:host-gateway"]
+  cli:
+    image: wordpress:cli-php8.3
+    depends_on: { wp: { condition: service_started } }
+    user: "33:33"
+    entrypoint: ["wp"]
+    command: ["--info"]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: wp
+      WORDPRESS_DB_NAME: wp
+    volumes:
+      - wpdata:/var/www/html
+      - ../rentadriver-delivery:/var/www/html/wp-content/plugins/rentadriver-delivery
+      - ./mu-plugins:/var/www/html/wp-content/mu-plugins
+    extra_hosts: ["host.docker.internal:host-gateway"]
+  # WooCommerce refuses REST key pairs over plain http (it wants OAuth 1.0a there), so WordPress is served over TLS.
+  # The certificate is self-signed: run the API with NODE_TLS_REJECT_UNAUTHORIZED=0 against this store, and only this one.
+  proxy:
+    image: nginx:alpine
+    depends_on: { wp: { condition: service_started } }
+    ports: ["${RD_TLS_PORT:-8443}:8443"]
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs:/certs:ro
+volumes: { dbdata: {}, wpdata: {} }

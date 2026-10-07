@@ -1,0 +1,21 @@
+query RunInput {
+  deliveryCustomization {
+    metafield(namespace: "$app:rentadriver", key: "delivery-areas") {
+      jsonValue
+    }
+  }
+  cart {
+    deliveryGroups {
+      deliveryAddress {
+        countryCode
+        zip
+        latitude
+        longitude
+      }
+      deliveryOptions {
+        handle
+        title
+      }
+    }
+  }
+}

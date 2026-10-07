@@ -1,0 +1,10 @@
+{
+  "name": "rentadriver-slack",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Private-workspace RentADriver Slack app",
+  "license": "MIT",
+  "engines": { "node": ">=22.13" },
+  "scripts": { "start": "node server.mjs", "test": "node --test test/*.test.mjs", "manifest": "node manifest.mjs" }
+}

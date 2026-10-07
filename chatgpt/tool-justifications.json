@@ -1,0 +1,217 @@
+{
+  "check_coverage": {
+    "read_only_justification": "Only answers whether a location is inside a service area; stores nothing and changes nothing.",
+    "destructive_justification": "Performs no booking, charge, deletion or overwrite.",
+    "open_world_justification": "Looks up RentADriver's own service-area data; the address is geocoded server-side as part of that lookup, and nothing is sent to or changed at any third party."
+  },
+  "list_service_areas": {
+    "read_only_justification": "Lists the configured service areas only.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Returns RentADriver's bounded service-area catalogue."
+  },
+  "get_quote": {
+    "read_only_justification": "Prices a trip. The server stores a 15-minute pricing snapshot so a later create_delivery can reference the same price, but nothing is booked, held or charged and nothing is visible or needs undoing if unused.",
+    "destructive_justification": "No booking, payment, dispatch, deletion or overwrite.",
+    "open_world_justification": "Computed from RentADriver's own tariffs and route estimate; no driver, merchant or third party is contacted."
+  },
+  "list_intercity_lanes": {
+    "read_only_justification": "Lists each city's neighbouring cities within 160 km with a same-day sample price.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Computed from RentADriver's own list of launch cities."
+  },
+  "get_intercity_quote": {
+    "read_only_justification": "Prices a same-day trip to a neighbouring city; like get_quote it stores only an expiring pricing snapshot, with no booking, hold or charge.",
+    "destructive_justification": "No booking, payment, dispatch, deletion or overwrite.",
+    "open_world_justification": "Computed from RentADriver's own city rate cards; nobody outside the platform is contacted."
+  },
+  "get_platform_stats": {
+    "read_only_justification": "Returns aggregate live counts.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Returns RentADriver's own aggregate counts."
+  },
+  "list_country_workspaces": {
+    "read_only_justification": "Lists the account's country workspaces and balances.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own account."
+  },
+  "enable_country_workspace": {
+    "read_only_justification": "Creates a new country workspace in the account, so it writes.",
+    "destructive_justification": "Additive: starts at zero balance and leaves existing workspaces and money untouched.",
+    "open_world_justification": "Bounded to the caller's own account."
+  },
+  "signup": {
+    "read_only_justification": "Creates a new RentADriver account and API key.",
+    "destructive_justification": "Creates a new account; deletes or overwrites nothing and moves no money.",
+    "open_world_justification": "Creates an account inside RentADriver only; a verification email goes only to the address the user supplied."
+  },
+  "check_account_status": {
+    "read_only_justification": "Reads verification and funding status.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own account."
+  },
+  "get_wallet_balance": {
+    "read_only_justification": "Reads the wallet balance.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own account."
+  },
+  "create_wallet_deposit": {
+    "read_only_justification": "Creates a Stripe Checkout link for the account.",
+    "destructive_justification": "No money moves: the link only charges if a human opens it and pays in Stripe's own confirmation screen.",
+    "open_world_justification": "Returns a checkout link for the caller's own account; nothing leaves the account until a human completes payment themselves."
+  },
+  "create_x402_deposit": {
+    "read_only_justification": "Creates an x402 payment request.",
+    "destructive_justification": "Returns payment requirements only; no funds move until the caller signs a payment separately.",
+    "open_world_justification": "The payment it prepares settles on a public blockchain (USDC on Base), outside RentADriver."
+  },
+  "set_spending_controls": {
+    "read_only_justification": "Changes the account's spending caps.",
+    "destructive_justification": "Overwrites the previous caps (null clears them), so earlier values are replaced.",
+    "open_world_justification": "Bounded to the caller's own account."
+  },
+  "list_api_keys": {
+    "read_only_justification": "Lists API key metadata (no secrets).",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own account."
+  },
+  "create_api_key": {
+    "read_only_justification": "Issues an additional API key.",
+    "destructive_justification": "Additive: existing keys keep working and nothing is deleted or charged.",
+    "open_world_justification": "Bounded to the caller's own account."
+  },
+  "revoke_api_key": {
+    "read_only_justification": "Deactivates an API key.",
+    "destructive_justification": "Permanent: the revoked key can never be used again.",
+    "open_world_justification": "Bounded to the caller's own account."
+  },
+  "create_delivery": {
+    "read_only_justification": "Books a real delivery.",
+    "destructive_justification": "Holds real wallet funds (unless fund=false) and starts dispatch; cancelling after a driver is assigned costs a fee. dryRun=true validates without booking.",
+    "open_world_justification": "Dispatches the job to real independent drivers and notifies the recipient."
+  },
+  "create_store_pickup": {
+    "read_only_justification": "Books a real store-pickup delivery.",
+    "destructive_justification": "Holds real wallet funds and starts dispatch, like create_delivery.",
+    "open_world_justification": "Dispatches real independent drivers and involves the store and recipient."
+  },
+  "create_batch": {
+    "read_only_justification": "Books up to 25 real deliveries.",
+    "destructive_justification": "Holds real wallet funds for every delivery and starts dispatch.",
+    "open_world_justification": "Dispatches real independent drivers for each delivery."
+  },
+  "fund_delivery": {
+    "read_only_justification": "Funds an existing delivery.",
+    "destructive_justification": "Holds real wallet funds and releases the delivery to dispatch.",
+    "open_world_justification": "Dispatch reaches real independent drivers."
+  },
+  "get_delivery": {
+    "read_only_justification": "Reads one delivery.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own deliveries."
+  },
+  "list_deliveries": {
+    "read_only_justification": "Lists the caller's deliveries.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own deliveries."
+  },
+  "create_recipient_code": {
+    "read_only_justification": "Creates or replaces a handover code for a stop.",
+    "destructive_justification": "Replacing invalidates the previous code, overwriting it.",
+    "open_world_justification": "The code is returned to the caller only; RentADriver sends it to nobody."
+  },
+  "track_delivery": {
+    "read_only_justification": "Reads live status, ETA and position.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own deliveries."
+  },
+  "get_delivery_events": {
+    "read_only_justification": "Reads the delivery's event timeline.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own deliveries."
+  },
+  "update_delivery": {
+    "read_only_justification": "Edits an in-progress delivery.",
+    "destructive_justification": "Overwrites the instructions, contingency or drop-off contact previously stored.",
+    "open_world_justification": "The change is stored on the caller's own delivery."
+  },
+  "cancel_delivery": {
+    "read_only_justification": "Cancels a delivery.",
+    "destructive_justification": "Irreversible: a cancelled delivery cannot be resumed, and after assignment a cancellation fee is charged.",
+    "open_world_justification": "Changes only the caller's own delivery; the assigned driver's app simply drops the job."
+  },
+  "create_return": {
+    "read_only_justification": "Books the reverse leg as a new delivery.",
+    "destructive_justification": "Creates and funds a new real delivery, holding wallet money.",
+    "open_world_justification": "Dispatches real independent drivers."
+  },
+  "send_message_to_driver": {
+    "read_only_justification": "Sends a message.",
+    "destructive_justification": "Additive: adds a message to the delivery thread, deleting, overwriting or charging nothing.",
+    "open_world_justification": "Delivered as a push and in-app message to the assigned driver, an independent person outside the account."
+  },
+  "get_delivery_messages": {
+    "read_only_justification": "Reads the delivery's message thread.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own deliveries."
+  },
+  "get_proof_of_delivery": {
+    "read_only_justification": "Reads photos, signature and codes captured at handover.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own deliveries."
+  },
+  "confirm_delivery": {
+    "read_only_justification": "Confirms a completed delivery.",
+    "destructive_justification": "Irreversibly releases the held payment to the driver.",
+    "open_world_justification": "Pays an independent driver outside the account."
+  },
+  "open_dispute": {
+    "read_only_justification": "Opens a dispute ticket.",
+    "destructive_justification": "Additive and reversible: funds simply stay held while RentADriver reviews; nothing is deleted, paid or overwritten.",
+    "open_world_justification": "Handled by RentADriver's own operations team."
+  },
+  "tip_driver": {
+    "read_only_justification": "Tips the driver.",
+    "destructive_justification": "Irreversibly moves wallet money to the driver.",
+    "open_world_justification": "Pays an independent driver outside the account."
+  },
+  "rate_driver": {
+    "read_only_justification": "Records a rating.",
+    "destructive_justification": "Additive feedback on a completed delivery; moves no money and deletes nothing.",
+    "open_world_justification": "Stored inside RentADriver; the driver is not contacted."
+  },
+  "list_shopify_orders": {
+    "read_only_justification": "Lists the connected Shopify store's orders.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Reads only the caller's own connected store."
+  },
+  "book_shopify_order": {
+    "read_only_justification": "Books a delivery for a Shopify order.",
+    "destructive_justification": "Holds real wallet funds, starts dispatch and fulfils the order in Shopify.",
+    "open_world_justification": "Dispatches real independent drivers and writes fulfilment/tracking back to Shopify."
+  },
+  "list_store_orders": {
+    "read_only_justification": "Lists orders from the caller's connected store.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Reads only the caller's own connected store."
+  },
+  "book_store_order": {
+    "read_only_justification": "Books a delivery for a store order.",
+    "destructive_justification": "Holds real wallet funds and starts dispatch.",
+    "open_world_justification": "Dispatches real independent drivers and updates the order on the store platform."
+  },
+  "register_webhook": {
+    "read_only_justification": "Registers a webhook.",
+    "destructive_justification": "Additive: adds a subscription, deleting, overwriting or charging nothing.",
+    "open_world_justification": "RentADriver will POST delivery events to an arbitrary caller-supplied URL."
+  },
+  "list_webhooks": {
+    "read_only_justification": "Lists registered webhooks.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Bounded to the caller's own account."
+  },
+  "delete_webhook": {
+    "read_only_justification": "Deletes a webhook.",
+    "destructive_justification": "Deactivates the webhook permanently; queued deliveries to it stop.",
+    "open_world_justification": "Bounded to the caller's own account."
+  }
+}

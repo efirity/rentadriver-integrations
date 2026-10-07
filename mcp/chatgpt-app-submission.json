@@ -1,0 +1,528 @@
+{
+ "_comment": "ChatGPT App (OpenAI Apps SDK) directory submission for RentADriver. Field names mirror OpenAI's chatgpt-app-submission.json. The app IS the hosted MCP server; OpenAI imports the tools from it on connect. Written 2026-09-07.",
+ "display_name": "RentADriver",
+ "developer_name": "EFIRITY PTE. LTD.",
+ "version": "1.0.0",
+ "mcp_url": "https://mcp.rentadriver.ai/mcp",
+ "commerce_enabled": false,
+ "_commerceNote": "No plans or subscriptions are displayed or sold in chat. Deliveries are paid from the organisation's own prepaid RentADriver wallet (topped up on the website), so there is nothing for OpenAI commerce to mediate.",
+ "supported_auth": [
+  {
+   "type": "OAUTH",
+   "authorization_server": "https://api.rentadriver.ai",
+   "metadata": "https://mcp.rentadriver.ai/.well-known/oauth-protected-resource",
+   "dynamic_registration": true,
+   "pkce": true,
+   "scopes": [
+    "read",
+    "write"
+   ]
+  }
+ ],
+ "test_credentials": {
+  "method": "sandbox",
+  "instructions": "No credentials to type. On the OAuth consent screen at rentadriver.ai/oauth/authorize press \"Allow with a sandbox account\" — it mints a 24-hour key on the RentADriver demo organisation (pre-funded, simulated drivers) and authorises. Every tool then works end to end: list_service_areas → check_coverage → get_quote → create_delivery → fund_delivery → get_delivery → get_proof_of_delivery, all against test data, nothing charged. A key can also be minted directly with: curl -X POST https://api.rentadriver.ai/v1/sandbox/keys",
+  "sandbox": true
+ },
+ "contact": "support@rentadriver.ai",
+ "privacy": "https://rentadriver.ai/privacy",
+ "terms": "https://rentadriver.ai/terms",
+ "branding": {
+  "logo": "https://rentadriver.ai/brand/mark.svg",
+  "icon": "https://rentadriver.ai/brand/mark.svg",
+  "category": "Shopping",
+  "_categoryNote": "Best-fit OpenAI category for an on-demand local delivery marketplace; 'Travel' and 'Productivity' are the alternates. Confirm against the console's fixed list at submit time.",
+  "example_prompts": [
+   "Get a same-day delivery quote from Queen Victoria Market to Flinders Street Station in Melbourne.",
+   "Book a courier to pick up a parcel at my shop and drop it to a customer — show me the price before booking.",
+   "Track delivery RD-8F2K and show me the proof of delivery once it arrives.",
+   "Which of my launch cities can deliver same-day, and what does a 5 km drop cost in each?"
+  ],
+  "privacy": "https://rentadriver.ai/privacy",
+  "terms": "https://rentadriver.ai/terms",
+  "support": "support@rentadriver.ai",
+  "privacy_policy": "https://rentadriver.ai/privacy",
+  "terms_of_service": "https://rentadriver.ai/terms",
+  "customer_support": "support@rentadriver.ai"
+ },
+ "description": "Book real-world package deliveries by describing them in plain language. RentADriver quotes, books, dispatches, tracks and proves same-day local and city-to-city deliveries fulfilled by vetted drivers, across launch cities in Australia, the UK, the US and Canada. Quotes and coverage checks are free; booking uses a prepaid wallet with per-delivery and daily spending caps, so an agent can never overspend.",
+ "demo_recording_url": null,
+ "_demoNote": "A screen recording in the OpenAI Playground with the MCP server attached is required before final submit. Record the sandbox flow above before submitting.",
+ "resources": [
+  {
+   "name": "check_coverage",
+   "description": "Is an address or lat/lng inside a RentADriver service area? Free, no API key.",
+   "provided_tool_annotations": {
+    "title": "Check coverage",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_service_areas",
+   "description": "Launch cities with currency, timezone and radius. Free.",
+   "provided_tool_annotations": {
+    "title": "List service areas",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_quote",
+   "description": "Price and conditional ETA for a pickup and one or more drop-offs. Null ETA means driver availability is unconfirmed; never promise a pickup time. Free, no key. Returns a quote_id v",
+   "provided_tool_annotations": {
+    "title": "Get a delivery quote",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_intercity_lanes",
+   "description": "Same-day city-to-city routes: for every launch city, the neighbouring launch cities within 160 km by road, with road distance, drive time and a same-day sample price.",
+   "provided_tool_annotations": {
+    "title": "Intercity lanes",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_intercity_quote",
+   "description": "Price a same-day delivery to a neighbouring launch city up to 160 km away by road, one dedicated driver; longer trips return too_far.",
+   "provided_tool_annotations": {
+    "title": "Intercity quote",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_platform_stats",
+   "description": "Live counts: active drivers, drivers on shift, deliveries, agents connected.",
+   "provided_tool_annotations": {
+    "title": "Platform stats",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_country_workspaces",
+   "description": "List enabled country workspaces, their separate local-currency balances, and available countries. No FX or balance transfers.",
+   "provided_tool_annotations": {
+    "title": "Country workspaces",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "enable_country_workspace",
+   "description": "Enable another delivery country in this account. Admin role required. Starts with zero local-currency balance; existing money stays untouched. Set spending controls independently f",
+   "provided_tool_annotations": {
+    "title": "Enable country workspace",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "signup",
+   "description": "Self-serve signup for an agent/app. Returns an API key ONCE. Save it as RENTADRIVER_API_KEY. Rehearse with a sandbox (rd_test_) key; live bookings need a funded wallet.",
+   "provided_tool_annotations": {
+    "title": "Create account + API key",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "check_account_status",
+   "description": "Confirms the API key works; returns balance, caps and capabilities.",
+   "provided_tool_annotations": {
+    "title": "Account status",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_wallet_balance",
+   "description": "Selected country balance and ledger. Omit workspace_id for the original default wallet.",
+   "provided_tool_annotations": {
+    "title": "Wallet balance",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "create_wallet_deposit",
+   "description": "Creates a Stripe Checkout URL a human must open to pay. Wallet is credited on payment.",
+   "provided_tool_annotations": {
+    "title": "Deposit by card",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "create_x402_deposit",
+   "description": "Agent-native funding: returns x402 v2 payment requirements (USDC on Base). Sign with an x402 client and re-call with the X-Payment header via the REST endpoint.",
+   "provided_tool_annotations": {
+    "title": "Deposit USDC (x402)",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "set_spending_controls",
+   "description": "Cap per-delivery and rolling 24-hour spend in workspace currency minor units. Zero blocks, null clears. Defaults to original workspace.",
+   "provided_tool_annotations": {
+    "title": "Spending controls",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_api_keys",
+   "description": "Lists the account's API keys with prefix, name, last use and revocation state. Full keys are never returned.",
+   "provided_tool_annotations": {
+    "title": "List API keys",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "create_api_key",
+   "description": "Issues an additional key (max 10 active) for another agent or environment. The key is shown once.",
+   "provided_tool_annotations": {
+    "title": "Create API key",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "revoke_api_key",
+   "description": "Permanently deactivates a key. You cannot revoke the key you are calling with.",
+   "provided_tool_annotations": {
+    "title": "Revoke API key",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "create_delivery",
+   "description": "Books a delivery. Pass quote_id from get_quote, or pickup+dropoffs directly. fund=true (default) holds the price from your wallet and starts dispatch. Use dryRun=true first to see ",
+   "provided_tool_annotations": {
+    "title": "Create a delivery",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "create_store_pickup",
+   "description": "Shortcut for the most common agent job: collect a prepaid order from a store and deliver it. Pickup contact gets the order reference in the instructions.",
+   "provided_tool_annotations": {
+    "title": "Store pickup + delivery",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "create_batch",
+   "description": "Up to 25 create_delivery payloads in one call.",
+   "provided_tool_annotations": {
+    "title": "Create several deliveries",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "fund_delivery",
+   "description": "For deliveries created with fund=false, or after topping up the wallet.",
+   "provided_tool_annotations": {
+    "title": "Fund a delivery",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_delivery",
+   "description": "Full delivery by id or short code (RD-XXXXXXX). Hosts that support MCP Apps render a live tracker card.",
+   "provided_tool_annotations": {
+    "title": "Get delivery",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_deliveries",
+   "description": "status='active' or a comma list; since ISO datetime.",
+   "provided_tool_annotations": {
+    "title": "List deliveries",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "create_recipient_code",
+   "description": "Generate or replace a six-digit code for a delivery stop requiring OTP proof. Share it privately with the intended recipient, never the driver. Replacing invalidates the old code. ",
+   "provided_tool_annotations": {
+    "title": "Create a private handover code",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "track_delivery",
+   "description": "Live status, ETA, driver position and last event. Poll this every 30–60s while active.",
+   "provided_tool_annotations": {
+    "title": "Track delivery",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_delivery_events",
+   "description": "Every event on the delivery in order: created, funded, dispatching, offers, assigned, each driver step, delivered, confirmed, paid, plus messages.",
+   "provided_tool_annotations": {
+    "title": "Delivery timeline",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "update_delivery",
+   "description": "Change instructions, contingency rules or the drop-off contact while in progress.",
+   "provided_tool_annotations": {
+    "title": "Update delivery",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "cancel_delivery",
+   "description": "Free before a driver is assigned; a cancellation fee after assignment; not possible after pickup.",
+   "provided_tool_annotations": {
+    "title": "Cancel delivery",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "create_return",
+   "description": "Create the reverse delivery (last drop-off back to pickup).",
+   "provided_tool_annotations": {
+    "title": "Return leg",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "send_message_to_driver",
+   "description": "Delivered as a push + in-app message once a driver is assigned.",
+   "provided_tool_annotations": {
+    "title": "Message the driver",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_delivery_messages",
+   "description": "The full message thread between you and the driver for one delivery, oldest first.",
+   "provided_tool_annotations": {
+    "title": "Read messages",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_proof_of_delivery",
+   "description": "Signed photo URLs (1h), signature, recipient name, geo + time.",
+   "provided_tool_annotations": {
+    "title": "Proof of delivery",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "confirm_delivery",
+   "description": "Releases payment to the driver. Auto-confirms 24h after delivery if you don't.",
+   "provided_tool_annotations": {
+    "title": "Confirm delivery",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "open_dispute",
+   "description": "Funds stay held; ops reviews within 24h.",
+   "provided_tool_annotations": {
+    "title": "Open a dispute",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "tip_driver",
+   "description": "Cents, from your wallet. Reuse idempotency_key when retrying the same tip.",
+   "provided_tool_annotations": {
+    "title": "Tip the driver",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "rate_driver",
+   "description": "Rate the driver of a completed delivery from 1 to 5 stars, with an optional comment.",
+   "provided_tool_annotations": {
+    "title": "Rate the driver",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_shopify_orders",
+   "description": "Orders the RentADriver app for Shopify has seen on the shops connected to this account, with the booking status (booked / skipped / needs_funds / failed) and the linked delivery. R",
+   "provided_tool_annotations": {
+    "title": "List Shopify orders",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "book_shopify_order",
+   "description": "Book a same-day delivery for a Shopify order by its name (e.g. #1042) or id. Pickup is the store location, drop-off the order's shipping address, items from the line items. Fetches",
+   "provided_tool_annotations": {
+    "title": "Book a Shopify order",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_store_orders",
+   "description": "Orders the RentADriver connector has seen on the WooCommerce, BigCommerce, Wix Stores or Squarespace stores connected to this account, with the booking status (booked / skipped / n",
+   "provided_tool_annotations": {
+    "title": "List store orders",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "book_store_order",
+   "description": "Book a same-day delivery for a WooCommerce, BigCommerce, Wix Stores or Squarespace order by its number (e.g. #1042) or id. Pickup is the store location, drop-off the order's shippi",
+   "provided_tool_annotations": {
+    "title": "Book a store order",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "register_webhook",
+   "description": "HMAC-signed POSTs for delivery.* events. Returns the signing secret once.",
+   "provided_tool_annotations": {
+    "title": "Register webhook",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_webhooks",
+   "description": "Active webhooks registered on the account.",
+   "provided_tool_annotations": {
+    "title": "List webhooks",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "delete_webhook",
+   "description": "Deactivates a webhook; queued deliveries to it stop.",
+   "provided_tool_annotations": {
+    "title": "Delete webhook",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  }
+ ],
+ "_status": "draft — not yet submitted. Submitted through the OpenAI developer console (Apps SDK).",
+ "status": "draft"
+}

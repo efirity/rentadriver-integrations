@@ -1,0 +1,13 @@
+[
+  {
+    "name": "after",
+    "label": "After cursor",
+    "type": "text",
+    "default": "0",
+    "required": true,
+    "validate": {
+      "pattern": "^[0-9]+$"
+    },
+    "help": "Keep cursors as text. Save the next cursor only after processing the whole batch."
+  }
+]

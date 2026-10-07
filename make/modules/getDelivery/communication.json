@@ -1,0 +1,7 @@
+{
+  "url": "/deliveries/{{parameters.deliveryId}}",
+  "method": "GET",
+  "response": {
+    "output": "{{body}}"
+  }
+}

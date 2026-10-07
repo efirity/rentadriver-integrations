@@ -1,0 +1,6 @@
+{
+  "name": "getQuote",
+  "label": "Get a Delivery Quote",
+  "type": "action",
+  "connection": "oauth"
+}

@@ -1,0 +1,13 @@
+import { Store } from './store.mjs';
+import { Client } from './client.mjs';
+import { createApp } from './app.mjs';
+const required = key => { const value = process.env[key]; if (!value) throw new Error(`Configure ${key}.`); return value; };
+const storageKey = required('STORAGE_KEY');
+if (!/^[a-f0-9]{64}$/i.test(storageKey)) throw new Error('STORAGE_KEY must be a 32-byte hexadecimal key.');
+const config = { baseUrl: required('PUBLIC_BASE_URL'), teamId: required('SLACK_TEAM_ID'), signingSecret: required('SLACK_SIGNING_SECRET'), clientId: required('RENTADRIVER_CLIENT_ID') };
+const store = new Store(process.env.STORAGE_PATH || './data/connections.sqlite', Buffer.from(storageKey, 'hex'));
+const client = new Client({ clientId: config.clientId, botToken: required('SLACK_BOT_TOKEN') });
+const app = createApp({ ...config, store, client, onError: message => console.error(message) });
+app.server.listen(Number(process.env.PORT || 3000), process.env.HOST || '127.0.0.1', () => console.log('RentADriver Slack server ready.'));
+const stop = () => app.server.close(async () => { await app.drain(); store.close(); process.exit(0); });
+process.on('SIGTERM', stop); process.on('SIGINT', stop);

@@ -1,0 +1,6 @@
+{
+  "name": "getConnection",
+  "label": "Get Connection",
+  "type": "action",
+  "connection": "oauth"
+}

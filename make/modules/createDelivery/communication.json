@@ -1,0 +1,16 @@
+{
+  "url": "/automation/deliveries",
+  "method": "POST",
+  "type": "json",
+  "body": {
+    "quote_id": "{{parameters.quoteId}}",
+    "source_id": "{{parameters.sourceId}}",
+    "currency": "{{parameters.currency}}",
+    "max_price_cents": "{{parameters.maximumPrice}}",
+    "fund": "{{parameters.fund}}",
+    "dryRun": "{{parameters.dryRun}}"
+  },
+  "response": {
+    "output": "{{body}}"
+  }
+}

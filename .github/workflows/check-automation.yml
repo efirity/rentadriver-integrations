@@ -1,0 +1,35 @@
+name: Check automation integrations
+on:
+  push:
+    paths: ['zapier/**', 'slack/**', 'make/**', '.github/workflows/check-automation.yml']
+  pull_request:
+    paths: ['zapier/**', 'slack/**', 'make/**', '.github/workflows/check-automation.yml']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: zapier/package-lock.json
+      - run: npm --prefix zapier ci --ignore-scripts --no-audit --no-fund
+      - run: npm --prefix zapier test
+      - run: npm --prefix zapier run validate -- --without-style
+      - run: npm --prefix slack test
+      - name: Parse Make component definitions
+        run: |
+          node --input-type=module <<'JS'
+          import { readdirSync, readFileSync } from 'node:fs';
+          function check(path) {
+            for (const entry of readdirSync(path, {withFileTypes: true})) {
+              const file = `${path}/${entry.name}`;
+              if (entry.isDirectory()) check(file);
+              else if (entry.name.endsWith('.json')) JSON.parse(readFileSync(file, 'utf8'));
+            }
+          }
+          check('make');
+          JS

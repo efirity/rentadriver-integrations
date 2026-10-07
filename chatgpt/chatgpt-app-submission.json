@@ -1,0 +1,100 @@
+{
+  "record_type": "chatgpt_app_submission_record",
+  "record_version": 1,
+  "status": "submitted_for_review",
+  "status_recorded_on": "2026-09-16",
+  "submitted_on": "2026-09-16",
+  "published": false,
+  "public_listing_url": null,
+  "status_note": "Historical submission snapshot, not a live status feed or an OpenAI portal export. Approval and publication remain pending.",
+  "display_name": "RentADriver",
+  "developer_name": "EFIRITY PTE. LTD.",
+  "version": "1.0.0",
+  "subtitle": "Quote, book and track parcels",
+  "category": "Business & Operations",
+  "status_dashboard_url": "https://platform.openai.com/plugins",
+  "submission_confirmation": "RentADriver submitted for review",
+  "mcp_url": "https://mcp.rentadriver.ai/mcp",
+  "authentication": {
+    "type": "oauth",
+    "dynamic_client_registration": true,
+    "pkce": true
+  },
+  "availability": {
+    "countries": [
+      "GB",
+      "US",
+      "MD"
+    ],
+    "languages": [
+      "en-US"
+    ]
+  },
+  "domain_verification": {
+    "domain": "rentadriver.ai",
+    "status": "verified"
+  },
+  "tools": {
+    "count": 43,
+    "annotation_justifications_completed": 129,
+    "rescanned_before_submission": true
+  },
+  "website_url": "https://rentadriver.ai",
+  "support_url": "https://rentadriver.ai/support",
+  "privacy_policy_url": "https://rentadriver.ai/privacy",
+  "terms_url": "https://rentadriver.ai/terms",
+  "release_notes": "Initial release: check parcel delivery coverage, request quotes, book deliveries and track delivery progress through a connected RentADriver account.",
+  "purchasing": {
+    "links_to_external_purchases": true,
+    "checkout_provider": "Stripe Checkout",
+    "description": "RentADriver arranges physical parcel pickup and delivery by couriers. Users obtain a delivery quote and pay for a physical delivery from their prepaid RentADriver wallet. The card-deposit tool links to Stripe Checkout for wallet funding; the user completes payment outside ChatGPT. The plugin does not sell digital content, software subscriptions or subscription upgrades.",
+    "declarations": {
+      "no_digital_goods_services_or_subscriptions": true,
+      "no_prohibited_purchases": true,
+      "payment_activity_complies_with_applicable_laws_including_aml_consumer_protection_and_sanctions": true,
+      "confirmed_by": "product owner",
+      "confirmed_on": "2026-09-16"
+    }
+  },
+  "reviewer_access": {
+    "method": "sandbox_oauth",
+    "instructions": "On the RentADriver OAuth consent page choose Allow with a sandbox account. No password, MFA, SMS or email code is required. Reconnect through the same option when access expires.",
+    "sandbox_key_lifetime_hours": 24,
+    "test_funds": true,
+    "simulated_drivers": true
+  },
+  "verification": {
+    "applicable_ci_checks": "passed",
+    "deployment_status": "success",
+    "post_deployment_sandbox_checks": "passed",
+    "tools_checked": [
+      "list_service_areas",
+      "check_coverage",
+      "check_account_status",
+      "list_country_workspaces",
+      "get_wallet_balance",
+      "list_deliveries",
+      "get_quote"
+    ],
+    "chatgpt_sandbox_checks": [
+      "coverage",
+      "quotes",
+      "account and workspace balances",
+      "delivery tracking and proof",
+      "dry-run booking preview"
+    ],
+    "dry_run": {
+      "dryRun": true,
+      "fund": false,
+      "delivery_count_unchanged": true,
+      "wallet_balance_unchanged": true
+    },
+    "transient_read_errors": "Coverage and workspace-list calls passed on sequential retry.",
+    "negative_checks": [
+      "Passenger taxi request declined without delivery tools",
+      "PDF email request declined without delivery tools",
+      "Birthday-card writing completed without delivery tools"
+    ]
+  },
+  "next_step": "Record the OpenAI review decision, any requested changes, and the public listing URL after publication is confirmed."
+}
