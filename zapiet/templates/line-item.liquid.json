@@ -1,0 +1,1 @@
+{"id": "{{ line_item.id }}", "title": "{{ line_item.name }}", "sku": "{{ line_item.sku }}", "quantity": "{{ line_item.quantity }}", "grams": "{{ line_item.grams }}", "price": "{{ line_item.price_in_dollars }}"}

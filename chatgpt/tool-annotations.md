@@ -9,7 +9,7 @@ that reach people/systems outside the account (`check_coverage`, quotes and `cre
 `revoke_api_key`, `delete_webhook` → idempotent.
 
 Rules: readOnly = changes nothing the customer can see or must undo · destructive = moves/holds money, deletes, or overwrites ·
-openWorld = reaches drivers, stores, blockchains or caller URLs outside the account · idempotent = same call twice, same end state.
+openWorld = reaches drivers, stores, blockchains, caller URLs or caller-supplied email inboxes outside the account · idempotent = same call twice, same end state.
 
 | Tool | readOnly | destructive | idempotent | openWorld | Why |
 |---|---|---|---|---|---|
@@ -21,7 +21,7 @@ openWorld = reaches drivers, stores, blockchains or caller URLs outside the acco
 | `get_platform_stats` | true | false | true | false | Returns aggregate live counts. |
 | `list_country_workspaces` | true | false | true | false | Lists the account's country workspaces and balances. |
 | `enable_country_workspace` | false | false | true | false | Creates a new country workspace in the account, so it writes. |
-| `signup` | false | false | false | false | Creates a new RentADriver account and API key. |
+| `signup` | false | false | false | true | Creates a new RentADriver account and API key, and emails a verification link to the address the caller supplies (outside RentADriver). |
 | `check_account_status` | true | false | true | false | Reads verification and funding status. |
 | `get_wallet_balance` | true | false | true | false | Reads the wallet balance. |
 | `create_wallet_deposit` | false | false | false | false | Creates a Stripe Checkout link for the account. |

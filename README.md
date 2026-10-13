@@ -22,6 +22,7 @@ flow).
 | [zapier](zapier/README.md) | Zapier CLI app: quotes, unfunded drafts, delivery lookup and authenticated event hooks | Functional implementation; hosted pilot pending |
 | [slack](slack/README.md) | Slack bot: per-user account linking, private quotes and delivery status | Functional single-workspace implementation; live pilot pending |
 | [ebay](ebay/README.md) | eBay fulfillment connector | Draft specification |
+| [zapiet](zapiet/README.md) | Zapiet – Pickup + Delivery: RentADriver as a Last Mile Delivery courier | Draft specification |
 | tiktok | TikTok Shop connector | Planned; design maintained privately |
 
 Cross-cutting documents:

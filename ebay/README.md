@@ -1,17 +1,19 @@
-> Status: **P0 spike done (2026-10-05) — go for P1**, not implemented. The detailed design is maintained privately.
+> Status: **beta, live for UK business sellers (2026-10-07).** The detailed design is maintained privately.
 
 # RentADriver for eBay
 
-eBay connector on the **shared commerce layer**, planned as a **fulfillment connector** rather than a checkout plugin:
-eBay has no live-rate hook, no "same-day" shipping service, no tracking-link field and no app directory. The seller
-offers a flat-priced local courier option (`Same-day by RentADriver`, service `UK_OtherCourier24` / `ShippingMethodOvernight`,
-carrier `Other`, handling time 0); RentADriver takes the orders that chose it (push notification + 2-minute poll),
+eBay connector built as a **fulfillment connector** rather than a checkout plugin:
+eBay has no live-rate hook, no "same-day" shipping service, no tracking-link field and no app directory. A listing
+takes one postage policy, so the seller adds our courier (`UK_OtherCourier24` / `ShippingMethodOvernight`, carrier
+`Other`) to the postage policies their listings already use, next to their usual services; a `Same-day by RentADriver`
+policy is also created for listings that only offer local delivery. The courier's flat price follows a live RentADriver
+quote for the seller's area, updated daily. RentADriver takes the orders that chose it (2-minute poll),
 prices each one before booking (no postcode targeting on eBay, so out-of-area orders go to *Needs action*), books a
 driver, writes the tracking number back with `createShippingFulfillment`, and texts the buyer the live tracking link.
 
 Scope: US sellers and **UK business sellers** (UK private sellers must use eBay Simple Delivery since April 2025).
 
-| Setting (planned) | Value |
+| Setting | Value |
 |---|---|
 | Consent URL | `https://auth.ebay.com/oauth2/authorize` (sandbox: `auth.sandbox.ebay.com`) |
 | Redirect (RuName) | `https://api.rentadriver.ai/v1/ebay/callback` |

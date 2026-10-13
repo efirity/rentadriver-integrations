@@ -42,7 +42,7 @@
   "signup": {
     "read_only_justification": "Creates a new RentADriver account and API key.",
     "destructive_justification": "Creates a new account; deletes or overwrites nothing and moves no money.",
-    "open_world_justification": "Creates an account inside RentADriver only; a verification email goes only to the address the user supplied."
+    "open_world_justification": "Sends a verification email to the address the caller supplies, which is an inbox outside RentADriver."
   },
   "check_account_status": {
     "read_only_justification": "Reads verification and funding status.",
