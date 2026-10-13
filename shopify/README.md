@@ -73,10 +73,24 @@ Protected customer data access (Dev Dashboard → App settings) is required befo
 setting is exposed to the CLI or the Admin API.
 
 ## Group-1 features (2026-09-04)
-- **Flat-rate fallback** (`ensureFlatRate`, setting `flat_rate_fallback`): for stores without carrier-calculated shipping the app creates and
-  re-prices (daily, `refreshFlatRates`) a manual method `Same-day by RentADriver` in the default delivery profile's zone for the store country
-  (`deliveryProfileUpdate`). Price = the pricing rule (flat / free) or, for pass-through, a sample quote to the middle of the radius. State in
-  `settings.flat_rate` (method/zone/profile gids, price, synced_at, error). Switching the setting off deletes the method.
+- **Where the checkout rates live** (`ensureCheckoutRates` → `syncShopifyRates`) depends on the store's shipping model
+  (`shop.features.marketDrivenShipping`):
+  - *Market-driven shipping*: one app-owned profile named `RentADriver` (`coversAllItems: true`, the active locations that
+    fulfil online orders, one zone for the store country) holding the carrier service while live rates are on and the
+    fixed-price methods while the flat rate is on; with neither, the profile is removed. Shopify shows these next to the
+    merchant's market rates (checked on a market-driven dev store).
+  - *Legacy model* (every store until Shopify moves it, by July 2027): each product belongs to one profile, so an app
+    profile with `coversAllItems` shows nothing at checkout (checked on a dev store). The fixed-price methods stay in the
+    merchant's default profile, and from Admin API 2026-10 the app adds its carrier service to the store-country zone
+    itself when the profile doesn't offer it yet. Rates written there survive an uninstall (the app has no access after
+    it), so the merchant removes them by hand.
+  - A store that moves to market-driven shipping keeps the app's old methods as its own market rates; their names are
+    recorded in `settings.flat_rate.left_in_markets`.
+  Admin API 2026-10 or later (the API raises an older configured version).
+- **Flat-rate fallback** (setting `flat_rate_fallback`): for stores without carrier-calculated shipping the app keeps and
+  re-prices (daily) a manual method `Same-day by RentADriver` (named after the rate label) where the shipping model needs it. Price = the
+  pricing rule (flat / free) or, for pass-through, a sample quote to the middle of the radius. State in `settings.flat_rate`
+  (shipping model, profile, zone and method gids, price, synced_at, error). Switching the setting off deletes the method.
 - **Tomorrow-morning rate** (`offer_next_day`, `next_day_hour`, `next_day_label`): while same-day is on, a second carrier rate `RD_NEXTDAY` is
   quoted as a scheduled run at `next_day_hour` local (cheaper via the scheduled + off-peak factors); booking schedules the delivery at that time.
 - **Multi-location pickup** (`location_mode = fulfillment`): pickup = the location assigned to the order's fulfillment order (`assignedLocation`),
