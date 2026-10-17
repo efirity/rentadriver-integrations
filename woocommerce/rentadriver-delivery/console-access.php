@@ -35,6 +35,8 @@ function rentadriver_handoff( $app ) {
 		wp_die( esc_html__( 'A WordPress administrator must open the RentADriver console.', 'rentadriver-delivery' ), '', array( 'response' => 403 ) );
 	}
 	check_admin_referer( $app ? 'rentadriver_app' : 'rentadriver_console' );
+	// Display routing only, read after the nonce check: open the hosted app on its guided setup.
+	$setup    = $app && ! empty( $_GET['setup'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Verified by check_admin_referer() above.
 	$store_id = get_option( 'rentadriver_store_id', '' );
 	$token    = get_option( 'rentadriver_rate_token', '' );
 	$state    = wp_remote_get( RENTADRIVER_API . '/v1/woocommerce/plugin/' . rawurlencode( $store_id ) . '/' . rawurlencode( $token ) . '/settings', array( 'timeout' => 12 ) );
@@ -82,6 +84,11 @@ function rentadriver_handoff( $app ) {
 	// Fixed destination prevents a configured API endpoint from turning this action into an open redirect.
 	if ( 'https' !== wp_parse_url( $url, PHP_URL_SCHEME ) || 'rentadriver.ai' !== wp_parse_url( $url, PHP_URL_HOST ) || ( $app ? '/woocommerce' : '/commerce-console' ) !== wp_parse_url( $url, PHP_URL_PATH ) ) {
 		wp_die( esc_html__( 'Invalid console sign-in response.', 'rentadriver-delivery' ) );
+	}
+	if ( $setup ) {
+		// Before the one-use #handoff fragment, which must stay last.
+		$parts = explode( '#', $url, 2 );
+		$url   = $parts[0] . ( false === strpos( $parts[0], '?' ) ? '?' : '&' ) . 'setup=1' . ( isset( $parts[1] ) ? '#' . $parts[1] : '' );
 	}
 	nocache_headers();
 	// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- Fixed HTTPS host and path validated above.

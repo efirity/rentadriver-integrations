@@ -3,7 +3,7 @@
  * Plugin Name: RentADriver Delivery
  * Plugin URI:  https://rentadriver.ai/integrations/woocommerce
  * Description: Shows a live "Same-day by RentADriver" shipping rate at checkout for addresses inside your delivery radius. Orders paid with it are booked automatically by the RentADriver connector.
- * Version:     0.5.10
+ * Version:     0.6.0
  * Author:      RentADriver
  * Author URI:  https://rentadriver.ai
  * License:     GPL-2.0-or-later

@@ -5,7 +5,7 @@ Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
 Requires Plugins: woocommerce
-Stable tag: 0.5.10
+Stable tag: 0.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,12 @@ Switch the store to sandbox in the RentADriver app (simulated drivers, no charge
 9. The customer's live tracking page after the delivery.
 
 == Changelog ==
+
+= 0.6.0 =
+* Guided setup: four short steps (pickup, checkout rate, booking, go live) in the RentADriver app. New stores start there; Overview offers to continue it and Settings can open it again at any time.
+
+= 0.5.11 =
+* Maintenance release: RentADriver Settings no longer refuses to save pickup locations outside a RentADriver city with "Choose a valid timezone". No change to the plugin's checkout.
 
 = 0.5.10 =
 * A pickup address typed in RentADriver Settings is kept exactly as written, and UK postcodes are checked so the pickup point can't land on a nearby business.

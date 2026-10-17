@@ -84,8 +84,12 @@ setting is exposed to the CLI or the Admin API.
     merchant's default profile, and from Admin API 2026-10 the app adds its carrier service to the store-country zone
     itself when the profile doesn't offer it yet. Rates written there survive an uninstall (the app has no access after
     it), so the merchant removes them by hand.
-  - A store that moves to market-driven shipping keeps the app's old methods as its own market rates; their names are
-    recorded in `settings.flat_rate.left_in_markets`.
+  - A store that moves to market-driven shipping keeps the app's old methods (and carrier rate) as its own market
+    options, which would show next to the app profile's. With the `read_markets`/`write_markets` scopes the app deletes
+    exactly those copies (flat options by our method names, carrier options by our carrier service id) on that first
+    market-driven sync, before it creates the app profile. Shopify lists app-profile rates among the market options too,
+    so nothing is deleted while any app-owned profile offers our rates; copies not removed stay recorded in
+    `settings.flat_rate.left_in_markets` / `carrier_in_markets` for the owner to delete in Settings → Markets.
   Admin API 2026-10 or later (the API raises an older configured version).
 - **Flat-rate fallback** (setting `flat_rate_fallback`): for stores without carrier-calculated shipping the app keeps and
   re-prices (daily) a manual method `Same-day by RentADriver` (named after the rate label) where the shipping model needs it. Price = the

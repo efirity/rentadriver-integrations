@@ -87,17 +87,28 @@ function rentadriver_page_notice( $type, $message, $action = '' ) {
 }
 
 /**
+ * Signed admin-post URL that opens the hosted app.
+ *
+ * @param bool $setup Open the guided setup in the hosted app.
+ * @return string URL.
+ */
+function rentadriver_app_url( $setup = false ) {
+	return wp_nonce_url( admin_url( 'admin-post.php?action=rentadriver_app' . ( $setup ? '&setup=1' : '' ) ), 'rentadriver_app' );
+}
+
+/**
  * Signed link that opens the hosted app for account sign-in, wallet funding and manual booking.
  *
  * @param string $label   Button text.
  * @param bool   $primary Whether this is the page's primary action.
+ * @param bool   $setup   Open the guided setup in the hosted app.
  * @return string Button HTML, or an empty string for users who cannot approve the handoff.
  */
-function rentadriver_app_button( $label, $primary = true ) {
+function rentadriver_app_button( $label, $primary = true, $setup = false ) {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';
 	}
-	$app = wp_nonce_url( admin_url( 'admin-post.php?action=rentadriver_app' ), 'rentadriver_app' );
+	$app = rentadriver_app_url( $setup );
 	return '<a class="button' . ( $primary ? ' button-primary' : '' ) . '" href="' . esc_url( $app ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $label ) . '</a>';
 }
 
@@ -216,14 +227,40 @@ function rentadriver_render_version() {
  * Text link that opens the hosted app (account sign-in, wallet funding, manual booking) in a new tab.
  *
  * @param string $label Link text.
+ * @param bool   $setup Open the guided setup in the hosted app.
  * @return string Link HTML, or an empty string for users who cannot approve the handoff.
  */
-function rentadriver_app_link( $label ) {
+function rentadriver_app_link( $label, $setup = false ) {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';
 	}
-	$app = wp_nonce_url( admin_url( 'admin-post.php?action=rentadriver_app' ), 'rentadriver_app' );
+	$app = rentadriver_app_url( $setup );
 	return '<a href="' . esc_url( $app ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $label ) . '<span class="screen-reader-text"> ' . esc_html__( '(opens in a new tab)', 'rentadriver-delivery' ) . '</span> &#8599;</a>';
+}
+
+/**
+ * Guided setup progress, kept with the delivery settings by the hosted app's step-by-step setup.
+ *
+ * @param array $settings Delivery settings from RentADriver.
+ * @param array $store    Store summary from RentADriver.
+ * @return array{done: bool, due: bool, step: int, total: int, title: string} Progress for display.
+ */
+function rentadriver_setup_state( $settings, $store ) {
+	// The same steps, in the same order, as the hosted app's WooCommerce setup.
+	$titles = array( __( 'Pickup', 'rentadriver-delivery' ), __( 'Checkout rate', 'rentadriver-delivery' ), __( 'Booking', 'rentadriver-delivery' ), __( 'Go live', 'rentadriver-delivery' ) );
+	$setup  = is_array( $settings['setup'] ?? null ) ? $settings['setup'] : array();
+	$step   = max( 1, min( count( $titles ), (int) ( $setup['step'] ?? 1 ) ) );
+	$done   = ! empty( $setup['completed_at'] );
+	// Due only for a store still as a new connection leaves it, or one part-way through; stores set up before the guide keep their settings.
+	$fresh = empty( $settings['enabled'] ) && 'manual' === ( $settings['auto_book'] ?? '' );
+	$due   = ! $done && 0 === (int) ( $store['orders_booked'] ?? 0 ) && ( ! empty( $setup['step'] ) || $fresh );
+	return array(
+		'done'  => $done,
+		'due'   => $due,
+		'step'  => $step,
+		'total' => count( $titles ),
+		'title' => $titles[ $step - 1 ],
+	);
 }
 
 /** Overview: account, mode, wallet, coverage and this week's activity, plus the two settings changed most often. */
@@ -249,6 +286,15 @@ function rentadriver_render_overview() {
 	if ( ! empty( $store['last_error'] ) ) {
 		/* translators: %s: error message. */
 		rentadriver_page_notice( 'warning', sprintf( __( 'Setup needs attention: %s', 'rentadriver-delivery' ), $store['last_error'] ) );
+	}
+	$guide = rentadriver_setup_state( $settings, $store );
+	if ( 'ok' === $link && $guide['due'] ) {
+		$message = empty( $settings['setup']['step'] )
+			/* translators: %d: number of setup steps. */
+			? sprintf( __( 'Finish setting up RentADriver: %d short steps for pickup, checkout rate, booking and going live.', 'rentadriver-delivery' ), $guide['total'] )
+			/* translators: 1: current step, 2: number of steps, 3: step name. */
+			: sprintf( __( 'Finish setting up RentADriver: step %1$d of %2$d, %3$s.', 'rentadriver-delivery' ), $guide['step'], $guide['total'], $guide['title'] );
+		rentadriver_page_notice( 'info', $message, rentadriver_app_button( empty( $settings['setup']['step'] ) ? __( 'Start setup (new tab)', 'rentadriver-delivery' ) : __( 'Continue setup (new tab)', 'rentadriver-delivery' ), true, true ) );
 	}
 
 	$section_url = function ( $section, $field = '' ) {
@@ -515,6 +561,15 @@ function rentadriver_render_settings() {
 		/* translators: %s: error message. */
 		rentadriver_page_notice( 'error', sprintf( __( 'Could not load your delivery settings, so they cannot be edited right now: %s', 'rentadriver-delivery' ), $message ) );
 		return;
+	}
+	$guide   = rentadriver_setup_state( is_array( $remote['settings'] ?? null ) ? $remote['settings'] : array(), is_array( $remote['store'] ?? null ) ? $remote['store'] : array() );
+	$started = ! empty( $remote['settings']['setup']['step'] );
+	$open    = rentadriver_app_link( $started && ! $guide['done'] ? __( 'Continue setup', 'rentadriver-delivery' ) : __( 'Open setup guide', 'rentadriver-delivery' ), true );
+	if ( $open ) {
+		/* translators: 1: current step, 2: number of steps. */
+		$step     = sprintf( __( 'step %1$d of %2$d', 'rentadriver-delivery' ), $guide['step'], $guide['total'] );
+		$progress = $guide['done'] ? __( 'finished', 'rentadriver-delivery' ) : ( $started ? $step : __( 'walk through pickup, checkout rate, booking and going live', 'rentadriver-delivery' ) );
+		echo '<p><strong>' . esc_html__( 'Guided setup:', 'rentadriver-delivery' ) . '</strong> ' . esc_html( $progress ) . ' &middot; ' . $open . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in rentadriver_app_link().
 	}
 	echo '<h2>' . esc_html( $sections[ $current ][0] ) . '</h2>';
 	echo '<p>' . esc_html( $sections[ $current ][1] ) . ' ' . esc_html__( 'Saved to RentADriver; the RentADriver app shows the same settings.', 'rentadriver-delivery' ) . '</p>';

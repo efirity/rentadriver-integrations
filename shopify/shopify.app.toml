@@ -12,7 +12,9 @@ automatically_update_urls_on_dev = false
 
 [access_scopes]
 # Keep in sync with the scopes the RentADriver API requests.
-scopes = "read_orders,write_orders,read_shipping,write_shipping,read_fulfillments,write_fulfillments,read_merchant_managed_fulfillment_orders,write_merchant_managed_fulfillment_orders,read_locations"
+# read_markets/write_markets: when a store moves to market-driven shipping, Shopify copies the app's old rates into
+# its markets; the app deletes exactly those copies so checkout doesn't show RentADriver twice (removeRatesLeftInMarkets).
+scopes = "read_orders,write_orders,read_shipping,write_shipping,read_fulfillments,write_fulfillments,read_merchant_managed_fulfillment_orders,write_merchant_managed_fulfillment_orders,read_locations,read_markets,write_markets"
 # Asked for at runtime, only by stores that use the app-managed Shopify shipping rates: lets the RentADriver delivery
 # areas function hide those rates at checkout for addresses outside the delivery areas.
 optional_scopes = ["write_delivery_customizations"]
