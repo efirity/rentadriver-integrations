@@ -5,7 +5,7 @@ Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
 Requires Plugins: woocommerce
-Stable tag: 0.6.0
+Stable tag: 0.6.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,22 @@ Switch the store to sandbox in the RentADriver app (simulated drivers, no charge
 9. The customer's live tracking page after the delivery.
 
 == Changelog ==
+
+= 0.6.5 =
+* "Every paid order" automatic booking now checks the delivery radius: the delivery address is located first, and orders outside the radius wait for you instead of being booked.
+* Settings say what WooCommerce really does: "Send the tracking link" (WooCommerce has no shipped status; the link is added to the order as a note) and "Email the customer the tracking link and delivery updates"; booking on fulfilment is called "When I mark the order Completed".
+
+= 0.6.4 =
+* Overview warns when order emails are not reaching customers: an error after WordPress fails to send an email (with the reason), and a warning while no email (SMTP) service is set up, since many hosts do not deliver WordPress mail. Links to find an SMTP plugin and to send yourself a test email.
+
+= 0.6.3 =
+* Orders in the RentADriver app: every order has an "Open in WooCommerce" button to its order screen in wp-admin, including orders already booked or delivered.
+
+= 0.6.2 =
+* Orders in the RentADriver app: one list with each order's stage (Ordered, Paid, Booked, Driver assigned, Shipped, In transit, Delivered), stage filters and a Needs attention filter. Unpaid orders (On hold, Pending payment) are listed too, with a link to mark them paid in WooCommerce.
+
+= 0.6.1 =
+* Test orders (the plugin's Create test order, or WooPayments in test mode) now get the customer tracking emails, following the Notify customer setting, so you can see exactly what your customers receive.
 
 = 0.6.0 =
 * Guided setup: four short steps (pickup, checkout rate, booking, go live) in the RentADriver app. New stores start there; Overview offers to continue it and Settings can open it again at any time.

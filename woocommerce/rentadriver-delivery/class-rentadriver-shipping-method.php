@@ -536,7 +536,7 @@ class RentADriver_Shipping_Method extends WC_Shipping_Method {
 				'default' => 'rate_only',
 				'options' => array(
 					'rate_only' => __( 'When the customer picked the RentADriver option', 'rentadriver-delivery' ),
-					'all_paid'  => __( 'Every paid order', 'rentadriver-delivery' ),
+					'all_paid'  => __( 'Every paid order inside the delivery radius', 'rentadriver-delivery' ),
 					'fulfilled' => __( 'When the order is marked Completed', 'rentadriver-delivery' ),
 					'manual'    => __( 'Never — I book from the RentADriver app', 'rentadriver-delivery' ),
 				),
@@ -576,10 +576,11 @@ class RentADriver_Shipping_Method extends WC_Shipping_Method {
 				'description' => __( 'At least one is required.', 'rentadriver-delivery' ),
 			),
 			'rd_fulfill_on'            => array(
-				'title'   => __( 'Mark the order shipped', 'rentadriver-delivery' ),
-				'type'    => 'select',
-				'default' => 'picked_up',
-				'options' => array(
+				'title'       => __( 'Send the tracking link', 'rentadriver-delivery' ),
+				'description' => __( 'WooCommerce has no shipped status: the tracking link is added to the order as a note at this point, and emailed to the customer when Customer email is on.', 'rentadriver-delivery' ),
+				'type'        => 'select',
+				'default'     => 'picked_up',
+				'options'     => array(
 					'picked_up' => __( 'When the driver picks it up', 'rentadriver-delivery' ),
 					'assigned'  => __( 'As soon as a driver is assigned', 'rentadriver-delivery' ),
 				),
@@ -587,7 +588,7 @@ class RentADriver_Shipping_Method extends WC_Shipping_Method {
 			'rd_notify_customer'       => array(
 				'title'   => __( 'Customer email', 'rentadriver-delivery' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Send the platform&#8217;s shipping email', 'rentadriver-delivery' ),
+				'label'   => __( 'Email the customer the tracking link and delivery updates', 'rentadriver-delivery' ),
 				'default' => 'yes',
 			),
 			'rd_complete_on_delivered' => array(

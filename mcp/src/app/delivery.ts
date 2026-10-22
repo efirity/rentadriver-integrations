@@ -1,10 +1,15 @@
-/** Delivery tracker card — rendered by hosts when `get_delivery` runs. Refresh re-calls the tool; nothing here spends money. */
+/**
+ * Delivery tracker card — rendered by hosts after create_delivery, create_store_pickup, fund_delivery, get_delivery and
+ * track_delivery. Refresh re-calls get_delivery; nothing here spends money. A dry run shows the quote it priced; the
+ * slimmer track_delivery payload loads the full delivery once.
+ */
 import { boot, esc, money, km, mins, when, payload } from "./common";
+import { quoteView } from "./quote-view";
 
 const STATUS: Record<string, [string, string]> = {
   created: ["Created", "dim"], quoted: ["Quoted", "dim"], funded: ["Funded", "next"], dispatching: ["Finding a driver", "warn"], assigned: ["Driver assigned", "next"],
   en_route_pickup: ["Driver heading to pickup", "live"], at_pickup: ["Driver at pickup", "live"], picked_up: ["Picked up", "live"], en_route_dropoff: ["On the way", "live"],
-  at_dropoff: ["Driver at drop-off", "live"], delivered: ["Delivered", "live"], confirmed: ["Confirmed", "live"], cancelled: ["Cancelled", "bad"], no_driver_found: ["No driver found", "bad"], failed: ["Failed", "bad"], disputed: ["Disputed", "bad"],
+  at_dropoff: ["Driver at drop-off", "live"], delivered: ["Delivered", "ok"], confirmed: ["Confirmed", "ok"], cancelled: ["Cancelled", "bad"], no_driver_found: ["No driver found", "bad"], failed: ["Failed", "bad"], disputed: ["Disputed", "bad"],
 };
 type Stop = { seq: number; type: string; address: string; contact_name?: string | null; arrived_at?: string | null; completed_at?: string | null; window_start?: string | null; window_end?: string | null };
 type Delivery = Record<string, unknown> & { short_code: string; status: string; currency: string; price_cents: number; tip_cents?: number; stops?: Stop[]; driver?: { first_name?: string; rating?: number; jobs_completed?: number; vehicle_class?: string | null; location_updated_at?: string } | null; proof?: { photos?: string[]; signature?: string; recipient_name?: string } | null; eta_pickup_at?: string | null; eta_dropoff_at?: string | null; tracking_url?: string; distance_m?: number; duration_s?: number; dispatch_summary?: { reason?: string; waves?: number; radius_km?: number; minutes_searched?: number } | null; next_action?: string | null; delivered_at?: string | null; picked_up_at?: string | null };
@@ -37,25 +42,33 @@ function view(d: Delivery, busy = false, err?: string): string {
 }
 
 const app = boot("RentADriver delivery", ({ input, data, error }) => {
+  if (data?.dry_run && data.quote) { root.innerHTML = quoteView(data, input, error, "Dry run · not booked", 'Say "book it" in this chat to create the delivery for real.') ?? ""; return; }
+  const tracking = data?.tracking as Delivery | undefined;
   const d = (data?.delivery ?? (data && data.short_code ? data : null)) as Delivery | null;
   if (d) current = d;
-  if (!current) { root.innerHTML = `<div class="card"><div class="eyebrow">Delivery</div><div class="title mono">${esc(String(input?.delivery_id ?? "…"))}</div><div class="sub muted" style="margin-top:8px">${error ? esc(error) : "Loading…"}</div></div>`; return; }
+  else if (tracking?.short_code) { if (current?.short_code !== tracking.short_code) current = null; void load(tracking.short_code, error); if (!current) { root.innerHTML = placeholder(tracking.short_code, "Loading…"); return; } const { status, next_action, eta_pickup_at, eta_dropoff_at, driver } = tracking; current = { ...current, status, next_action, eta_pickup_at, eta_dropoff_at, driver }; }
+  if (!current) { root.innerHTML = placeholder(String(input?.delivery_id ?? (input?.dryRun ? "Dry run" : "Booking…")), error ? esc(error) : "Loading…"); return; }
   root.innerHTML = view(current, false, error);
   wire();
 });
 
+function placeholder(title: string, sub: string): string { return `<div class="card"><div class="eyebrow">Delivery</div><div class="title mono">${esc(title)}</div><div class="sub muted" style="margin-top:8px">${sub}</div></div>`; }
+
+/** Full delivery by short code (track_delivery omits price, addresses and proof). */
+async function load(code: string, err?: string, busy = false) {
+  if (busy && current) { root.innerHTML = view(current, true); wire(); }
+  try {
+    const r = await app.callServerTool({ name: "get_delivery", arguments: { delivery_id: code } });
+    const p = payload(r as never); const d = (p?.delivery ?? p) as Delivery | null;
+    if (d && d.short_code) current = d;
+    if (!current) { root.innerHTML = placeholder(code, esc(String(p?.message ?? "Could not load the delivery"))); return; }
+    root.innerHTML = view(current, false, (r as { isError?: boolean }).isError ? String(p?.message ?? "Refresh failed") : err);
+  } catch (e) { if (!current) { root.innerHTML = placeholder(code, esc(String((e as Error).message ?? e))); return; } root.innerHTML = view(current, false, String((e as Error).message ?? e)); }
+  wire();
+}
+
 function wire() {
-  document.getElementById("refresh")?.addEventListener("click", async () => {
-    if (!current) return;
-    root.innerHTML = view(current, true); wire();
-    try {
-      const r = await app.callServerTool({ name: "get_delivery", arguments: { delivery_id: current.short_code } });
-      const p = payload(r as never); const d = (p?.delivery ?? p) as Delivery | null;
-      if (d && d.short_code) current = d;
-      root.innerHTML = view(current!, false, (r as { isError?: boolean }).isError ? String(p?.message ?? "Refresh failed") : undefined);
-    } catch (e) { root.innerHTML = view(current!, false, String((e as Error).message ?? e)); }
-    wire();
-  });
+  document.getElementById("refresh")?.addEventListener("click", () => { if (current) void load(current.short_code, undefined, true); });
   document.getElementById("track")?.addEventListener("click", () => { if (current?.tracking_url) void app.openLink({ url: current.tracking_url }); });
   // A photo the host's content policy blocks becomes a link that opens it outside the card.
   root.querySelectorAll<HTMLImageElement>(".proof img").forEach((img) => img.addEventListener("error", () => {

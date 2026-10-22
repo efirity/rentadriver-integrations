@@ -263,6 +263,102 @@ function rentadriver_setup_state( $settings, $store ) {
 	);
 }
 
+/**
+ * Remember the last email WordPress could not send, so Overview can say that order emails (WooCommerce's own and the
+ * RentADriver delivery updates added as customer notes) are not reaching customers.
+ *
+ * @param WP_Error $error The wp_mail_failed error.
+ */
+function rentadriver_record_mail_failure( $error ) {
+	$message = is_wp_error( $error ) ? $error->get_error_message() : '';
+	update_option(
+		'rentadriver_mail_failure',
+		array(
+			'time'  => time(),
+			'error' => substr( sanitize_text_field( $message ), 0, 200 ),
+		),
+		false
+	);
+}
+add_action( 'wp_mail_failed', 'rentadriver_record_mail_failure' );
+
+/** An email went out again: forget the earlier failure. */
+function rentadriver_record_mail_sent() {
+	if ( get_option( 'rentadriver_mail_failure' ) ) {
+		delete_option( 'rentadriver_mail_failure' );
+	}
+}
+add_action( 'wp_mail_succeeded', 'rentadriver_record_mail_sent' );
+
+/**
+ * Whether WordPress sends email through an email service (an SMTP or transactional mail plugin) rather than the web
+ * host's PHP mail, which many hosts do not deliver. Such plugins hook phpmailer_init or pre_wp_mail, or replace wp_mail.
+ *
+ * @return bool
+ */
+function rentadriver_mail_service_configured() {
+	if ( has_action( 'phpmailer_init' ) || has_filter( 'pre_wp_mail' ) ) {
+		return true;
+	}
+	if ( function_exists( 'wp_mail' ) && defined( 'WPINC' ) ) {
+		$file = ( new ReflectionFunction( 'wp_mail' ) )->getFileName();
+		if ( wp_normalize_path( (string) $file ) !== wp_normalize_path( ABSPATH . WPINC . '/pluggable.php' ) ) {
+			return true;
+		}
+	}
+	return (bool) apply_filters( 'rentadriver_mail_service_configured', false );
+}
+
+/** Warn on the Overview when order emails are failing, or when no email service is set up. */
+function rentadriver_render_mail_notice() {
+	$failure = get_option( 'rentadriver_mail_failure' );
+	$failing = is_array( $failure ) && time() - (int) ( $failure['time'] ?? 0 ) < 14 * DAY_IN_SECONDS;
+	if ( ! $failing && ( rentadriver_mail_service_configured() || get_option( 'rentadriver_mail_notice_hidden' ) ) ) {
+		return;
+	}
+	$links = array();
+	if ( current_user_can( 'install_plugins' ) ) {
+		$links[] = '<a href="' . esc_url( admin_url( 'plugin-install.php?s=smtp&tab=search&type=term' ) ) . '">' . esc_html__( 'Find an SMTP plugin', 'rentadriver-delivery' ) . '</a>';
+	}
+	$links[] = '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rentadriver_mail_check&do=test' ), 'rentadriver_mail_check' ) ) . '">' . esc_html__( 'Send a test email', 'rentadriver-delivery' ) . '</a>';
+	if ( $failing ) {
+		$message = sprintf(
+			/* translators: 1: date and time, 2: error from WordPress. */
+			__( 'Order emails are not being sent. WordPress could not send an email on %1$s (%2$s). Until email works, customers get no WooCommerce order emails and no RentADriver delivery updates. Set up an email (SMTP) service, then send a test email.', 'rentadriver-delivery' ),
+			wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), (int) $failure['time'] ),
+			'' !== (string) ( $failure['error'] ?? '' ) ? $failure['error'] : __( 'no reason given', 'rentadriver-delivery' )
+		);
+		rentadriver_page_notice( 'error', $message, implode( ' &middot; ', $links ) );
+		return;
+	}
+	$links[] = '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rentadriver_mail_check&do=hide' ), 'rentadriver_mail_check' ) ) . '">' . esc_html__( 'Emails arrive, hide this', 'rentadriver-delivery' ) . '</a>';
+	rentadriver_page_notice( 'warning', __( 'No email service is set up, so WordPress sends email through your web host, and many hosts do not deliver it. Customers may not be getting WooCommerce order emails or RentADriver delivery updates. Set up an email (SMTP) service, then send a test email.', 'rentadriver-delivery' ), implode( ' &middot; ', $links ) );
+}
+
+/** Send a test email to the signed-in user, or hide the "no email service" warning. */
+function rentadriver_mail_check() {
+	if ( ! current_user_can( 'manage_woocommerce' ) ) {
+		wp_die( esc_html__( 'You do not have permission to manage RentADriver settings.', 'rentadriver-delivery' ), '', array( 'response' => 403 ) );
+	}
+	check_admin_referer( 'rentadriver_mail_check' );
+	if ( 'hide' === sanitize_key( wp_unslash( $_GET['do'] ?? '' ) ) ) {
+		update_option( 'rentadriver_mail_notice_hidden', 1, false );
+		rentadriver_flash( 'success', __( 'Email warning hidden. It comes back if WordPress fails to send an email.', 'rentadriver-delivery' ) );
+	} else {
+		$to = wp_get_current_user()->user_email;
+		if ( wp_mail( $to, __( 'RentADriver: test email from your store', 'rentadriver-delivery' ), __( 'Your WordPress site can send email. Customers will get WooCommerce order emails and RentADriver delivery updates.', 'rentadriver-delivery' ) ) ) {
+			/* translators: %s: email address. */
+			rentadriver_flash( 'success', sprintf( __( 'Test email sent to %s. If it has not arrived in a few minutes (check spam too), customers are not getting order emails either: set up an email (SMTP) service.', 'rentadriver-delivery' ), $to ) );
+		} else {
+			/* translators: %s: email address. */
+			rentadriver_flash( 'error', sprintf( __( 'WordPress could not send the test email to %s. Set up an email (SMTP) service.', 'rentadriver-delivery' ), $to ) );
+		}
+	}
+	wp_safe_redirect( admin_url( 'admin.php?page=rentadriver-settings&rd_notice=flash' ), 303 );
+	exit;
+}
+add_action( 'admin_post_rentadriver_mail_check', 'rentadriver_mail_check' );
+
 /** Overview: account, mode, wallet, coverage and this week's activity, plus the two settings changed most often. */
 function rentadriver_render_overview() {
 	$data = rentadriver_plugin_api( 'settings' );
@@ -287,6 +383,7 @@ function rentadriver_render_overview() {
 		/* translators: %s: error message. */
 		rentadriver_page_notice( 'warning', sprintf( __( 'Setup needs attention: %s', 'rentadriver-delivery' ), $store['last_error'] ) );
 	}
+	rentadriver_render_mail_notice();
 	$guide = rentadriver_setup_state( $settings, $store );
 	if ( 'ok' === $link && $guide['due'] ) {
 		$message = empty( $settings['setup']['step'] )
@@ -352,7 +449,7 @@ function rentadriver_render_overview() {
 	}
 	$modes   = array(
 		'rate_only' => __( 'When the customer chose RentADriver at checkout', 'rentadriver-delivery' ),
-		'all_paid'  => __( 'Every paid order', 'rentadriver-delivery' ),
+		'all_paid'  => __( 'Every paid order inside the delivery radius', 'rentadriver-delivery' ),
 		'fulfilled' => __( 'When the order is marked Completed', 'rentadriver-delivery' ),
 		'manual'    => __( 'Never — book by hand', 'rentadriver-delivery' ),
 	);

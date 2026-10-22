@@ -48,7 +48,7 @@ Status values reported to Zapiet: `scheduled`, `driver_assigned`, `out_for_deliv
    Shopify order* and *Send tracking details to customer*.
 4. Top up the workspace wallet. Orders placed before that are kept and booked once funds arrive.
 
-Merchant settings shown in Zapiet: vehicle size, leave at door, ID check at the door, and a pickup contact phone.
+Merchant settings shown in Zapiet: leave at door and a pickup contact phone. There is no ID check: RentADriver drivers\ncannot verify a recipient's identity, so an order sent with `id_check` set is refused with `422 unsupported_identity_proof`.
 
 ## Zapiet Partners configuration
 
@@ -64,7 +64,7 @@ are the source of truth: change them here first, then in the portal.
 | Create delivery | `POST /deliveries` · body [`create-delivery.liquid.json`](templates/create-delivery.liquid.json) · same line item schema · Delivery ID `delivery_id` · Tracking number `tracking_number` · Tracking URL `tracking_url` |
 | Delivery status | Webhook from carrier (`partners.zapiet.com/webhooks/delivery-status/rentadriver`), or polling `GET /deliveries/{{ courier.delivery.id }}/status` · status key `status` · values `scheduled`, `driver_assigned`, `out_for_delivery`, `delivered`, `cancelled`, `failed` · delivered = `delivered` · cancelled = `cancelled` |
 | Cancel delivery | `POST /deliveries/{{ courier.delivery.id }}/cancel`, empty body |
-| Settings | `leave_at_door` (checkbox), `id_check` (checkbox), `pickup_phone` (text) |
+| Settings | `leave_at_door` (checkbox), `pickup_phone` (text) |
 
 The templates follow Zapiet's own convention: each value is a quoted `"{{ variable }}"` (an unset one renders as `""`),
 the template is valid JSON before rendering, and the quoted `"{{ line_items }}"` becomes an array of the line-item
