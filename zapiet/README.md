@@ -48,7 +48,8 @@ Status values reported to Zapiet: `scheduled`, `driver_assigned`, `out_for_deliv
    Shopify order* and *Send tracking details to customer*.
 4. Top up the workspace wallet. Orders placed before that are kept and booked once funds arrive.
 
-Merchant settings shown in Zapiet: leave at door and a pickup contact phone. There is no ID check: RentADriver drivers\ncannot verify a recipient's identity, so an order sent with `id_check` set is refused with `422 unsupported_identity_proof`.
+Merchant settings shown in Zapiet: leave at door and a pickup contact phone. There is no ID check: RentADriver drivers
+cannot verify a recipient's identity, so an order sent with `id_check` set is refused with `422 unsupported_identity_proof`.
 
 ## Zapiet Partners configuration
 

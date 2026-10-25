@@ -5,7 +5,7 @@ Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
 Requires Plugins: woocommerce
-Stable tag: 0.6.5
+Stable tag: 0.6.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,9 @@ Switch the store to sandbox in the RentADriver app (simulated drivers, no charge
 9. The customer's live tracking page after the delivery.
 
 == Changelog ==
+
+= 0.6.6 =
+* "ID check" is no longer offered as a proof at drop-off: drivers cannot verify a recipient's identity, and a store that had it ticked could not book. Stores that chose it keep their other proofs (or photo and recipient name).
 
 = 0.6.5 =
 * "Every paid order" automatic booking now checks the delivery radius: the delivery address is located first, and orders outside the radius wait for you instead of being booked.

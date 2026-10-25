@@ -571,7 +571,6 @@ class RentADriver_Shipping_Method extends WC_Shipping_Method {
 					'recipient_name' => __( 'Recipient name', 'rentadriver-delivery' ),
 					'signature'      => __( 'Signature', 'rentadriver-delivery' ),
 					'otp'            => __( 'One-time code', 'rentadriver-delivery' ),
-					'id_check'       => __( 'ID check', 'rentadriver-delivery' ),
 				),
 				'description' => __( 'At least one is required.', 'rentadriver-delivery' ),
 			),
