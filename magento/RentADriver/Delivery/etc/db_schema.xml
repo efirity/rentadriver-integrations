@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="rentadriver_order" resource="sales" engine="innodb" comment="RentADriver per-order facts">
+        <column xsi:type="int" name="order_id" unsigned="true" nullable="false" comment="Sales order entity id"/>
+        <column xsi:type="varchar" name="rate_code" length="40" nullable="true" comment="RentADriver rate code"/>
+        <column xsi:type="boolean" name="is_test" nullable="false" default="0" comment="Placed while test mode was on"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Recorded at"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY"><column name="order_id"/></constraint>
+    </table>
+</schema>

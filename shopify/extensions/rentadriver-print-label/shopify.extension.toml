@@ -1,0 +1,12 @@
+api_version = "2026-07"
+
+[[extensions]]
+name = "RentADriver label"
+handle = "rentadriver-print-label"
+uid = "020c523a-397b-4d58-a444-ca9b13fdc753"
+type = "ui_extension"
+description = "Print the RentADriver delivery label from the order's Print menu."
+
+  [[extensions.targeting]]
+  module = "./src/PrintLabel.jsx"
+  target = "admin.order-details.print-action.render"

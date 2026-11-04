@@ -1,6 +1,6 @@
 {
   "name": "rentadriver-mcp",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "description": "RentADriver — from “send it” to delivered. The MCP server for real package deliveries: upfront quotes, driver tracking and proof of handover.",
   "license": "MIT",
   "type": "module",

@@ -3,7 +3,7 @@
  * Plugin Name: RentADriver Delivery
  * Plugin URI:  https://rentadriver.ai/integrations/woocommerce
  * Description: Shows a live "Same-day by RentADriver" shipping rate at checkout for addresses inside your delivery radius. Orders paid with it are booked automatically by the RentADriver connector.
- * Version:     0.6.6
+ * Version:     0.6.27
  * Author:      RentADriver
  * Author URI:  https://rentadriver.ai
  * License:     GPL-2.0-or-later
@@ -208,8 +208,15 @@ add_action(
 						echo '<p>' . esc_html__( 'No delivery booked yet. Book it from the RentADriver app.', 'rentadriver-delivery' ) . '</p>';
 						return; }
 					echo '<p><strong>' . esc_html( $d['short_code'] ?? '' ) . '</strong> · ' . esc_html( str_replace( '_', ' ', $d['status'] ?? '' ) ) . '</p>';
+					$when = rentadriver_delivery_when( $d );
+					if ( $when ) {
+						echo '<p>' . esc_html( $when ) . '</p>';
+					}
 					if ( ! empty( $d['tracking_url'] ) ) {
 						echo '<p><a class="button" target="_blank" rel="noopener" href="' . esc_url( $d['tracking_url'] ) . '">' . esc_html__( 'Open tracking', 'rentadriver-delivery' ) . '</a></p>';
+					}
+					if ( current_user_can( 'manage_woocommerce' ) ) {
+						echo '<p><a class="button" target="_blank" rel="noopener" href="' . esc_url( rentadriver_label_url( $order->get_id() ) ) . '">' . esc_html__( 'Print label', 'rentadriver-delivery' ) . '</a> <a target="_blank" rel="noopener" href="' . esc_url( rentadriver_label_url( $order->get_id(), 'a4' ) ) . '">' . esc_html__( 'A4', 'rentadriver-delivery' ) . '</a></p>';
 					}
 				},
 				$screen,

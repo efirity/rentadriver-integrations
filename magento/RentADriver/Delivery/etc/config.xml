@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <rentadriver>
+                <active>1</active>
+                <model>RentADriver\Delivery\Model\Carrier</model>
+                <title>RentADriver</title>
+                <name>Same-day delivery</name>
+                <sallowspecific>0</sallowspecific>
+                <showmethod>0</showmethod>
+                <sort_order>10</sort_order>
+                <test_mode>0</test_mode>
+            </rentadriver>
+        </carriers>
+    </default>
+</config>

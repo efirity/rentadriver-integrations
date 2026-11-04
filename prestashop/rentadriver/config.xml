@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>rentadriver</name>
+    <displayName><![CDATA[RentADriver Same-Day Delivery]]></displayName>
+    <version><![CDATA[0.1.2]]></version>
+    <description><![CDATA[Same-day local delivery by vetted RentADriver drivers: live checkout price, automatic booking and tracking.]]></description>
+    <author><![CDATA[RentADriver]]></author>
+    <tab><![CDATA[shipping_logistics]]></tab>
+    <is_configurable>1</is_configurable>
+    <need_instance>0</need_instance>
+</module>

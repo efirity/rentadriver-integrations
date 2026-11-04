@@ -76,6 +76,31 @@ function rentadriver_money( $cents, $currency ) {
 }
 
 /**
+ * When a delivery happens, in the site's time zone and date/time formats: the delivered time once delivered,
+ * otherwise the scheduled time, otherwise when it was booked.
+ *
+ * @param array $d Delivery fields: delivered_at, scheduled_at, booked_at (ISO 8601, any may be missing).
+ * @return string Display text, or '' when no time is known.
+ */
+function rentadriver_delivery_when( $d ) {
+	$format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+	foreach ( array(
+		/* translators: %s: date and time. */
+		'delivered_at' => __( 'Delivered %s', 'rentadriver-delivery' ),
+		/* translators: %s: date and time. */
+		'scheduled_at' => __( 'Scheduled for %s', 'rentadriver-delivery' ),
+		/* translators: %s: date and time. */
+		'booked_at'    => __( 'Booked %s', 'rentadriver-delivery' ),
+	) as $key => $label ) {
+		$time = empty( $d[ $key ] ) ? false : strtotime( (string) $d[ $key ] );
+		if ( $time ) {
+			return sprintf( $label, wp_date( $format, $time ) );
+		}
+	}
+	return '';
+}
+
+/**
  * Print a notice scoped to the RentADriver page (never a site-wide admin notice).
  *
  * @param string $type    success | error | warning | info.
@@ -359,6 +384,66 @@ function rentadriver_mail_check() {
 }
 add_action( 'admin_post_rentadriver_mail_check', 'rentadriver_mail_check' );
 
+/**
+ * Signed admin-post URL that opens the PDF label of the delivery booked for an order.
+ *
+ * @param int    $order_id WooCommerce order ID.
+ * @param string $size     4x6 (thermal printer) or a4.
+ * @return string URL.
+ */
+function rentadriver_label_url( $order_id, $size = '4x6' ) {
+	return wp_nonce_url( admin_url( 'admin-post.php?action=rentadriver_label&order=' . absint( $order_id ) . '&size=' . ( 'a4' === $size ? 'a4' : '4x6' ) ), 'rentadriver_label' );
+}
+
+/**
+ * Fetch the PDF label of the delivery booked for an order, server-side with the store token.
+ *
+ * @param int    $order WooCommerce order ID.
+ * @param string $size  4x6 or a4.
+ * @return string|WP_Error PDF bytes, or why there is none.
+ */
+function rentadriver_fetch_label( $order, $size ) {
+	$url = $order ? rentadriver_plugin_url( 'orders/' . absint( $order ) . '/label?size=' . ( 'a4' === $size ? 'a4' : '4x6' ) ) : '';
+	if ( ! $url ) {
+		return new WP_Error( 'rentadriver_not_connected', __( 'Connect the store first.', 'rentadriver-delivery' ) );
+	}
+	$res = wp_remote_get( $url, array( 'timeout' => 20 ) );
+	if ( is_wp_error( $res ) ) {
+		return $res;
+	}
+	if ( 200 !== wp_remote_retrieve_response_code( $res ) || 0 !== strpos( (string) wp_remote_retrieve_header( $res, 'content-type' ), 'application/pdf' ) ) {
+		$data = json_decode( wp_remote_retrieve_body( $res ), true );
+		return new WP_Error( 'rentadriver_api', is_array( $data ) && ! empty( $data['error']['message'] ) ? $data['error']['message'] : __( 'RentADriver did not answer. Try again in a minute.', 'rentadriver-delivery' ) );
+	}
+	return wp_remote_retrieve_body( $res );
+}
+
+/** Streams the delivery label. The store token stays on the server; the browser only gets the PDF. */
+function rentadriver_label() {
+	if ( ! current_user_can( 'manage_woocommerce' ) ) {
+		wp_die( esc_html__( 'You do not have permission to print delivery labels.', 'rentadriver-delivery' ), '', array( 'response' => 403 ) );
+	}
+	check_admin_referer( 'rentadriver_label' );
+	$order = absint( wp_unslash( $_GET['order'] ?? 0 ) );
+	$pdf   = rentadriver_fetch_label( $order, sanitize_key( wp_unslash( $_GET['size'] ?? '' ) ) );
+	if ( is_wp_error( $pdf ) ) {
+		wp_die(
+			esc_html( $pdf->get_error_message() ),
+			'',
+			array(
+				'response'  => 502,
+				'back_link' => true,
+			)
+		);
+	}
+	nocache_headers();
+	header( 'Content-Type: application/pdf' );
+	header( 'Content-Disposition: inline; filename="rentadriver-order-' . $order . '-label.pdf"' );
+	echo $pdf; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- PDF bytes from RentADriver, served as application/pdf.
+	exit;
+}
+add_action( 'admin_post_rentadriver_label', 'rentadriver_label' );
+
 /** Overview: account, mode, wallet, coverage and this week's activity, plus the two settings changed most often. */
 function rentadriver_render_overview() {
 	$data = rentadriver_plugin_api( 'settings' );
@@ -554,6 +639,20 @@ function rentadriver_sync_after_general_settings() {
 }
 add_action( 'woocommerce_update_options_general', 'rentadriver_sync_after_general_settings' );
 
+/**
+ * After the plugin is installed or updated, sync the store details once, so a fix to how RentADriver reads the store
+ * address reaches stores that have not saved WooCommerce → Settings → General since. Admin requests only.
+ */
+function rentadriver_sync_after_update() {
+	$version = rentadriver_plugin_version();
+	if ( get_option( 'rentadriver_synced_version', '' ) === $version || ! current_user_can( 'manage_woocommerce' ) || ! rentadriver_plugin_url( 'sync' ) ) {
+		return;
+	}
+	update_option( 'rentadriver_synced_version', $version, false );
+	rentadriver_sync_after_general_settings();
+}
+add_action( 'admin_init', 'rentadriver_sync_after_update' );
+
 /** Orders sent to RentADriver, with delivery status and tracking. */
 function rentadriver_render_orders() {
 	$data = rentadriver_plugin_api( 'orders' );
@@ -594,8 +693,15 @@ function rentadriver_render_orders() {
 		echo '</td><td>';
 		if ( $delivery ) {
 			echo esc_html( ( $delivery['short_code'] ?? '' ) . ' · ' . str_replace( '_', ' ', (string) ( $delivery['status'] ?? '' ) ) );
+			$when = rentadriver_delivery_when( array_merge( $delivery, array( 'booked_at' => $o['booked_at'] ?? null ) ) );
+			if ( $when ) {
+				echo '<br><small>' . esc_html( $when ) . '</small>';
+			}
 			if ( ! empty( $delivery['tracking_url'] ) ) {
 				echo '<br><a href="' . esc_url( $delivery['tracking_url'] ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Tracking', 'rentadriver-delivery' ) . '</a>';
+			}
+			if ( ! empty( $o['order_id'] ) ) {
+				echo '<br><a href="' . esc_url( rentadriver_label_url( $o['order_id'] ) ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Print label', 'rentadriver-delivery' ) . '</a> <small>(<a href="' . esc_url( rentadriver_label_url( $o['order_id'], 'a4' ) ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'A4', 'rentadriver-delivery' ) . '</a>)</small>';
 			}
 		} else {
 			echo '—';

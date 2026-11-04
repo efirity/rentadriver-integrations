@@ -108,7 +108,12 @@ Free and unauthenticated. Use these first to check feasibility and show the huma
 | `check_coverage` | Tells you whether an address or a lat/lng pair is inside a RentADriver service area, which city it maps to, and the nearest area with distance if it isn't covered. | address (string) or lat + lng (numbers) |
 | `list_service_areas` | Launch cities with country, currency, timezone, centre, radius, launch phase and the minimum price. Use it to explain coverage or pick a city before quoting. | none |
 | `get_quote` | Prices a delivery from one pickup to one or more drop-offs. Geocodes addresses, routes the trip, applies size, urgency, vehicle and live surge, and guarantees the driver floor. Returns a quote_id valid for 15 minutes plus the full breakdown and ETAs, so the agent can show the human the price before spending anything. | pickup (stop), dropoffs[] (1–8 stops), items[] (description, size_class S/M/L/XL, category), urgency asap|today|scheduled, scheduled_at, vehicle_class |
-| `get_platform_stats` | Live counts: drivers signed up, on shift now, service areas, deliveries, agents connected, founding-driver signups. Useful for status pages or sanity checks. | none |
+| `get_platform_stats` | Live counts: service areas, deliveries, agents connected. Useful for status pages or sanity checks. | none |
+| `search_docs` | Searches RentADriver's published documentation and returns matches with absolute URLs to cite and a snippet. | query (1–200 chars), limit (1–10) |
+| `read_docs_page` | Full text of one documentation page, by a URL from search_docs or list_docs_sections. | url |
+| `list_docs_sections` | Every documentation section with its pages (title and URL). | none |
+| `get_pricing` | Published pricing: pay per delivery, starting prices by city and the pricing page URL. | none |
+| `get_faq` | Published FAQ answers, optionally filtered by a topic. | topic? |
 
 </details>
 
@@ -126,7 +131,7 @@ Self-serve signup, balance, deposits and keys. Everything here needs an API key 
 | `create_x402_deposit` | Agent-native funding without a card. Returns x402 v2 payment requirements for USDC on Base; sign them with an x402 client and retry the REST endpoint with the payment header to credit the wallet. Returns not-enrolled while the account is outside early access. | amount_cents (≥ 100) |
 | `set_spending_controls` | Caps what the account can spend per delivery and per rolling 24 hours. The API refuses any create_delivery above the cap. Pass null to clear a cap. | spending_cap_per_delivery_cents, daily_cap_cents |
 | `list_api_keys` | Lists the account's keys with prefix, name, last use and revocation state. Full keys are never returned. | none |
-| `create_api_key` | Issues an additional key (max 10 active) for another agent or environment. The key is shown once. | name (optional) |
+| `create_api_key` | Issues an additional key (up to 50 active; sign-in sessions do not count) for another agent or environment. The key is shown once. | name (optional) |
 | `revoke_api_key` | Permanently deactivates a key. You cannot revoke the key you are calling with. | key_id |
 
 </details>
@@ -216,6 +221,14 @@ Credentials live in `~/.rentadriver/config.json` (mode 600). Non-interactive fla
 ```json
 { "mcpServers": { "rentadriver": { "url": "https://mcp.rentadriver.ai/mcp" } } }
 ```
+
+**No account needed to start.** Without sign-in, `/mcp` lists every tool and runs the account-free ones — the docs tools (`search_docs`, `read_docs_page`, `list_docs_sections`, `get_pricing`, `get_faq`) and `check_coverage`, `list_service_areas`, `get_quote`, `list_intercity_lanes`, `get_intercity_quote`, `get_platform_stats`. Agents discover it from `https://rentadriver.ai/.well-known/mcp.json`. Calling a tool that needs an account asks your app to sign in, then the call is retried with the new token:
+
+- Claude, VS Code / Copilot, Zed and MCP SDK clients get `HTTP 401` with a `WWW-Authenticate` challenge on that call (in Claude, add the connector with "Sign in when needed").
+- ChatGPT gets a tool result with `_meta["mcp/www_authenticate"]`; each tool declares `securitySchemes` (`noauth` for the free tools, `oauth2` for the rest). Add the connector with "No Auth" — the tools ask for sign-in themselves.
+- Apps that decide at setup whether a server needs sign-in (e.g. grok.com, Le Chat, Perplexity, Gemini) should use `https://mcp.rentadriver.ai/mcp?login`, which asks for sign-in first.
+
+`https://mcp.rentadriver.ai/public` serves only the account-free tools and never asks for sign-in.
 
 Scopes: `read` (quotes, deliveries, tracking, proof, balance) and `write` (book, fund from balance, cancel, confirm, webhooks). Tokens can never add funds, create keys or change team settings. Disconnect an app from the console (Developers → Connected apps) or `DELETE /v1/oauth/connections/:id`.
 

@@ -1,0 +1,11 @@
+{
+  "name": "rentadriver-print-label",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@shopify/ui-extensions": "2026.7.4",
+    "preact": "10.29.8"
+  }
+}

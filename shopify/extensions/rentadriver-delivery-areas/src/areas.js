@@ -17,28 +17,27 @@ export function haversineM(a, b) {
 }
 
 /**
- * Is this delivery address inside one of the zones? null = can't tell (no postcode and no coordinates), in which case
- * nothing is hidden and booking still checks the address.
+ * Is this delivery address inside one of the zones? null = can't tell (a zone in the address's country can't be checked:
+ * no postcode for a postcode zone, or no coordinates for a radius zone, as when the customer types the address instead of
+ * picking a suggestion), in which case nothing is hidden and booking still checks the address. Zones in another country
+ * only rule the address out; they never settle a zone in its own country.
  */
 export function insideAreas(address, zones) {
   const country = String(address?.countryCode ?? "").toUpperCase();
   const postal = normalizedPostal(address?.zip);
   const point = typeof address?.latitude === "number" && typeof address?.longitude === "number" ? { lat: address.latitude, lng: address.longitude } : null;
-  let decidable = false;
+  let undecided = false;
   for (const zone of zones ?? []) {
-    if (zone.country && country && zone.country.toUpperCase() !== country) { decidable = true; continue; }
+    if (zone.country && country && zone.country.toUpperCase() !== country) continue;
     if (zone.type === "postal") {
-      if (!postal) continue;
-      decidable = true;
+      if (!postal) { undecided = true; continue; }
       if (zone.codes.some((code) => { const c = normalizedPostal(code); return c.endsWith("*") ? postal.startsWith(c.slice(0, -1)) : postal === c; })) return true;
     } else if (zone.type === "radius") {
-      if (!point) continue;
-      decidable = true;
+      if (!point) { undecided = true; continue; }
       if (haversineM({ lat: zone.lat, lng: zone.lng }, point) <= zone.km * 1000) return true;
     }
   }
-  if (!(zones ?? []).length) return false;
-  return decidable ? false : null;
+  return undecided ? null : false;
 }
 
 /** The function's operations: hide the RentADriver rates for every delivery group whose address is outside all zones. */

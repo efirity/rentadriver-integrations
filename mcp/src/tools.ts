@@ -3,6 +3,7 @@ import { z } from "zod";
 import { registerAppTool } from "@modelcontextprotocol/ext-apps/server";
 import { uiMeta } from "./app.js";
 import type { RentADriverClient } from "./client.js";
+import { docsIndex, faqFor, findPage, searchDocs } from "./docs.js";
 
 const Stop = z.object({
   address: z.string().describe("Street address (geocoded if lat/lng omitted)").optional(),
@@ -29,12 +30,22 @@ type ToolResult = { content: Array<{ type: "text"; text: string }>; structuredCo
 const ok = (data: unknown): ToolResult => ({ content: [{ type: "text", text: JSON.stringify(data, null, 2) }], structuredContent: (typeof data === "object" && data ? data : { result: data }) as Record<string, unknown> });
 const fail = (e: unknown): ToolResult => {
   const err = e as Error & { code?: string; status?: number; details?: unknown; body?: unknown };
-  const hint = err.code === "workspace_required" ? " → call list_country_workspaces, then enable_country_workspace for the pickup country. Fund that local wallet before booking." : err.code === "insufficient_funds" ? " → call create_wallet_deposit (card) or create_x402_deposit (USDC), then fund_delivery." : err.code === "outside_coverage" ? " → call list_service_areas / check_coverage." : err.code === "unauthorized" || err.code === "invalid_api_key" ? " → set RENTADRIVER_API_KEY or call signup." : "";
+  const hint = err.code === "workspace_required" ? " → call list_country_workspaces, then enable_country_workspace for the pickup country. Fund that local wallet before booking." : err.code === "insufficient_funds" ? " → call create_wallet_deposit (card) or create_x402_deposit (USDC), then fund_delivery." : err.code === "outside_coverage" ? " → call list_service_areas / check_coverage." : err.code === "unauthorized" || err.code === "invalid_api_key" ? " → sign in to RentADriver again (connector: reconnect; local server: run `npx -y rentadriver-mcp login` or set RENTADRIVER_API_KEY)." : "";
   return { content: [{ type: "text", text: `Error ${err.code ?? err.status ?? ""}: ${err.message}${hint}${err.details ? "\n" + JSON.stringify(err.details) : ""}` }], isError: true };
 };
 const run = async (fn: () => Promise<unknown>): Promise<ToolResult> => { try { return ok(await fn()); } catch (e) { return fail(e); } };
 
-export function registerTools(server: McpServer, api: RentADriverClient, opts: { hide?: ReadonlySet<string> } = {}) {
+/** Tools that work without an account: coverage, cities, lanes, quotes and live stats. The hosted server serves only
+ *  these at /public, with no sign-in, so people can try quotes before creating an account. */
+export const DOCS_TOOLS: ReadonlySet<string> = new Set(["search_docs", "read_docs_page", "list_docs_sections", "get_pricing", "get_faq"]);
+export const PUBLIC_TOOLS: ReadonlySet<string> = new Set(["check_coverage", "list_service_areas", "get_quote", "list_intercity_lanes", "get_intercity_quote", "get_platform_stats", ...DOCS_TOOLS]);
+
+/** Per-tool auth for hosts that read it (ChatGPT Apps SDK): public tools run anonymously, the rest need sign-in. */
+export const securitySchemes = (name: string) => DOCS_TOOLS.has(name) ? [{ type: "noauth" }] : PUBLIC_TOOLS.has(name) ? [{ type: "noauth" }, { type: "oauth2", scopes: ["read"] }] : [{ type: "oauth2", scopes: ["read", "write"] }];
+
+/** `signIn`: the hosted server's anonymous mode for clients that expect sign-in as a tool result (ChatGPT): a call to a
+ *  tool that needs an account returns isError with `_meta["mcp/www_authenticate"]`, which shows the host's connect step. */
+export function registerTools(server: McpServer, api: RentADriverClient, opts: { hide?: ReadonlySet<string>; only?: ReadonlySet<string>; signIn?: { challenge: string } } = {}) {
   // Every tool advertises all four hints as explicit booleans. The per-tool justification submitted to OpenAI is
   // ../chatgpt/tool-annotations.md; change both together (a repository test pins them).
   // readOnly    = changes nothing the user can see or must undo. Quotes store a 15-minute pricing snapshot that
@@ -46,7 +57,7 @@ export function registerTools(server: McpServer, api: RentADriverClient, opts: {
   //               emailing an address the caller supplied (signup's verification email).
   //               Lookups against our own service data are bounded, even when an address is geocoded.
   // idempotent  = repeating the same call leaves the same end state.
-  const READ_ONLY = new Set(["check_coverage", "list_service_areas", "get_quote", "list_intercity_lanes", "get_intercity_quote", "get_platform_stats", "list_country_workspaces", "check_account_status", "get_wallet_balance", "list_api_keys", "get_delivery", "list_deliveries", "track_delivery", "get_delivery_events", "get_delivery_messages", "get_proof_of_delivery", "list_shopify_orders", "list_store_orders", "list_webhooks"]);
+  const READ_ONLY = new Set(["search_docs", "read_docs_page", "list_docs_sections", "get_pricing", "get_faq", "check_coverage", "list_service_areas", "get_quote", "list_intercity_lanes", "get_intercity_quote", "get_platform_stats", "list_country_workspaces", "check_account_status", "get_wallet_balance", "list_api_keys", "get_delivery", "list_deliveries", "track_delivery", "get_delivery_events", "get_delivery_messages", "get_proof_of_delivery", "list_shopify_orders", "list_store_orders", "list_webhooks"]);
   const DESTRUCTIVE = new Set(["set_spending_controls", "revoke_api_key", "create_delivery", "create_store_pickup", "create_batch", "fund_delivery", "create_recipient_code", "update_delivery", "cancel_delivery", "create_return", "confirm_delivery", "tip_driver", "book_shopify_order", "book_store_order", "delete_webhook"]);
   const OPEN_WORLD = new Set(["signup", "create_x402_deposit", "create_delivery", "create_store_pickup", "create_batch", "fund_delivery", "create_return", "send_message_to_driver", "confirm_delivery", "tip_driver", "book_shopify_order", "book_store_order", "register_webhook"]);
   const IDEMPOTENT = new Set(["set_spending_controls", "revoke_api_key", "update_delivery", "rate_driver", "enable_country_workspace", "confirm_delivery", "delete_webhook"]);
@@ -56,11 +67,14 @@ export function registerTools(server: McpServer, api: RentADriverClient, opts: {
   // tool-set change — mcp-tools.ts stays canonical and mcp:check still counts every registration below.
   const HIDDEN = opts.hide ?? new Set((process.env.MCP_HIDE_TOOLS ?? "").split(",").map((s) => s.trim()).filter(Boolean));
   const register = server.registerTool.bind(server);
-  server.registerTool = ((name: string, config: { title?: string; annotations?: Record<string, unknown> }, cb: unknown) => {
+  const signIn = opts.signIn;
+  const needsAccount = (title?: string) => async () => ({ isError: true, content: [{ type: "text" as const, text: `${title ?? "This tool"} needs a RentADriver account. Connect your account when asked (quotes and coverage work without one), or send an API key.` }], _meta: { "mcp/www_authenticate": [signIn!.challenge] } });
+  server.registerTool = ((name: string, config: { title?: string; annotations?: Record<string, unknown>; _meta?: Record<string, unknown> }, cb: unknown) => {
     const readOnly = READ_ONLY.has(name);
     const annotations = { title: config.title, readOnlyHint: readOnly, destructiveHint: DESTRUCTIVE.has(name), idempotentHint: readOnly || IDEMPOTENT.has(name), openWorldHint: OPEN_WORLD.has(name), ...(config.annotations ?? {}) };
-    const tool = register(name, { ...config, annotations } as never, cb as never);
-    if (HIDDEN.has(name)) tool.remove();
+    const handler = signIn && !PUBLIC_TOOLS.has(name) ? needsAccount(config.title) : cb;
+    const tool = register(name, { ...config, annotations, _meta: { ...(config._meta ?? {}), securitySchemes: securitySchemes(name) } } as never, handler as never);
+    if (HIDDEN.has(name) || (opts.only && !opts.only.has(name))) tool.remove();
     return tool;
   }) as typeof server.registerTool;
   // ---- discovery (no auth) ----
@@ -73,10 +87,22 @@ export function registerTools(server: McpServer, api: RentADriverClient, opts: {
   server.registerTool("list_intercity_lanes", { title: "Intercity lanes", description: "Same-day city-to-city routes: for every launch city, the neighbouring launch cities within 160 km by road (e.g. London → Reading, Leeds → Sheffield, San Francisco → San Jose) with road distance, drive time and a same-day sample price. Longer trips are not offered. Free.", inputSchema: {} }, async () => run(() => api.get("/v1/intercity/lanes")));
   server.registerTool("get_intercity_quote", { title: "Intercity quote", description: "Price a same-day delivery to a neighbouring city: pickup in a launch city, drop-off in (or within 20 km of) another launch city in the same country at most 160 km away by road. One dedicated driver collects within about an hour; it must arrive by 21:00 local time, otherwise pickup moves to the next morning. Trips over 160 km return too_far. Returns quote_id, the price breakdown incl. the drive-back allowance, and pickup/arrival times. Free, no key.", inputSchema: { workspace_id: z.string().uuid().optional(), pickup: Stop, dropoffs: z.array(Stop).min(1).max(3), items: z.array(Item).optional(), scheduled_at: z.string().optional(), vehicle_class: z.enum(["car", "suv", "van", "truck"]).optional() } },
     async (a) => run(() => api.post("/v1/quotes", { ...a, service: "intercity" })));
-  server.registerTool("get_platform_stats", { title: "Platform stats", description: "Live counts: active drivers, drivers on shift, deliveries, agents connected.", inputSchema: {} },
+  server.registerTool("get_platform_stats", { title: "Platform stats", description: "Live counts: service areas, deliveries, agents connected.", inputSchema: {} },
     async () => run(() => api.get("/v1/stats", {}, false)));
 
   // ---- account ----
+  // ---- site knowledge (no auth): the published docs, pricing and FAQ, from rentadriver.ai/docs-index.json ----
+  const Page = { title: z.string(), url: z.string().url(), section: z.string() };
+  server.registerTool("search_docs", { title: "Search the docs", description: "Search RentADriver's published documentation (API, MCP tools, pricing, coverage, integrations, answers, FAQ). Returns titles, absolute URLs to cite and a snippet; read a page with read_docs_page.", inputSchema: { query: z.string().min(1).max(200), limit: z.number().int().min(1).max(10).default(5) }, outputSchema: { results: z.array(z.object({ ...Page, snippet: z.string() })) } },
+    async (a) => run(async () => ({ results: searchDocs(await docsIndex(), a.query, a.limit) })));
+  server.registerTool("read_docs_page", { title: "Read a docs page", description: "Full text of one documentation page, by a URL from search_docs or list_docs_sections.", inputSchema: { url: z.string().min(1).max(500) }, outputSchema: { ...Page, content: z.string() } },
+    async (a) => { try { const p = findPage(await docsIndex(), a.url); return p ? ok(p) : { content: [{ type: "text" as const, text: `Not found: ${a.url} is not a published docs page. Use search_docs or list_docs_sections for valid URLs.` }], isError: true }; } catch (e) { return fail(e); } });
+  server.registerTool("list_docs_sections", { title: "List docs sections", description: "Every documentation section with its pages (title and URL).", inputSchema: {}, outputSchema: { sections: z.array(z.object({ name: z.string(), pages: z.array(z.object({ title: z.string(), url: z.string().url() })) })) } },
+    async () => run(async () => ({ sections: (await docsIndex()).sections.map((s) => ({ name: s.name, pages: s.pages.map((p) => ({ title: p.title, url: p.url })) })) })));
+  server.registerTool("get_pricing", { title: "Pricing", description: "Published pricing: pay per delivery, no subscription, starting prices by city and the pricing page URL. Use get_quote for the exact price of a route.", inputSchema: {} },
+    async () => run(async () => (await docsIndex()).pricing));
+  server.registerTool("get_faq", { title: "FAQ", description: "Published FAQ answers (agents, businesses and drivers), optionally filtered by a topic such as \"payment\" or \"proof of delivery\".", inputSchema: { topic: z.string().max(200).optional() } },
+    async (a) => run(async () => ({ faqs: faqFor(await docsIndex(), a.topic) })));
   server.registerTool("list_country_workspaces", { title: "Country workspaces", description: "List enabled country workspaces, their separate local-currency balances, and available countries. No FX or balance transfers.", inputSchema: {} }, async () => run(() => api.get("/v1/workspaces")));
   server.registerTool("enable_country_workspace", { title: "Enable country workspace", description: "Enable another delivery country in this account. Admin role required. Starts with zero local-currency balance; existing money stays untouched. Set spending controls independently for this workspace.", inputSchema: { country_code: z.enum(["US","GB","AU","CA"]), spending_cap_per_delivery_cents: z.number().int().min(0).nullable().optional(), daily_cap_cents: z.number().int().min(0).nullable().optional() } }, async (a) => run(() => api.post("/v1/workspaces", a)));
   server.registerTool("signup", { title: "Create account + API key", description: "Self-serve signup for an agent/app. Returns an API key ONCE. Save it as RENTADRIVER_API_KEY. Rehearse with a sandbox (rd_test_) key; live bookings need a funded wallet.", inputSchema: { country_code: z.enum(["US","GB","AU","CA"]).default("US").describe("Initial country workspace. Enable additional countries with enable_country_workspace; each has its own local-currency balance."), name: z.string(), email: z.string().email(), kind: z.enum(["agent", "app", "business"]).default("agent"), agent_framework: z.string().optional() } },
@@ -91,7 +117,7 @@ export function registerTools(server: McpServer, api: RentADriverClient, opts: {
   server.registerTool("set_spending_controls", { title: "Spending controls", description: "Cap per-delivery and rolling 24-hour spend in workspace currency minor units. Zero blocks, null clears. Defaults to original workspace.", inputSchema: { workspace_id: z.string().uuid().optional(), spending_cap_per_delivery_cents: z.number().int().nullable().optional(), daily_cap_cents: z.number().int().nullable().optional() } },
     async (a) => run(() => api.patch(`/v1/account/controls${a.workspace_id ? `?workspace_id=${a.workspace_id}` : ""}`, a)));
   server.registerTool("list_api_keys", { title: "List API keys", description: "Lists the account's API keys with prefix, name, last use and revocation state. Full keys are never returned.", inputSchema: {} }, async () => run(() => api.get("/v1/api-keys")));
-  server.registerTool("create_api_key", { title: "Create API key", description: "Issues an additional key (max 10 active) for another agent or environment. The key is shown once.", inputSchema: { name: z.string().optional() } }, async (a) => run(() => api.post("/v1/api-keys", a)));
+  server.registerTool("create_api_key", { title: "Create API key", description: "Issues an additional key (up to 50 active; sign-in sessions do not count) for another agent or environment. The key is shown once.", inputSchema: { name: z.string().optional() } }, async (a) => run(() => api.post("/v1/api-keys", a)));
   server.registerTool("revoke_api_key", { title: "Revoke API key", description: "Permanently deactivates a key. You cannot revoke the key you are calling with.", inputSchema: { key_id: z.string() } }, async (a) => run(() => api.del(`/v1/api-keys/${a.key_id}`)));
 
   // ---- deliveries ----

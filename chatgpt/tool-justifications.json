@@ -29,6 +29,31 @@
     "destructive_justification": "Changes nothing.",
     "open_world_justification": "Returns RentADriver's own aggregate counts."
   },
+  "search_docs": {
+    "read_only_justification": "Searches the published docs index; stores nothing and changes nothing.",
+    "destructive_justification": "Search only; no booking, charge, deletion or overwrite.",
+    "open_world_justification": "Reads RentADriver's own published documentation; nothing is sent to or changed at a third party."
+  },
+  "read_docs_page": {
+    "read_only_justification": "Returns the text of one published page; changes nothing.",
+    "destructive_justification": "Read only; changes nothing.",
+    "open_world_justification": "Reads RentADriver's own published documentation only; URLs outside the index are refused."
+  },
+  "list_docs_sections": {
+    "read_only_justification": "Lists published documentation pages; changes nothing.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Returns RentADriver's bounded documentation catalogue."
+  },
+  "get_pricing": {
+    "read_only_justification": "Returns the published rate summary; nothing is quoted, booked or charged.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Returns RentADriver's own published pricing."
+  },
+  "get_faq": {
+    "read_only_justification": "Returns published FAQ entries; changes nothing.",
+    "destructive_justification": "Changes nothing.",
+    "open_world_justification": "Returns RentADriver's own published FAQ."
+  },
   "list_country_workspaces": {
     "read_only_justification": "Lists the account's country workspaces and balances.",
     "destructive_justification": "Changes nothing.",

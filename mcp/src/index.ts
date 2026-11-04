@@ -2,12 +2,13 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import { createServer } from "node:http";
+import { createServer, type IncomingMessage } from "node:http";
 import { createInterface } from "node:readline";
 import { z } from "zod";
 import { CONFIG_PATH, oauthLogin, readConfig, revokeOAuth, writeConfig } from "./auth.js";
 import { loadConfig, RentADriverClient } from "./client.js";
-import { registerTools } from "./tools.js";
+import { PUBLIC_TOOLS, registerTools } from "./tools.js";
+import { createSessionCheck } from "./session-check.js";
 import { registerApps } from "./app.js";
 import { containRequestErrors, readRequestBody } from "./http-request.js";
 
@@ -15,9 +16,13 @@ import { readFileSync } from "node:fs";
 
 const VERSION: string = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")).version;
 
-function buildServer(api: RentADriverClient, hide?: ReadonlySet<string>): McpServer {
+function buildServer(api: RentADriverClient, hide?: ReadonlySet<string>, only?: ReadonlySet<string>, signIn?: { challenge: string }): McpServer {
   const server = new McpServer({ name: "rentadriver", title: "RentADriver", version: VERSION, description: "From send it to delivered. Real package deliveries with upfront quotes, driver tracking and proof of handover.", websiteUrl: "https://rentadriver.ai", icons: [{ src: "https://rentadriver.ai/brand/icon.svg", mimeType: "image/svg+xml" }] }, { instructions: `RentADriver books real-world package deliveries fulfilled by vetted RentADriver drivers. Typical flow: check_coverage → get_quote (free) → create_delivery (dryRun first if unsure) → track_delivery → get_proof_of_delivery → confirm_delivery. Prices are in cents. If a call fails with insufficient_funds, deposit to the wallet first. API: ${api.apiUrl}` });
-  registerTools(server, api, { hide });
+  registerTools(server, api, { hide, only, signIn });
+  // ChatGPT reads `securitySchemes` on the tool itself; the SDK passes only `_meta` through, so copy it up at list time.
+  const handlers = (server.server as unknown as { _requestHandlers: Map<string, (req: unknown, extra: unknown) => Promise<{ tools: Array<{ _meta?: { securitySchemes?: unknown } }> }>> })._requestHandlers;
+  const listTools = handlers.get("tools/list");
+  if (listTools) handlers.set("tools/list", async (req, extra) => { const out = await listTools(req, extra); return { ...out, tools: out.tools.map((t) => ({ ...t, securitySchemes: t._meta?.securitySchemes })) }; });
   registerApps(server); // MCP Apps: ui:// cards for get_delivery / get_quote
   server.registerResource("openapi", "openapi://spec", { title: "RentADriver OpenAPI", description: "Full REST spec", mimeType: "application/json" }, async (uri) => ({ contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(await api.get("/.well-known/openapi.json", {}, false)) }] }));
   server.registerResource("delivery", new ResourceTemplate("delivery://{id}", { list: undefined }), { title: "Delivery", description: "A delivery by id or short code" }, async (uri, { id }) => ({ contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(await api.get(`/v1/deliveries/${id}`), null, 2) }] }));
@@ -106,12 +111,25 @@ async function main() {
     // Claude-only default (set it to "" to serve Claude the full set).
     const parseTools = (v: string | undefined) => (v ?? "").split(",").map((s) => s.trim()).filter(Boolean);
     const CLAUDE_UA = /claude|anthropic/i, CLAUDE_DEV_UA = /claude-cli|claude-code/i;
+    // ChatGPT's connector identifies itself as "openai-mcp/…"; it asks for sign-in from a tool result, not an HTTP 401.
+    const TOOL_RESULT_SIGN_IN = new RegExp(process.env.MCP_TOOL_RESULT_SIGN_IN_UA || "openai|chatgpt", "i");
     const hiddenFor = (ua: string): Set<string> => {
       const hidden = new Set(parseTools(process.env.MCP_HIDE_TOOLS));
       if (CLAUDE_UA.test(ua) && !CLAUDE_DEV_UA.test(ua)) for (const t of parseTools(process.env.MCP_HIDE_TOOLS_CLAUDE ?? "create_x402_deposit")) hidden.add(t);
       return hidden;
     };
+    // Anonymous callers (docs, quotes, coverage) are limited per client IP; signed-in calls are limited by the API.
+    const ANON_PER_MIN = Number(process.env.MCP_ANON_RATE_PER_MIN || 120);
+    const anonHits = new Map<string, { start: number; n: number }>();
+    const anonLimited = (ip: string): number => {
+      const now = Date.now(); const w = anonHits.get(ip);
+      if (!w || now - w.start >= 60_000) { if (anonHits.size > 50_000) anonHits.clear(); anonHits.set(ip, { start: now, n: 1 }); return 0; }
+      return ++w.n > ANON_PER_MIN ? Math.ceil((w.start + 60_000 - now) / 1000) : 0;
+    };
+    const clientIp = (req: IncomingMessage) => String(req.headers["x-forwarded-for"] ?? "").split(",")[0]!.trim() || req.socket.remoteAddress || "unknown";
     const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "Content-Type, Authorization, x-api-key, Mcp-Session-Id, Mcp-Protocol-Version", "access-control-allow-methods": "GET, POST, DELETE, OPTIONS", "access-control-expose-headers": "WWW-Authenticate, Mcp-Session-Id" };
+    // A token the API no longer accepts (revoked key, expired connector session) is handled like no token.
+    const sessionRejected = createSessionCheck(cfg.apiUrl);
     const prm = { resource: `${publicUrl}/mcp`, resource_name: "RentADriver MCP", authorization_servers: [cfg.apiUrl], bearer_methods_supported: ["header"], scopes_supported: ["read", "write"], resource_documentation: "https://rentadriver.ai/docs/mcp#oauth" };
     const http = createServer((req, res) => {
       void containRequestErrors(res, async () => {
@@ -119,17 +137,50 @@ async function main() {
       if (req.method === "OPTIONS") { res.writeHead(204, cors); res.end(); return; }
       if (path === "/health") { res.writeHead(200, { "content-type": "application/json", ...cors }); res.end(JSON.stringify({ ok: true, name: "rentadriver-mcp", version: VERSION, oauth: true })); return; }
       if (path === "/.well-known/oauth-protected-resource" || path === "/.well-known/oauth-protected-resource/mcp") { res.writeHead(200, { "content-type": "application/json", "cache-control": "public, max-age=300", ...cors }); res.end(JSON.stringify(prm)); return; }
-      if (path !== "/mcp") { res.writeHead(404, cors); res.end("Use /mcp"); return; }
-      const key = (req.headers["x-api-key"] as string | undefined) || (typeof req.headers.authorization === "string" && req.headers.authorization.toLowerCase().startsWith("bearer ") ? req.headers.authorization.slice(7) : undefined);
-      if (!key && process.env.MCP_ALLOW_ANONYMOUS !== "true") {
-        res.writeHead(401, { "content-type": "application/json", "www-authenticate": `Bearer realm="rentadriver", resource_metadata="${publicUrl}/.well-known/oauth-protected-resource", scope="read write"`, ...cors });
-        res.end(JSON.stringify({ jsonrpc: "2.0", error: { code: -32001, message: "Unauthorized: connect with OAuth (see WWW-Authenticate) or send an API key in x-api-key / Authorization: Bearer" }, id: null }));
+      // /public: no sign-in, only the account-free tools (coverage, cities, lanes, quotes, stats), so people can try
+      // quotes before signing up. Any key sent here is ignored; /mcp keeps its OAuth challenge for the full tool set.
+      const anonymous = !req.headers["x-api-key"] && !(typeof req.headers.authorization === "string" && /^bearer /i.test(req.headers.authorization));
+      const retryAfter = anonymous && (path === "/public" || path === "/mcp") && req.method === "POST" ? anonLimited(clientIp(req)) : 0;
+      if (retryAfter) { res.writeHead(429, { "content-type": "application/json", "retry-after": String(retryAfter), ...cors }); res.end(JSON.stringify({ jsonrpc: "2.0", error: { code: -32029, message: `Too many requests without an account. Retry in ${retryAfter}s, or sign in.` }, id: null })); return; }
+      if (path === "/public") {
+        const body = await readRequestBody(req);
+        const server = buildServer(new RentADriverClient({ ...cfg, apiKey: undefined, oauth: undefined }), undefined, PUBLIC_TOOLS);
+        const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
+        res.on("close", () => { void Promise.allSettled([transport.close(), server.close()]); });
+        await server.connect(transport);
+        await transport.handleRequest(req, res, body);
         return;
       }
+      if (path !== "/mcp") { res.writeHead(404, cors); res.end("Use /mcp"); return; }
+      const key = (req.headers["x-api-key"] as string | undefined) || (typeof req.headers.authorization === "string" && req.headers.authorization.toLowerCase().startsWith("bearer ") ? req.headers.authorization.slice(7) : undefined);
+      // Lazy sign-in (one URL for everyone): without a key, initialize, tools/list and the account-free tools work, and
+      // calling a tool that needs an account asks the host to sign in. Hosts differ in how they want that asked:
+      //  - Claude, VS Code, Zed and the MCP SDK clients start OAuth on an HTTP 401 + WWW-Authenticate for that request;
+      //  - ChatGPT starts it from a tool result carrying _meta["mcp/www_authenticate"] (Apps SDK), so it gets that instead.
+      // `?login` keeps sign-in-first for hosts that decide once, at setup, by whether the first request is refused
+      // (grok.com, Le Chat, Perplexity, Gemini). MCP_LAZY_AUTH=false restores sign-in-first for everyone.
+      const ua = String(req.headers["user-agent"] ?? "");
+      const challenge = (error: string, description: string) => `Bearer realm="rentadriver", error="${error}", error_description="${description}", resource_metadata="${publicUrl}/.well-known/oauth-protected-resource", scope="read write"`;
+      const refuse = (description: string) => {
+        res.writeHead(401, { "content-type": "application/json", "www-authenticate": challenge("invalid_token", description), ...cors });
+        res.end(JSON.stringify({ jsonrpc: "2.0", error: { code: -32001, message: `Unauthorized: ${description}. Connect with OAuth (see WWW-Authenticate) or send an API key in x-api-key / Authorization: Bearer` }, id: null }));
+      };
+      const signInFirst = new URLSearchParams((req.url ?? "").split("?")[1] ?? "").has("login") || process.env.MCP_LAZY_AUTH === "false";
+      if (!key && signInFirst) { refuse("Sign in to use RentADriver"); return; }
       const body = await readRequestBody(req);
+      const messages = (Array.isArray(body) ? body : [body]) as Array<{ method?: string; params?: { name?: unknown } }>;
+      const needsAccount = messages.map((m) => m?.method === "tools/call" ? m.params?.name : undefined).find((n): n is string => typeof n === "string" && !PUBLIC_TOOLS.has(n));
+      // A token the API rejects counts as no sign-in, so the host re-runs OAuth instead of resending it.
+      let signedIn = key;
+      if (key && needsAccount && await sessionRejected(key)) signedIn = undefined;
+      if (!signedIn && needsAccount) {
+        const expired = !!key;
+        console.error(`[auth] ${expired ? "expired" : "anonymous"} ${needsAccount} → ${TOOL_RESULT_SIGN_IN.test(ua) ? "tool-result" : "401"} sign-in (ua ${ua.slice(0, 80)})`);
+        if (!TOOL_RESULT_SIGN_IN.test(ua)) { refuse(expired ? "Your RentADriver sign-in has expired. Sign in again" : `Sign in to RentADriver to use ${needsAccount}`); return; }
+      }
       // Remote callers must never inherit the operator’s local API key or OAuth session.
-      const perReq = new RentADriverClient({ ...cfg, apiKey: key, oauth: undefined });
-      const server = buildServer(perReq, hiddenFor(String(req.headers["user-agent"] ?? "")));
+      const perReq = new RentADriverClient({ ...cfg, apiKey: signedIn, oauth: undefined });
+      const server = buildServer(perReq, hiddenFor(ua), undefined, signedIn ? undefined : { challenge: challenge(key ? "invalid_token" : "insufficient_scope", key ? "Your RentADriver sign-in has expired. Sign in again" : "Sign in to RentADriver to continue") });
       const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
       res.on("close", () => {
         void Promise.allSettled([transport.close(), server.close()]);

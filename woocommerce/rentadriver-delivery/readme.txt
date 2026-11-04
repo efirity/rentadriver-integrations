@@ -5,7 +5,7 @@ Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
 Requires Plugins: woocommerce
-Stable tag: 0.6.6
+Stable tag: 0.6.27
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,71 @@ Switch the store to sandbox in the RentADriver app (simulated drivers, no charge
 9. The customer's live tracking page after the delivery.
 
 == Changelog ==
+
+= 0.6.27 =
+* Delivery labels show the time as well as the date for same-day and ASAP deliveries (the time it was booked), not only for scheduled ones.
+* After the plugin is installed or updated, it syncs your store details with RentADriver once by itself, so the pickup address drivers read is current without re-saving WooCommerce → Settings → General.
+
+= 0.6.26 =
+* The RentADriver app's Deliveries list has an Order column: the WooCommerce order number, opening the order in WooCommerce. The tracking code stays first.
+
+= 0.6.25 =
+* The pickup address RentADriver saves from WooCommerce → Settings → General keeps your own words. Before, the map lookup could replace it with a nearby business's name and postcode, which is what drivers read.
+
+= 0.6.24 =
+* "Print label" on RentADriver → Orders and in the order's RentADriver box: a PDF delivery label (4×6 for thermal printers, or A4) with a barcode and tracking QR code, and no prices. WordPress fetches it from RentADriver, so your store credentials never reach the browser.
+
+= 0.6.23 =
+* RentADriver → Orders and the order's RentADriver box show when each delivery happens: the delivered time once delivered, otherwise the scheduled or booked time, in your site's time zone and date format.
+
+= 0.6.22 =
+* Hosted app: "Print label" on each delivery prints its PDF label, 4×6 in (thermal) or A4. The plugin's WordPress pages are unchanged.
+
+= 0.6.21 =
+* Hosted app: the Deliveries list shows when each delivery happened or is due (delivered, else scheduled, else booked) in the store's time zone, and the delivery timeline shows the date. The plugin's WordPress pages are unchanged.
+
+= 0.6.20 =
+* Hosted app: Sign out moved to Settings → Account; the "Ask the AI assistant" button shows only when the app is opened on its own page, not inside WordPress admin; "Open the console to chat with your AI assistant" opens the console on its Support tab. The plugin's WordPress pages are unchanged.
+
+= 0.6.19 =
+* Internal: the hosted app's server routes are shared with the new hosted Shopify app. Nothing changes in WordPress or in the hosted app.
+
+= 0.6.18 =
+* Hosted app: Reports lists delivery spend only in currencies you actually used; an order that needs action stays in Deliveries whatever the date range; an order the balance now covers offers Retry instead of Top up.
+
+= 0.6.17 =
+* The hosted app's Addresses page shows your store's address from WooCommerce, with Sync store and a link to WooCommerce → Settings → General to change it. The plugin's WordPress pages are unchanged.
+
+= 0.6.16 =
+* The hosted app no longer signs you out after you open Support. RentADriver prices show in your account's currency; store details (name, timezone, miles or km, pickup postcode) come from the store; today's bar shows in Deliveries per day; the Deliveries date filter works; spending limits are entered as amounts.
+* The hosted app's Support page inside wp-admin offers to open the RentADriver console for the AI assistant, which can't open inside another site's admin; tickets work in place. The plugin's WordPress pages are unchanged.
+
+= 0.6.15 =
+* Drop-off addresses with a UK postcode are located from the postcode when the street lookup lands elsewhere, so checkout prices and drivers use the right address.
+
+= 0.6.14 =
+* An order booked by two WooCommerce notifications arriving at once (order created and order updated) no longer shows as "failed" in RentADriver: the second attempt links the delivery the first one booked.
+
+= 0.6.13 =
+* The hosted app's pickup phone fields are marked as phone numbers, so browsers no longer autofill an address into them; Addresses explains where the store's pickup address lives. The plugin's WordPress pages are unchanged.
+
+= 0.6.12 =
+* The redesigned hosted app opens by default; "Back to the current app" keeps the previous one for this browser. The plugin's WordPress pages are unchanged.
+
+= 0.6.11 =
+* The hosted app (?ui=new) shows distances in miles for UK and US stores, with a Distance unit setting (by country, kilometres or miles). The plugin's WordPress pages are unchanged.
+
+= 0.6.10 =
+* The redesigned hosted app (?ui=new) uses the RentADriver console's own screens for this store: Overview, Deliveries, Wallet (card top-up and history), Addresses, Notifications, Support (assistant and tickets), Reports and Settings. The plugin's WordPress pages are unchanged.
+
+= 0.6.9 =
+* The redesigned hosted app (?ui=new) draws Reports, the account section and the footer in its own design, and shows amounts in the store's currency. The plugin's WordPress pages are unchanged.
+
+= 0.6.8 =
+* The redesigned hosted app (?ui=new) gains Sync store, Test an address, the setup guide, Reports, account linking and the API key option. The plugin's WordPress pages are unchanged.
+
+= 0.6.7 =
+* The hosted RentADriver app can show its redesigned version on request (open it with ?ui=new; ?ui=old returns). The plugin's WordPress pages are unchanged.
 
 = 0.6.6 =
 * "ID check" is no longer offered as a proof at drop-off: drivers cannot verify a recipient's identity, and a store that had it ticked could not book. Stores that chose it keep their other proofs (or photo and recipient name).

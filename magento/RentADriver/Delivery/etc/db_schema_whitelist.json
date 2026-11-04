@@ -1,0 +1,6 @@
+{
+    "rentadriver_order": {
+        "column": { "order_id": true, "rate_code": true, "is_test": true, "created_at": true },
+        "constraint": { "PRIMARY": true }
+    }
+}

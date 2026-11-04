@@ -1,4 +1,5 @@
-> Status: **API built, not yet released (2026-10-12).** The detailed design is maintained privately.
+> Status: **live** (API since 2026-10-12). The RentADriver app is not yet listed for merchants in Zapiet;
+> Zapiet makes partner apps public. The detailed design is maintained privately.
 
 # RentADriver for Zapiet – Pickup + Delivery
 
@@ -40,13 +41,14 @@ Status values reported to Zapiet: `scheduled`, `driver_assigned`, `out_for_deliv
 
 ## Merchant setup
 
-1. Open the RentADriver listing in Zapiet › Settings › Last mile delivery and follow *Learn more* to
-   `rentadriver.ai/integrations/zapiet`.
-2. Sign in, choose the workspace that pays for deliveries, enter the store's `*.myshopify.com` domain and copy the API
-   key shown once.
-3. In Zapiet, paste the key, choose which Zapiet locations RentADriver serves, and turn on *Add tracking details to
-   Shopify order* and *Send tracking details to customer*.
-4. Top up the workspace wallet. Orders placed before that are kept and booked once funds arrive.
+1. Sign in at `rentadriver.ai/dashboard`, choose the account that pays for deliveries, open **Developers** and create a
+   key with **New key** (shown once). Keys created there are administrator keys; team keys with the *operator* or
+   *viewer* role are refused. In **Sandbox** mode the key is a sandbox key (`rd_test_…`).
+2. In Zapiet › Settings › Last mile delivery › RentADriver, paste the key, tick the Zapiet locations RentADriver serves
+   (a location is listed once delivery is switched on for it in Zapiet), and turn on *Add tracking details to Shopify
+   order* and *Send tracking details to customer*.
+3. Top up the RentADriver wallet for live keys. An order that arrives while the wallet is empty is not booked: the API
+   answers `402` and Zapiet retries for up to 10 minutes.
 
 Merchant settings shown in Zapiet: leave at door and a pickup contact phone. There is no ID check: RentADriver drivers
 cannot verify a recipient's identity, so an order sent with `id_check` set is refused with `422 unsupported_identity_proof`.

@@ -19,6 +19,11 @@ openWorld = reaches drivers, stores, blockchains, caller URLs or caller-supplied
 | `list_intercity_lanes` | true | false | true | false | Lists each city's neighbouring cities (≤ 160 km) with a same-day sample price. |
 | `get_intercity_quote` | true | false | true | false | Prices a same-day trip to a neighbouring city; like get_quote it stores only an expiring pricing snapshot, with no booking, hold or charge. |
 | `get_platform_stats` | true | false | true | false | Returns aggregate live counts. |
+| `search_docs` | true | false | true | false | Searches the published docs index; stores nothing and changes nothing. |
+| `read_docs_page` | true | false | true | false | Returns the text of one published page; changes nothing. |
+| `list_docs_sections` | true | false | true | false | Lists published documentation pages; changes nothing. |
+| `get_pricing` | true | false | true | false | Returns the published rate summary; nothing is quoted, booked or charged. |
+| `get_faq` | true | false | true | false | Returns published FAQ entries; changes nothing. |
 | `list_country_workspaces` | true | false | true | false | Lists the account's country workspaces and balances. |
 | `enable_country_workspace` | false | false | true | false | Creates a new country workspace in the account, so it writes. |
 | `signup` | false | false | false | true | Creates a new RentADriver account and API key, and emails a verification link to the address the caller supplies (outside RentADriver). |

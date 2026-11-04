@@ -1,0 +1,25 @@
+<?php
+$_['heading_title']        = 'RentADriver Same-Day Delivery';
+$_['text_extension']       = 'Extensions';
+$_['text_success']         = 'Success: RentADriver settings saved.';
+$_['text_edit']            = 'RentADriver settings';
+$_['text_intro']           = 'Offer same-day local delivery by vetted RentADriver drivers. Connect your store, then choose your prices, delivery area and automatic booking in RentADriver.';
+$_['text_connected']       = 'Connected as %s.';
+$_['text_managed']         = 'Prices, delivery area, automatic booking and your delivery account are managed in RentADriver.';
+$_['text_no_https']        = 'Your store must use HTTPS before it can connect to RentADriver.';
+$_['text_test_help']       = 'For trying RentADriver in sandbox mode: only test orders receive sandbox delivery updates. Turn it off before taking real orders.';
+$_['text_delivered_help']  = 'Used only when "Complete the order when delivered" is on in RentADriver.';
+$_['text_keep']            = 'Keep the current status';
+$_['text_none']            = '--- None ---';
+$_['button_connect']       = 'Connect to RentADriver';
+$_['button_open']          = 'Open RentADriver';
+$_['button_setup']         = 'Guided setup';
+$_['button_disconnect']    = 'Disconnect this store';
+$_['entry_status']         = 'Show at checkout';
+$_['entry_sort_order']     = 'Sort order';
+$_['entry_tax_class']      = 'Tax class';
+$_['entry_test_mode']      = 'Mark new orders as test orders';
+$_['entry_status_shipped'] = 'Status when the driver collects the parcel';
+$_['entry_status_delivered'] = 'Status when the parcel is delivered';
+$_['error_permission']     = 'Warning: You do not have permission to modify RentADriver!';
+$_['error_https']          = 'Your store must use HTTPS before it can connect to RentADriver.';
