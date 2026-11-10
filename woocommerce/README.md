@@ -68,7 +68,7 @@ minutes to show.
 URL and adds one `WC_Shipping_Rate` per returned entry (`rates[] { id, label, cost, currency, description, meta.rd_rate_code }`),
 cached 2 min per destination. `ratesFor()` (shared) returns nothing when the app is disabled, the store is not geocoded, the
 basket is under `min_subtotal_cents`, the items exceed `max_size_class`, it is after `cutoff_time` without next-day, or the
-address is outside `radius_km` / coverage. Otherwise `RD_SAMEDAY` (+ optional cheaper `RD_NEXTDAY`), priced by the merchant's
+address is outside `radius_km` / coverage. Otherwise `RD_SAMEDAY` (+ optional scheduled `RD_NEXTDAY`), priced by the merchant's
 rule (pass-through ± %, flat, free over a basket size). Without the plugin a flat method titled "Same-day by RentADriver"
 is matched on the order (`rdShippingChosen`).
 

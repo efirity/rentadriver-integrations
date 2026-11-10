@@ -27,7 +27,7 @@ class Rentadriver extends CarrierModule
     {
         $this->name = 'rentadriver';
         $this->tab = 'shipping_logistics';
-        $this->version = '0.1.2';
+        $this->version = '0.1.5';
         $this->author = 'RentADriver';
         $this->need_instance = 0;
         $this->bootstrap = true;

@@ -458,7 +458,7 @@ class RentADriver_Shipping_Method extends WC_Shipping_Method {
 			'rd_offer_next_day'        => array(
 				'title'   => __( 'Tomorrow-morning rate', 'rentadriver-delivery' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Also offer a cheaper scheduled rate', 'rentadriver-delivery' ),
+				'label'   => __( 'Also offer a scheduled tomorrow-morning rate', 'rentadriver-delivery' ),
 				'default' => 'yes',
 			),
 			'rd_next_day_label'        => array(

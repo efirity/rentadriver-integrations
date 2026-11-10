@@ -59,7 +59,7 @@ The app already satisfies each check:
 ```
 1. Install the app on any development store from the listing (or open https://rentadriver.ai/shopify and enter the store domain).
 2. The app opens embedded in admin. On first load it links the store, geocodes the store address and registers the carrier service and webhooks; a banner explains anything the store plan does not support (e.g. carrier-calculated rates on plans without third-party rates — booking from the Orders tab works on every plan).
-3. Use the "Test" tab to rehearse with simulated drivers before depositing; live deliveries need a topped-up wallet. Deliveries are only dispatched inside our launch cities (Melbourne, Sydney, Brisbane, London, Birmingham, Toronto); for a store elsewhere use the "Test" tab to see the rate logic, or set the store address to one of those cities.
+3. Use the "Test" tab to rehearse with simulated drivers before depositing; live deliveries need a topped-up wallet. Deliveries are only dispatched inside our launch cities in the UK and the US (see rentadriver.ai/coverage); for a store elsewhere use the "Test" tab to see the rate logic, or set the store address to a covered city.
 4. Place a paid test order (Bogus Gateway) with the "Same-day by RentADriver" rate, or open Orders → "Book delivery" on any paid order. The order is tagged rd:<code>, gets a rentadriver.delivery metafield and, once a driver picks it up, a fulfillment with tracking https://rentadriver.ai/track/<code>.
 5. Settings lets you change radius, cut-off, prep time, size limit, customer price rule and proof requirements; Overview → Sync re-runs provisioning.
 No merchant login is required beyond the Shopify session. Support: support@rentadriver.ai.

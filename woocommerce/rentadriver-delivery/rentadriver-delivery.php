@@ -3,7 +3,7 @@
  * Plugin Name: RentADriver Delivery
  * Plugin URI:  https://rentadriver.ai/integrations/woocommerce
  * Description: Shows a live "Same-day by RentADriver" shipping rate at checkout for addresses inside your delivery radius. Orders paid with it are booked automatically by the RentADriver connector.
- * Version:     0.6.27
+ * Version:     0.6.33
  * Author:      RentADriver
  * Author URI:  https://rentadriver.ai
  * License:     GPL-2.0-or-later
@@ -225,6 +225,33 @@ add_action(
 		}
 	}
 );
+
+/**
+ * WooCommerce Shipment Tracking: when RentADriver writes a delivery to an order (REST order update), add its code and
+ * tracking link there once, so that extension's customer emails and My Account show it like any carrier's.
+ * Nothing happens when the extension is not active.
+ *
+ * @param WC_Order $order Order just updated through the WooCommerce REST API.
+ */
+function rentadriver_shipment_tracking( $order ) {
+	if ( ! function_exists( 'wc_st_add_tracking_number' ) || ! is_object( $order ) || ! method_exists( $order, 'get_meta' ) ) {
+		return;
+	}
+	$d = $order->get_meta( '_rentadriver_delivery' );
+	if ( ! is_array( $d ) || empty( $d['short_code'] ) || empty( $d['tracking_url'] ) ) {
+		return;
+	}
+	if ( in_array( $d['status'] ?? '', array( 'cancelled', 'failed', 'returned', 'no_driver_found' ), true ) ) {
+		return;
+	}
+	if ( $order->get_meta( '_rentadriver_shipment_tracking' ) === $d['short_code'] ) {
+		return;
+	}
+	$order->update_meta_data( '_rentadriver_shipment_tracking', $d['short_code'] );
+	$order->save_meta_data();
+	wc_st_add_tracking_number( $order->get_id(), $d['short_code'], 'RentADriver', time(), $d['tracking_url'] );
+}
+add_action( 'woocommerce_rest_insert_shop_order_object', 'rentadriver_shipment_tracking', 20 );
 
 /**
  * Plugins-screen row, the way WooCommerce presents its own: "Settings" beside Deactivate, and docs/support in the

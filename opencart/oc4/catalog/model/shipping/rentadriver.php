@@ -21,7 +21,7 @@ class Rentadriver extends \Opencart\System\Engine\Model
         if (!$this->config->get('shipping_rentadriver_status')) {
             return array();
         }
-        $core = new Core(new OpenCartBridge($this->db, $this->config, VERSION, '0.1.2'));
+        $core = new Core(new OpenCartBridge($this->db, $this->config, VERSION, '0.1.5'));
         if (!$core->connected()) {
             return array();
         }

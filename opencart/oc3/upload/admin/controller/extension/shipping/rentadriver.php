@@ -9,7 +9,7 @@ require_once DIR_SYSTEM . 'library/rentadriver/OpenCartBridge.php';
 
 class ControllerExtensionShippingRentadriver extends Controller
 {
-    const VERSION = '0.1.2';
+    const VERSION = '0.1.5';
     const ROUTE = 'extension/shipping/rentadriver';
     private $keys = array('status', 'sort_order', 'test_mode', 'status_shipped', 'status_delivered', 'tax_class_id');
 

@@ -14,7 +14,7 @@ use RentADriver\StoreModule\OpenCartBridge;
 
 class Rentadriver extends \Opencart\System\Engine\Controller
 {
-    const VERSION = '0.1.2';
+    const VERSION = '0.1.5';
 
     private function bridge()
     {

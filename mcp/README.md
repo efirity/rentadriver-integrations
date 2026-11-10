@@ -69,11 +69,11 @@ Rule: only use RentADriver's own tools (check_coverage, get_quote, create_delive
 ## 60 seconds with an agent
 
 ```text
-user   › Get this parcel from Queen Victoria Market to Flinders Street Station today.
-agent  › check_coverage  → Melbourne, covered
-agent  › get_quote       → A$14.20 · pickup ETA 11 min · quote_id q_…
-agent  › create_delivery {quote_id, dryRun: true} → A$14.20, funds sufficient
-agent  › "It's A$14.20 with a driver in about 11 minutes. Book it?"
+user   › Get this parcel from Borough Market to King's Cross station today.
+agent  › check_coverage  → London, covered
+agent  › get_quote       → £X.XX · pickup ETA 11 min · quote_id q_…
+agent  › create_delivery {quote_id, dryRun: true} → £X.XX, funds sufficient
+agent  › "It's £X.XX with a driver in about 11 minutes. Book it?"
 user   › yes
 agent  › create_delivery {quote_id} → RD-7K2P9QX · dispatching
 agent  › track_delivery  → assigned · Zoe · 1.4 km away … delivered 09:41
@@ -107,7 +107,7 @@ Free and unauthenticated. Use these first to check feasibility and show the huma
 |---|---|---|
 | `check_coverage` | Tells you whether an address or a lat/lng pair is inside a RentADriver service area, which city it maps to, and the nearest area with distance if it isn't covered. | address (string) or lat + lng (numbers) |
 | `list_service_areas` | Launch cities with country, currency, timezone, centre, radius, launch phase and the minimum price. Use it to explain coverage or pick a city before quoting. | none |
-| `get_quote` | Prices a delivery from one pickup to one or more drop-offs. Geocodes addresses, routes the trip, applies size, urgency, vehicle and live surge, and guarantees the driver floor. Returns a quote_id valid for 15 minutes plus the full breakdown and ETAs, so the agent can show the human the price before spending anything. | pickup (stop), dropoffs[] (1–8 stops), items[] (description, size_class S/M/L/XL, category), urgency asap|today|scheduled, scheduled_at, vehicle_class |
+| `get_quote` | Prices a delivery from one pickup to one or more drop-offs. Geocodes addresses, routes the trip, applies size, urgency, vehicle and live demand. Returns a quote_id valid for 15 minutes plus the full breakdown and ETAs, so the agent can show the human the price before spending anything. | pickup (stop), dropoffs[] (1–8 stops), items[] (description, size_class S/M/L/XL, category), urgency asap|today|scheduled, scheduled_at, vehicle_class |
 | `get_platform_stats` | Live counts: service areas, deliveries, agents connected. Useful for status pages or sanity checks. | none |
 | `search_docs` | Searches RentADriver's published documentation and returns matches with absolute URLs to cite and a snippet. | query (1–200 chars), limit (1–10) |
 | `read_docs_page` | Full text of one documentation page, by a URL from search_docs or list_docs_sections. | url |

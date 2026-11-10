@@ -2,7 +2,7 @@
     "name": "rentadriver/module-delivery",
     "description": "RentADriver same-day local delivery for Adobe Commerce and Magento Open Source: live checkout price, automatic booking and tracking.",
     "type": "magento2-module",
-    "version": "0.1.4",
+    "version": "0.1.7",
     "license": "GPL-2.0-or-later",
     "homepage": "https://rentadriver.ai/integrations/magento",
     "require": {

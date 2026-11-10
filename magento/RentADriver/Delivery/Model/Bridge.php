@@ -26,7 +26,7 @@ use RentADriver\Delivery\Lib\Core;
 
 class Bridge implements \RentADriver\Delivery\Lib\Bridge
 {
-    public const VERSION = '0.1.4';
+    public const VERSION = '0.1.7';
     public const PATH = 'rentadriver/protocol/';
     private const LB_TO_KG = 0.45359237;
 

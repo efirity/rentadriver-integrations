@@ -2,7 +2,7 @@
 <module>
     <name>rentadriver</name>
     <displayName><![CDATA[RentADriver Same-Day Delivery]]></displayName>
-    <version><![CDATA[0.1.2]]></version>
+    <version><![CDATA[0.1.5]]></version>
     <description><![CDATA[Same-day local delivery by vetted RentADriver drivers: live checkout price, automatic booking and tracking.]]></description>
     <author><![CDATA[RentADriver]]></author>
     <tab><![CDATA[shipping_logistics]]></tab>

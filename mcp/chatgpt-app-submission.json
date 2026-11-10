@@ -33,7 +33,7 @@
   "category": "Shopping",
   "_categoryNote": "Best-fit OpenAI category for an on-demand local delivery marketplace; 'Travel' and 'Productivity' are the alternates. Confirm against the console's fixed list at submit time.",
   "example_prompts": [
-   "Get a same-day delivery quote from Queen Victoria Market to Flinders Street Station in Melbourne.",
+   "Get a same-day delivery quote from Borough Market to King's Cross station in London.",
    "Book a courier to pick up a parcel at my shop and drop it to a customer — show me the price before booking.",
    "Track delivery RD-8F2K and show me the proof of delivery once it arrives.",
    "Which of my launch cities can deliver same-day, and what does a 5 km drop cost in each?"
@@ -45,7 +45,7 @@
   "terms_of_service": "https://rentadriver.ai/terms",
   "customer_support": "support@rentadriver.ai"
  },
- "description": "Book real-world package deliveries by describing them in plain language. RentADriver quotes, books, dispatches, tracks and proves same-day local and city-to-city deliveries fulfilled by vetted drivers, across launch cities in Australia, the UK, the US and Canada. Quotes and coverage checks are free; booking uses a prepaid wallet with per-delivery and daily spending caps, so an agent can never overspend.",
+ "description": "Book real-world package deliveries by describing them in plain language. RentADriver quotes, books, dispatches, tracks and proves same-day local and city-to-city deliveries fulfilled by vetted drivers, across launch cities in the UK and the US. Quotes and coverage checks are free; booking uses a prepaid wallet with per-delivery and daily spending caps, so an agent can never overspend.",
  "demo_recording_url": null,
  "_demoNote": "A screen recording in the OpenAI Playground with the MCP server attached is required before final submit. Record the sandbox flow above before submitting.",
  "resources": [

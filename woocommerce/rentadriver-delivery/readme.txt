@@ -5,7 +5,7 @@ Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.0
 Requires Plugins: woocommerce
-Stable tag: 0.6.27
+Stable tag: 0.6.33
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,7 +24,7 @@ Everything day-to-day lives under WordPress → RentADriver: an overview of your
 * Live rate at checkout, priced per order and destination — not a flat table
 * Your delivery radius, cut-off time, prep time and maximum item size
 * Choose what the shopper pays: pass the quote through, add or subtract a percentage, charge a flat amount, or make it free over a basket size
-* Optional cheaper "tomorrow morning" rate alongside same-day
+* Optional scheduled "tomorrow morning" rate alongside same-day
 * Automatic booking on paid orders, or book by hand from the RentADriver app
 * Proof of delivery: photo, recipient name, signature or OTP
 * Pickup address, contact and driver instructions per store
@@ -88,6 +88,26 @@ Switch the store to sandbox in the RentADriver app (simulated drivers, no charge
 9. The customer's live tracking page after the delivery.
 
 == Changelog ==
+
+= 0.6.33 =
+* Hosted app: a long order number wraps inside the Deliveries list's Order column instead of running into the route.
+
+= 0.6.32 =
+* The tomorrow-morning rate is no longer described as cheaper: with a flat price or free delivery it costs the shopper the same as same-day.
+
+= 0.6.31 =
+* Fix for 0.6.29: on a store in sandbox mode, the "booked" order note and delivery details now go only to RentADriver test orders, never to real orders.
+
+= 0.6.30 =
+* Hosted app: print a delivery's label straight from the Deliveries list; the Book dialog shows nothing held in Test mode; a booked order no longer appears twice until a refresh.
+
+= 0.6.29 =
+* Sandbox test orders created from RentADriver → Test rate now get the "booked" order note with the tracking link, like live orders. Real orders on a sandbox store are still left untouched.
+* With WooCommerce Shipment Tracking active, each booked delivery is added there once (provider RentADriver, the delivery code and its tracking link), so that extension's emails and My Account show it.
+* In the RentADriver app, orders not yet booked show the delivery street and postcode, not only the city.
+
+= 0.6.28 =
+* RentADriver delivery is offered only for pickups and addresses in countries RentADriver delivers in.
 
 = 0.6.27 =
 * Delivery labels show the time as well as the date for same-day and ASAP deliveries (the time it was booked), not only for scheduled ones.
