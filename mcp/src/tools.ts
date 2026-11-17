@@ -33,6 +33,12 @@ const fail = (e: unknown): ToolResult => {
   const hint = err.code === "workspace_required" ? " → call list_country_workspaces, then enable_country_workspace for the pickup country. Fund that local wallet before booking." : err.code === "insufficient_funds" ? " → call create_wallet_deposit (card) or create_x402_deposit (USDC), then fund_delivery." : err.code === "outside_coverage" ? " → call list_service_areas / check_coverage." : err.code === "unauthorized" || err.code === "invalid_api_key" ? " → sign in to RentADriver again (connector: reconnect; local server: run `npx -y rentadriver-mcp login` or set RENTADRIVER_API_KEY)." : "";
   return { content: [{ type: "text", text: `Error ${err.code ?? err.status ?? ""}: ${err.message}${hint}${err.details ? "\n" + JSON.stringify(err.details) : ""}` }], isError: true };
 };
+/** Plain meaning of service-area tiers (website "Live now / Book ahead / Waitlist"), so hosts do not read "scheduled" as unavailable. */
+export const TIER_MEANING = {
+  live: "Live now: bookable; drivers based there were online in the last 24 hours.",
+  scheduled: "Book ahead: bookable; approved drivers are based there. Schedule the delivery and RentADriver matches a driver. Not unavailable.",
+  waitlist: "Waitlist: not bookable yet; the city opens when drivers are approved there.",
+} as const;
 const run = async (fn: () => Promise<unknown>): Promise<ToolResult> => { try { return ok(await fn()); } catch (e) { return fail(e); } };
 
 /** Tools that work without an account: coverage, cities, lanes, quotes and live stats. The hosted server serves only
@@ -78,10 +84,10 @@ export function registerTools(server: McpServer, api: RentADriverClient, opts: {
     return tool;
   }) as typeof server.registerTool;
   // ---- discovery (no auth) ----
-  server.registerTool("check_coverage", { title: "Check coverage", description: "Is an address or lat/lng inside a RentADriver service area? Free, no API key.", inputSchema: { address: z.string().optional(), lat: z.number().optional(), lng: z.number().optional() } },
+  server.registerTool("check_coverage", { title: "Check coverage", description: "Is an address or lat/lng inside a RentADriver service area? covered=true means a delivery can be booked there (in a book-ahead city, RentADriver matches a driver for the scheduled time). Free, no API key.", inputSchema: { address: z.string().optional(), lat: z.number().optional(), lng: z.number().optional() } },
     async (a) => run(() => api.get("/v1/coverage", { address: a.address, lat: a.lat, lng: a.lng }, false)));
-  server.registerTool("list_service_areas", { title: "List service areas", description: "Launch cities with currency, timezone and radius. Free.", inputSchema: {} },
-    async () => run(() => api.get("/v1/service-areas", {}, false)));
+  server.registerTool("list_service_areas", { title: "List service areas", description: "Cities with currency, timezone, radius and tier. tier is driver presence, not whether booking works: \"live\" = drivers based there were online in the last 24 h; \"scheduled\" = bookable, approved drivers are based there (book ahead, we match one); \"waitlist\" = not bookable yet. Never call a scheduled city unavailable or not live; say it is bookable ahead. Free.", inputSchema: {} },
+    async () => run(async () => ({ ...(await api.get("/v1/service-areas", {}, false) as Record<string, unknown>), tier_meaning: TIER_MEANING })));
   registerAppTool(server, "get_quote", { _meta: uiMeta("quote"), title: "Get a delivery quote", description: "Price and conditional ETA for a pickup and one or more drop-offs. Null ETA means driver availability is unconfirmed; never promise a pickup time. Free, no key. Returns a quote_id valid 15 minutes; pass it to create_delivery. The quote card shows these details: reply in one short line instead of repeating them.", inputSchema: { workspace_id: z.string().uuid().optional(), pickup: Stop, dropoffs: z.array(Stop).min(1).max(8), items: z.array(Item).optional(), urgency: z.enum(["asap", "today", "scheduled"]).default("asap"), scheduled_at: z.string().optional(), vehicle_class: z.enum(["bike", "scooter", "car", "suv", "van", "truck"]).optional(), service: z.enum(["auto", "local", "intercity"]).default("auto").describe("intercity = same-day delivery to a neighbouring launch city up to 160 km by road; auto picks it when the drop-off is in one") } },
     async (a) => run(() => api.post("/v1/quotes", a, false)));
   server.registerTool("list_intercity_lanes", { title: "Intercity lanes", description: "Same-day city-to-city routes: for every launch city, the neighbouring launch cities within 160 km by road (e.g. London → Reading, Leeds → Sheffield, San Francisco → San Jose) with road distance, drive time and a same-day sample price. Longer trips are not offered. Free.", inputSchema: {} }, async () => run(() => api.get("/v1/intercity/lanes")));

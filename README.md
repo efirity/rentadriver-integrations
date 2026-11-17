@@ -13,8 +13,8 @@ flow).
 | [woocommerce](woocommerce/README.md) | **RentADriver Delivery** WordPress plugin ([WordPress.org](https://wordpress.org/plugins/rentadriver-delivery/)), coding-standards setup, directory artwork, local dev harness | Live |
 | [wix](wix/README.md) | Wix Stores app: shipping-rates extension, listing copy and assets | Live on the Wix App Market |
 | [squarespace](squarespace/README.md) | Squarespace connector: Developer Platform setup and publishing notes | Live (OAuth app approved) |
-| [bigcommerce](bigcommerce/README.md) | BigCommerce app: setup, callbacks, listing assets | Marketplace review |
-| [mcp](mcp/README.md) | **rentadriver-mcp** MCP server ([npm](https://www.npmjs.com/package/rentadriver-mcp)): stdio and remote Streamable HTTP, tools, OAuth and MCP App cards | Live (npm and https://mcp.rentadriver.ai/mcp) |
+| [bigcommerce](bigcommerce/README.md) | BigCommerce app: setup, callbacks, listing assets | Live on the [BigCommerce App Marketplace](https://www.bigcommerce.com/apps/rentadriver/) |
+| [mcp](mcp/README.md) | **rentadriver-mcp** MCP server ([npm](https://www.npmjs.com/package/rentadriver-mcp)): stdio and remote Streamable HTTP, tools, OAuth and MCP App cards | Live (npm and https://mcp.rentadriver.ai/mcp); listed in the [official MCP Registry](https://registry.modelcontextprotocol.io/v0/servers?search=ai.rentadriver) as `ai.rentadriver/rentadriver`, on [Glama](https://glama.ai/mcp/connectors/ai.rentadriver.mcp/rent-adriver-sameday-delivery) and [mcp.so](https://mcp.so/servers/rentadriver-sameday-delivery) |
 | [chatgpt](chatgpt/README.md) | ChatGPT app: MCP manifest, tool annotations and justifications, submission record | Live in ChatGPT |
 | [claude](claude/README.md) | Claude connector: remote MCP, OAuth consent, connectors-directory submission | Directory review |
 | [make](make/README.md) | Make Custom App: OAuth, connection checks, quotes, exact-quote booking, delivery lookup and event polling | Private pilot; not in the catalogue |
@@ -23,7 +23,7 @@ flow).
 | [slack](slack/README.md) | Slack bot: per-user account linking, private quotes and delivery status | Functional single-workspace implementation; live pilot pending |
 | [ebay](ebay/README.md) | eBay fulfillment connector | Live (UK business sellers) |
 | [zapiet](zapiet/README.md) | Zapiet – Pickup + Delivery: RentADriver as a Last Mile Delivery courier | Draft specification |
-| [skills](skills/rentadriver-same-day-delivery/SKILL.md) | **Agent skill** `rentadriver-same-day-delivery` (SKILL.md): teaches any MCP-capable agent to quote, book, track and confirm deliveries | Free on [Agensi](https://agensi.io/skills/rentadriver-same-day-local-delivery) (in review) |
+| [skills](skills/rentadriver-same-day-delivery/SKILL.md) | **Agent skill** `rentadriver-same-day-delivery` (SKILL.md): teaches any MCP-capable agent to quote, book, track and confirm deliveries | Free on [Agensi](https://agensi.io/skills/rentadriver-same-day-local-delivery) |
 | tiktok | TikTok Shop connector | Live in the TikTok Shop app store (UK); design maintained privately |
 
 Cross-cutting documents:
