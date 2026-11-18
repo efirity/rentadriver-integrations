@@ -1,11 +1,31 @@
 # RentADriver integrations
 
 Store, automation and AI-assistant integrations for [RentADriver](https://rentadriver.ai): same-day local delivery with vetted
-drivers, booked from the tools merchants already use. This repository holds the platform-specific packages: the
-WordPress plugin, app manifests and configuration, listing copy and assets, and the design notes for connectors in
-progress. The API, the merchant apps and the deploy pipeline live in RentADriver's private monorepo; this repository
-is a published mirror of its `apps/integrations` folder (see [CONTRIBUTING.md](CONTRIBUTING.md) for how changes
-flow).
+drivers, booked from the tools merchants already use.
+
+## MCP server (`mcp/`)
+
+**This repository contains the full source of the RentADriver MCP server**, `rentadriver-mcp`, in [`mcp/`](mcp/README.md):
+TypeScript sources (`mcp/src/`), tool definitions, OAuth sign-in and MCP App cards. It is the same code published to npm
+as [`rentadriver-mcp`](https://www.npmjs.com/package/rentadriver-mcp) and served at `https://mcp.rentadriver.ai/mcp`.
+
+```bash
+# run from source (stdio)
+cd mcp && npm install && npm run build && node dist/index.js
+
+# or as a container, from the repository root
+docker build -t rentadriver-mcp . && docker run -i --rm rentadriver-mcp
+```
+
+Coverage checks and quotes work without an account; set `RENTADRIVER_API_KEY` (or run `node dist/index.js setup`) to
+book. Tools and setup for every client: [mcp/README.md](mcp/README.md).
+
+## Everything else
+
+The rest of the repository holds the platform-specific packages: the WordPress plugin, app manifests and configuration,
+listing copy and assets, and the design notes for connectors in progress. The RentADriver API, the merchant apps and the
+deploy pipeline are private; this repository is published from RentADriver's monorepo (see
+[CONTRIBUTING.md](CONTRIBUTING.md) for how changes flow).
 
 | Directory | Integration | Status |
 |---|---|---|
